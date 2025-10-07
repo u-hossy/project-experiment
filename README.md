@@ -1,12 +1,12 @@
 # プロジェクト実験
 
-学部3年後期、プロジェクト実験
+学部 3 年後期、プロジェクト実験
 
 ## 開発規則
 
-### Git・GitHub関連
+### Git・GitHub 関連
 
-> ブランチの命名規則、コミットメッセージの書き方、Pull Requestからmainブランチへマージされるまでの流れなど
+> ブランチの命名規則、コミットメッセージの書き方、Pull Request から main ブランチへマージされるまでの流れなど
 
 [`CONTRIBUTING.md`](/CONTRIBUTING.md)を参照してください
 
@@ -23,3 +23,11 @@
 ## 環境構築方法
 
 > プロジェクトの詳細が決まってから記載します
+
+### バックエンド
+
+```bash
+cd backend/
+python3 -m venv .venv
+. .venv/bin/activate
+```
