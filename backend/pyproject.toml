@@ -1,16 +1,18 @@
 [project]
 name = "project-experiment"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
 authors = [
-    {name = "Your Name",email = "you@example.com"}
+    {name = "u-hossy",email = "95125392+u-hossy@users.noreply.github.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "django (>=5.2.7,<6.0.0)"
 ]
 
+[tool.poetry]
+packages = [{ include = "core" }]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
