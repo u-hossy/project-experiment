@@ -1,1 +1,4 @@
+.env
+
 core/__pycache__/*
+*.sqlite3
