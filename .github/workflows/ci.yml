@@ -20,7 +20,7 @@ jobs:
         working-directory: frontend
 
       - name: Format and Lint
-        run: pnpm run lint
+        run: pnpm run check
         working-directory: frontend
 
       - name: Test
