@@ -50,3 +50,10 @@ pnpm run check
 pnpm run check:fix
 ```
 
+### テスト
+
+フロントエンドの単体テストを実行するには以下のコマンドを実行してください。
+
+```bash
+pnpm run test
+```
