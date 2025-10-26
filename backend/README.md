@@ -61,3 +61,21 @@ python3 manage.py runserver
 ```bash
 deactivate
 ```
+
+## models.py変更時
+
+### 1. マイグレーションの作成
+
+以下のコマンドを実行しマイグレーションファイルの作成
+
+```bash
+python3 manage.py makemigrations
+```
+
+出力文に問題がなければ以下のコマンドを実行してマイグレーションの適用
+
+```bash
+python3 manage.py migrate
+```
+
+
