@@ -1,5 +1,5 @@
 import { PlusIcon } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -24,13 +24,16 @@ export default function MemberList() {
   // メンバー削除関数
   const handleDeleteMember = (index: number) => {
     // アラートの表示
-    alert('本当に削除しますか')
+    alert("本当に削除しますか");
 
     // フィルターで指定index以外を残す
     setMembers((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number,
+  ) => {
     if (e.key === "Enter") {
       e.preventDefault();
 
@@ -53,20 +56,21 @@ export default function MemberList() {
 
   return (
     <div className="p-4">
-      <h2 className="mb-2 text-xl font-semibold">メンバー一覧</h2>
+      <h2 className="mb-2 font-semibold text-xl">メンバー一覧</h2>
 
       {members.map((member, index) => (
-        <div
-          key={index} className="mb-2 flex items-center gap-2">
+        <div key={index} className="mb-2 flex items-center gap-2">
           <Input
-          //各inputを登録
-            ref={(el) => {inputRefs.current[index] = el}}
+            //各inputを登録
+            ref={(el) => {
+              inputRefs.current[index] = el;
+            }}
             type="text"
             value={member}
             placeholder={`メンバー${index + 1}`}
             onChange={(e) => handleChange(index, e.target.value)}
             onKeyDown={(e) => handleKeyDown(e, index)}
-            className="border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="rounded-md border px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
 
           {/* 削除ボタン */}
@@ -84,7 +88,7 @@ export default function MemberList() {
       <Button
         onClick={handleAddMember}
         variant="outline"
-        className="cursor-pointer mt-2"
+        className="mt-2 cursor-pointer"
       >
         <PlusIcon />
         メンバーを追加
