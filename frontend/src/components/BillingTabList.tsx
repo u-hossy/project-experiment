@@ -1,12 +1,28 @@
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Person } from "@/type/person";
 
-type BillingDetailModalProps = {
-  people: Person[];
-}
 
-export default function BillingDetailModal({ people }: BillingDetailModalProps) {
+export default function BillingTabList() {
+  const [people, setPeople] = useState<Person[]>([])
+
+  useEffect(() => {
+    const fetchPeople = () => {
+      fetch("http://localhost:3001/members")
+        .then(res => res.json())
+        .then(data => setPeople(data))
+    }
+
+    fetchPeople()
+
+    const interval = setInterval(fetchPeople, 2000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
+    (!people.length) ?
+    <></> :
     <div className="w-full">
       <Tabs defaultValue={`p${people[0].id}`} className="w-full">
         <TabsList
@@ -19,7 +35,7 @@ export default function BillingDetailModal({ people }: BillingDetailModalProps) 
             gap-2
           "
         >
-          {people.map((person) => (
+          {people.map((person) =>
             <TabsTrigger
               key={person.id}
               value={`p${person.id}`}
@@ -31,12 +47,12 @@ export default function BillingDetailModal({ people }: BillingDetailModalProps) 
             >
               {person.name}
             </TabsTrigger>
-          ))}
+          )}
         </TabsList>
 
         {people.map((person) => (
           <TabsContent key={person.id} value={`p${person.id}`}>
-            {`${person.name} さんの送金先と金額`}
+            {person.name} さんの送金先と金額
           </TabsContent>
         ))}
       </Tabs>
