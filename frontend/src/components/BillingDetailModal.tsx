@@ -1,40 +1,45 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Person } from "@/type/person";
 
 type BillingDetailModalProps = {
-  triggerLabel: string
   people: Person[];
 }
 
-export default function BillingDetailModal(
-  {triggerLabel, people}: BillingDetailModalProps
-) {
-
+export default function BillingDetailModal({ people }: BillingDetailModalProps) {
   return (
-    <Dialog>
-     <DialogTrigger>{triggerLabel}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{triggerLabel}さんの請求ページ</DialogTitle>
-            {people.map((p) => (
-            <div key={p.id} className="flex items-center gap-3">
-              <Checkbox
-                id={p.id}
-                checked={p.checked}
-              />
-                <Label htmlFor={p.id}>{p.name}</Label>
-            </div>
+    <div className="w-full">
+      <Tabs defaultValue={`p${people[0].id}`} className="w-full">
+        <TabsList
+          className="
+            flex
+            justify-start
+            overflow-x-auto
+            whitespace-nowrap
+            w-full
+            gap-2
+          "
+        >
+          {people.map((person) => (
+            <TabsTrigger
+              key={person.id}
+              value={`p${person.id}`}
+              className="
+                flex-shrink-0
+                min-w-[80px]
+                px-3 py-1
+              "
+            >
+              {person.name}
+            </TabsTrigger>
           ))}
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
-  );
+        </TabsList>
+
+        {people.map((person) => (
+          <TabsContent key={person.id} value={`p${person.id}`}>
+            {`${person.name} さんの送金先と金額`}
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
+  )
 }

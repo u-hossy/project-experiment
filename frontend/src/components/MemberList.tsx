@@ -2,31 +2,48 @@ import { PlusIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import type { Person } from "../type/person";
 
 export default function MemberList() {
   // メンバー名の配列を状態として管理
-  const [members, setMembers] = useState<string[]>([""]);
+  const [members, setMembers] = useState<Person[]>([]);
   // 各inputへの参照を保持
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // メンバー追加関数
-  const handleAddMember = () => {
-    setMembers((prev) => [...prev, ""]);
+  const handleAddMember = async () => {
+    const res = await fetch("http://localhost:3001/members", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "" }),
+    });
+    const newMember: Person  = await res.json();
+    setMembers((prev) => [...prev, newMember]);
   };
 
   // 入力内容を更新する関数
-  const handleChange = (index: number, value: string) => {
+  const handleChange = async (index: number, value: string) => {
     const updated = [...members];
-    updated[index] = value;
+    updated[index].name = value;
     setMembers(updated);
+
+    const target = updated[index];
+
+    await fetch(`http://localhost:3001/members/${target.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: value }),
+    });
   };
 
   // メンバー削除関数
-  const handleDeleteMember = (index: number) => {
+  const handleDeleteMember = async (index: number) => {
+    const target = members[index];
     // アラートの表示
-    alert("本当に削除しますか");
+    if (!confirm("本当に削除しますか？")) return;
 
-    // フィルターで指定index以外を残す
+    await fetch(`http://localhost:3001/members/${target.id}`, {method: "DELETE"});
+
     setMembers((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -49,10 +66,14 @@ export default function MemberList() {
 
   // メンバー追加時に自動で新しい欄にフォーカス
   useEffect(() => {
-    if (inputRefs.current[members.length - 1]) {
-      inputRefs.current[members.length - 1]?.focus();
-    }
-  }, [members.length]);
+    const fetchMembers = async () => {
+      const res = await fetch("http://localhost:3001/members");
+      const data: Person[] = await res.json();
+      setMembers(data);
+    };
+    fetchMembers();
+  }, []);
+
 
   return (
     <div className="p-4">
@@ -66,7 +87,7 @@ export default function MemberList() {
               inputRefs.current[index] = el;
             }}
             type="text"
-            value={member}
+            value={member.name}
             placeholder={`メンバー${index + 1}`}
             onChange={(e) => handleChange(index, e.target.value)}
             onKeyDown={(e) => handleKeyDown(e, index)}
