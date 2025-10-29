@@ -17,24 +17,12 @@
       "name": "tokugawa"
     },
     {
-      "id": "247d",
-      "name": "tokugawa1"
-    },
-    {
       "id": "554e",
       "name": "tokugawa2"
     },
     {
       "id": "523b",
       "name": "tokugawa3"
-    },
-    {
-      "id": "8bec",
-      "name": "tokugawa99"
-    },
-    {
-      "id": "ffc5",
-      "name": "toyotomi"
     },
     {
       "id": "0430",
@@ -45,5 +33,30 @@
       "name": "toyotomi3"
     }
   ],
-  "billings": []
+  "billings": [
+    {
+      "id": "5b2b49a6-ffdd-432f-b752-e0ceccad07bf",
+      "payerId": "ff90",
+      "receiverId": "2fb6",
+      "amount": 600
+    },
+    {
+      "id": "c1612d9f-c6a4-4f98-b84b-b982a527e01d",
+      "payerId": "ff90",
+      "receiverId": "e87a",
+      "amount": 500
+    },
+    {
+      "id": "8e467ca9-84b2-4144-9610-54f4acda0bc2",
+      "payerId": "ff90",
+      "receiverId": "0430",
+      "amount": 90
+    },
+    {
+      "id": "0f3c0dd5-8128-483b-be0b-0f39d8728712",
+      "payerId": "ff90",
+      "receiverId": "2fb6",
+      "amount": 1000
+    }
+  ]
 }

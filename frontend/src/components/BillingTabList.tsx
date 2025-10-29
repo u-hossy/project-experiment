@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui/tabs"
 import type { Person } from "@/type/person";
+import BillingDetailCard from "./BillingDetailCard";
 
 
 export default function BillingTabList() {
@@ -52,7 +58,7 @@ export default function BillingTabList() {
 
         {people.map((person) => (
           <TabsContent key={person.id} value={`p${person.id}`}>
-            {person.name} さんの送金先と金額
+            <BillingDetailCard payer={person}/>
           </TabsContent>
         ))}
       </Tabs>
