@@ -1,67 +1,48 @@
 import { useEffect, useState } from "react";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Person } from "@/type/person";
 import BillingDetailCard from "./BillingDetailCard";
 
-
 export default function BillingTabList() {
-  const [people, setPeople] = useState<Person[]>([])
+  const [people, setPeople] = useState<Person[]>([]);
 
   useEffect(() => {
     const fetchPeople = () => {
       fetch("http://localhost:3001/members")
-        .then(res => res.json())
-        .then(data => setPeople(data))
-    }
+        .then((res) => res.json())
+        .then((data) => setPeople(data));
+    };
 
-    fetchPeople()
+    fetchPeople();
 
-    const interval = setInterval(fetchPeople, 2000)
+    const interval = setInterval(fetchPeople, 2000);
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
-  return (
-    (!people.length) ?
-    <></> :
+  return !people.length ? (
+    <></>
+  ) : (
     <div className="w-full">
       <Tabs defaultValue={`p${people[0].id}`} className="w-full">
-        <TabsList
-          className="
-            flex
-            justify-start
-            overflow-x-auto
-            whitespace-nowrap
-            w-full
-            gap-2
-          "
-        >
-          {people.map((person) =>
+        <TabsList className="flex w-full justify-start gap-2 overflow-x-auto whitespace-nowrap">
+          {people.map((person) => (
             <TabsTrigger
               key={person.id}
               value={`p${person.id}`}
-              className="
-                flex-shrink-0
-                min-w-[80px]
-                px-3 py-1
-              "
+              className="min-w-[80px] flex-shrink-0 px-3 py-1"
             >
               {person.name}
             </TabsTrigger>
-          )}
+          ))}
         </TabsList>
 
         {people.map((person) => (
           <TabsContent key={person.id} value={`p${person.id}`}>
-            <BillingDetailCard payer={person}/>
+            <BillingDetailCard payer={person} />
           </TabsContent>
         ))}
       </Tabs>
     </div>
-  )
+  );
 }

@@ -1,8 +1,8 @@
 import { PlusIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import type { Person } from "../type/person";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import type { Person } from "../type/person";
 
 export default function MemberList() {
   // メンバー名の配列を状態として管理
@@ -17,7 +17,7 @@ export default function MemberList() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: "" }),
     });
-    const newMember: Person  = await res.json();
+    const newMember: Person = await res.json();
     setMembers((prev) => [...prev, newMember]);
   };
 
@@ -42,7 +42,9 @@ export default function MemberList() {
     // アラートの表示
     if (!confirm("本当に削除しますか？")) return;
 
-    await fetch(`http://localhost:3001/members/${target.id}`, {method: "DELETE"});
+    await fetch(`http://localhost:3001/members/${target.id}`, {
+      method: "DELETE",
+    });
 
     setMembers((prev) => prev.filter((_, i) => i !== index));
   };
@@ -73,7 +75,6 @@ export default function MemberList() {
     };
     fetchMembers();
   }, []);
-
 
   return (
     <div className="p-4">
