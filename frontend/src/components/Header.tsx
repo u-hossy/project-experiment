@@ -1,3 +1,5 @@
+import { HeaderMenu } from "./HeaderMenu";
+
 export default function Header() {
   return (
     <header className="fixed top-0 left-0 z-50 w-full border-b bg-background shadow-md">
@@ -10,6 +12,7 @@ export default function Header() {
           />
           <span className="font-bold text-lg">割り勘くん</span>
         </div>
+        <HeaderMenu/>
       </div>
     </header>
   );
