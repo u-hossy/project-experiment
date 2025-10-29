@@ -5,8 +5,15 @@ function App() {
   return (
     <div style={{ paddingTop: "80px" }}>
       <Header />
-      <h1>メンバー編集画面</h1>
       <MemberList />
+
+      <div
+        style={{
+          borderBottom: "2px solid #ccc",
+          marginTop: "20px",
+          width: "100%",
+        }}
+      />
     </div>
   );
 }

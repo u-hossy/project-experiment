@@ -11,7 +11,9 @@ export default function MemberList() {
 
   // メンバー追加関数
   const handleAddMember = () => {
-    setMembers((prev) => [...prev, ""]);
+    if (members[members.length - 1] !== "") {
+      setMembers((prev) => [...prev, ""]);
+    }
   };
 
   // 入力内容を更新する関数
