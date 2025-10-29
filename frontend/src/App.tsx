@@ -1,5 +1,5 @@
-import MemberList from "./components/MemberList";
 import Header from "./components/Header";
+import MemberList from "./components/MemberList";
 
 function App() {
   return (
