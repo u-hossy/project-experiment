@@ -30,14 +30,14 @@ export default function BillingTabList() {
           {people
             .filter((person) => person.name !== "")
             .map((person) => (
-            <TabsTrigger
-              key={person.id}
-              value={`p${person.id}`}
-              className="min-w-[80px] flex-shrink-0 px-3 py-1"
-            >
-              {person.name}
-            </TabsTrigger>
-          ))}
+              <TabsTrigger
+                key={person.id}
+                value={`p${person.id}`}
+                className="min-w-[80px] flex-shrink-0 px-3 py-1"
+              >
+                {person.name}
+              </TabsTrigger>
+            ))}
         </TabsList>
 
         {people.map((person) => (

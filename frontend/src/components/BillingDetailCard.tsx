@@ -64,7 +64,7 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
       id: d.id,
       payerId: payer.id,
       receiverId: newValue,
-      amount: Number(d.amount)
+      amount: Number(d.amount),
     };
 
     const res = await fetch(`http://localhost:3001/billings/${d.id}`);
@@ -75,9 +75,9 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
 
     await fetch(url, {
       method: methohd,
-      headers: {"Content-Type": "application/json"},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(billing),
-    })
+    });
   };
 
   const handleAmountChange = (index: number, v: number | "") => {
@@ -155,7 +155,7 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
                 </SelectTrigger>
                 <SelectContent>
                   {people
-                    .filter((p) => (p.id !== payer.id) && (p.name !== ""))
+                    .filter((p) => p.id !== payer.id && p.name !== "")
                     .map((p) => (
                       <SelectItem key={p.id} value={p.id}>
                         {p.name}
@@ -172,15 +172,13 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
                 onChange={(e) =>
                   handleAmountChange(
                     index,
-                    e.target.value === "" ? "" : Number(e.target.value)
+                    e.target.value === "" ? "" : Number(e.target.value),
                   )
                 }
                 onBlur={() => handleBlur(index)}
               />
               <span>円</span>
-              <Button onClick={() => handleDeleteBilling(index)}>
-                削除
-              </Button>
+              <Button onClick={() => handleDeleteBilling(index)}>削除</Button>
             </div>
           );
         })}
