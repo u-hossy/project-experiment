@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import type { Billing } from "@/type/billing";
 import type { Person } from "@/type/person";
+import { Button } from "./ui/button";
 
 type BillingDetailCardProps = {
   payer: Person;
@@ -76,17 +77,6 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
   const handleBlur = async (index: number) => {
     const d = details[index];
 
-    if (!d.receiverId || d.amount === "") {
-      if (d.id) {
-        await fetch(`http://localhost:3001/billings/${d.id}`, {
-          method: "DELETE",
-        });
-      }
-
-      setDetails((prev) => prev.filter((_, i) => i !== index));
-      return;
-    }
-
     const billing: Billing = {
       id: d.id,
       payerId: payer.id,
@@ -114,6 +104,18 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
     }
   };
 
+  const handleDeleteBilling = async (index: number) => {
+    const target = details[index];
+
+    if (!confirm("本当に削除しますか？")) return;
+
+    await fetch(`http://localhost:3001/billings/${target.id}`, {
+      method: "DELETE",
+    });
+
+    setDetails((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <Card className="p-4 shadow-md">
       <CardHeader>
@@ -139,7 +141,6 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
                         {p.name}
                       </SelectItem>
                     ))}
-                  <SelectItem value="none">選択しない</SelectItem>
                 </SelectContent>
               </Select>
               <Input
@@ -151,12 +152,15 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
                 onChange={(e) =>
                   handleAmountChange(
                     index,
-                    e.target.value === "" ? "" : Number(e.target.value),
+                    e.target.value === "" ? "" : Number(e.target.value)
                   )
                 }
                 onBlur={() => handleBlur(index)}
               />
               <span>円</span>
+              <Button onClick={() => handleDeleteBilling(index)}>
+                削除
+              </Button>
             </div>
           );
         })}
