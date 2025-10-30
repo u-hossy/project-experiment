@@ -12,7 +12,7 @@ export default function Header() {
           />
           <span className="font-bold text-lg">割り勘くん</span>
         </div>
-        <HeaderMenu/>
+        <HeaderMenu />
       </div>
     </header>
   );

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { MoreHorizontalIcon } from "lucide-react"
+import { MoreHorizontalIcon } from "lucide-react";
+import { useState } from "react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,31 +11,24 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 export function HeaderMenu() {
-
   return (
     <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" aria-label="Open menu" size="icon-sm">
-            <MoreHorizontalIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40" align="end">
-          <DropdownMenuLabel>Menu</DropdownMenuLabel>
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              はじめから
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              ダウンロード
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              新しい割り勘
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" aria-label="Open menu" size="icon-sm">
+          <MoreHorizontalIcon />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-40" align="end">
+        <DropdownMenuLabel>Menu</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuItem>はじめから</DropdownMenuItem>
+          <DropdownMenuItem>ダウンロード</DropdownMenuItem>
+          <DropdownMenuItem>新しい割り勘</DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
