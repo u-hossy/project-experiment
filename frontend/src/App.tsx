@@ -8,12 +8,7 @@ import { datas } from "./tmp/tmp_datas";
 function App() {
   return (
     <div
-      style={{
-        paddingTop: "80px",
-        paddingBottom: "200px",
-        justifyContent: "center",
-        gap: "32px",
-      }}
+      className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-20 pb-48 px-8"
     >
       <Header />
       <CardWrapper title="メンバー 一覧">
@@ -21,6 +16,9 @@ function App() {
       </CardWrapper>
       <CardWrapper title="精算">
         <BillingTabList />
+      </CardWrapper>
+      <CardWrapper title="計算結果">
+        <p>テスト</p>
       </CardWrapper>
       <CardWrapper title="ネットワークグラフ">
         <PaymentNetwork debts={datas} />

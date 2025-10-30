@@ -96,8 +96,7 @@ export default function MemberList() {
           {/* 削除ボタン */}
           <Button
             onClick={() => handleDeleteMember(index)}
-            variant="destructive"
-            className="cursor-pointer hover:bg-red-700"
+            className="cursor-pointer hover:bg-gray-800"
           >
             削除
           </Button>
