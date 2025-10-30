@@ -16,8 +16,10 @@
     "@tailwindcss/vite": "^4.1.16",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cytoscape": "^3.33.1",
     "lucide-react": "^0.548.0",
     "react": "^19.2.0",
+    "react-cytoscapejs": "^2.0.0",
     "react-dom": "^19.2.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.16"
