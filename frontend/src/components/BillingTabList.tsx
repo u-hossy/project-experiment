@@ -26,7 +26,9 @@ export default function BillingTabList() {
     <div className="w-full">
       <Tabs defaultValue={`p${people[0].id}`} className="w-full">
         <TabsList className="flex w-full justify-start gap-2 overflow-x-auto whitespace-nowrap">
-          {people.map((person) => (
+          {people
+            .filter((person) => person.name !== "")
+            .map((person) => (
             <TabsTrigger
               key={person.id}
               value={`p${person.id}`}

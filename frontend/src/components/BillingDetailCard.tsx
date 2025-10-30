@@ -133,7 +133,7 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
                 </SelectTrigger>
                 <SelectContent>
                   {people
-                    .filter((p) => p.id !== payer.id)
+                    .filter((p) => (p.id !== payer.id) && (p.name !== ""))
                     .map((p) => (
                       <SelectItem key={p.id} value={p.id}>
                         {p.name}
