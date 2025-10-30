@@ -17,7 +17,7 @@ export default function PaymentNetwork({ debts }: Props) {
 
   const elements = [
     ...persons.map(p => ({
-      data: { id: p, label: `${p.toUpperCase()}さん` }
+      data: { id: p, label: p.toUpperCase() }
     })),
     ...debts.map((d, i) => ({
       data: {
@@ -29,7 +29,14 @@ export default function PaymentNetwork({ debts }: Props) {
     }))
   ];
 
-  const layout = { name: "cose", animate: true };
+  const layout = {
+    name: "cose",
+    animate: false,
+    nodeRepulsion: 8000000000,
+    idealEdgeLength: 1000,  
+    gravity: 0.01,       
+    numIter: 1000,      
+  };
 
   const style = [
     {
@@ -60,7 +67,7 @@ export default function PaymentNetwork({ debts }: Props) {
         style={{
             width: "calc(100% - 48px)", 
             margin: "0 24px",
-            height: "400px", 
+            height: "500px", 
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.25)", 
             borderRadius: "8px", 
             background: "#ffffff"
