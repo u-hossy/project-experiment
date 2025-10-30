@@ -25,7 +25,9 @@ export default function NetworkGraph({ debts }: Props) {
   };
 
   const colorMap = new Map<string, string>();
-  people.forEach((p) => colorMap.set(p, randomColor()));
+  people.forEach((p) => {
+    colorMap.set(p, randomColor());
+  });
 
   const nodes = people.map((p) => ({
     data: {
