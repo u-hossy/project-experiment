@@ -137,7 +137,7 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
   };
 
   return (
-    <Card className="p-4 shadow-md overflow-y-auto h-[450px]">
+    <Card className="h-[450px] overflow-y-auto p-4 shadow-md">
       <CardHeader>
         <CardTitle>{payer.name}さんの送金先と金額</CardTitle>
       </CardHeader>
