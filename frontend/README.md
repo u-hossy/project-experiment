@@ -57,3 +57,11 @@ pnpm run check:fix
 ```bash
 pnpm run test
 ```
+
+### json-server 起動方法
+
+json-server を起動するには以下のコマンドを実行してください。
+
+```bash
+pnpm run mock
+```
