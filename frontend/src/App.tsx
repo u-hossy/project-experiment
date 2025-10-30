@@ -16,13 +16,15 @@ function App() {
       }}
     >
       <Header />
-      <CardWrapper>
+      <CardWrapper title="メンバー 一覧">
         <MemberList />
       </CardWrapper>
-      <CardWrapper>
+      <CardWrapper title="精算">
         <BillingTabList />
       </CardWrapper>
-      <PaymentNetwork debts={datas} />
+      <CardWrapper title="ネットワークグラフ">
+        <PaymentNetwork debts={datas} />
+      </CardWrapper>
     </div>
   );
 }

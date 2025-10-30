@@ -78,8 +78,6 @@ export default function MemberList() {
 
   return (
     <div className="p-4">
-      <h2 className="mb-2 font-semibold text-xl">メンバー 一覧</h2>
-
       {members.map((member, index) => (
         <div key={index} className="mb-2 flex items-center gap-2">
           <Input

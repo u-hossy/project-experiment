@@ -1,13 +1,23 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { 
+    Card, 
+    CardContent,
+    CardHeader, 
+    CardTitle 
+} from "@/components/ui/card";
 
-export default function CardWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+
+type CardWrapperProps = {
+    title: string;
+    children: React.ReactNode;
+};
+
+export default function CardWrapper({ title, children } : CardWrapperProps ) {
   return (
-    <Card className="mx-8 mb-8 h-[630px] overflow-y-auto shadow-md">
-      <CardContent>{children}</CardContent>
+    <Card className="mx-8 mb-8 h-[640px] overflow-y-auto shadow-md">
+        <CardHeader>
+            <CardTitle className="text-2xl font-bold tracking-wide">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>{children}</CardContent>
     </Card>
   );
 }
