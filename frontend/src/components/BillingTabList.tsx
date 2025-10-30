@@ -24,7 +24,7 @@ export default function BillingTabList() {
     <></>
   ) : (
     <div className="p-4">
-      <h2 className="mb-2 font-semibold text-xl">メンバー一覧</h2>
+      <h2 className="mb-2 font-semibold text-xl">請求</h2>
       <Tabs defaultValue={`p${people[0].id}`} className="w-full">
         <TabsList className="flex w-full justify-start gap-2 overflow-x-auto whitespace-nowrap">
           {people

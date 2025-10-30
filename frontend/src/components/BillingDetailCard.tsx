@@ -51,13 +51,33 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
     loadData();
   }, [payer.id]);
 
-  const handleReceiverChange = (index: number, value: string) => {
+  const handleReceiverChange = async (index: number, value: string) => {
     const newValue = value === "none" ? "" : value;
     setDetails((prev) => {
       const updated = [...prev];
       updated[index].receiverId = newValue;
       return updated;
     });
+
+    const d = details[index];
+    const billing: Billing = {
+      id: d.id,
+      payerId: payer.id,
+      receiverId: newValue,
+      amount: Number(d.amount)
+    };
+
+    const res = await fetch(`http://localhost:3001/billings/${d.id}`);
+    const methohd = res.ok ? "PATCH" : "POST";
+    const url = res.ok
+      ? `http://localhost:3001/billings/${d.id}`
+      : `http://localhost:3001/billings`;
+
+    await fetch(url, {
+      method: methohd,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(billing),
+    })
   };
 
   const handleAmountChange = (index: number, v: number | "") => {
