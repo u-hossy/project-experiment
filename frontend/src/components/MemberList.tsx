@@ -12,7 +12,6 @@ export default function MemberList() {
   // 最後に追加されたメンバーにフォーカスを当てるためのフラグ
   const [shouldFocusLast, setShouldFocusLast] = useState(false);
 
-
   // メンバー追加関数
   const handleAddMember = async () => {
     const res = await fetch("http://localhost:3001/members", {
@@ -66,7 +65,7 @@ export default function MemberList() {
     index: number,
   ) => {
     // 日本語入力中のEnterは無視
-    if(e.nativeEvent.isComposing) return;
+    if (e.nativeEvent.isComposing) return;
 
     if (e.key === "Enter") {
       e.preventDefault();
@@ -89,7 +88,7 @@ export default function MemberList() {
       // 一度だけ実行
       setShouldFocusLast(false);
     }
-  }, [members, shouldFocusLast])
+  }, [members, shouldFocusLast]);
 
   // 初期データ取得
   useEffect(() => {
