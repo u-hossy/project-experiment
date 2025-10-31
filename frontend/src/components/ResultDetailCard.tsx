@@ -6,6 +6,7 @@ const sampleResult = [
   { from: "B", to: "A", amount: 4500 },
   { from: "D", to: "A", amount: 14000 },
   { from: "B", to: "C", amount: 2800 },
+  { from: "A", to: "C", amount: 3200 },
 ];
 
 const formatCurrency = (amount) => {
@@ -33,7 +34,7 @@ export default function ResultDetailCard({ person }) {
     <Card className="mt-4">
       <CardHeader>
         <CardTitle className="text-xl">
-            {person}さんの精算サマリー
+            {person}さんの精算結果
         </CardTitle>
         <div className={`mt-2 text-2xl font-bold ${netStyle}`}>
           {netText}: {formatCurrency(Math.abs(netAmount))}
