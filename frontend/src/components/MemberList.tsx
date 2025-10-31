@@ -102,8 +102,6 @@ export default function MemberList() {
 
   return (
     <div className="p-4">
-      <h2 className="mb-2 font-semibold text-xl">メンバー 一覧</h2>
-
       {members.map((member, index) => (
         <div key={index} className="mb-2 flex items-center gap-2">
           <Input
@@ -122,8 +120,7 @@ export default function MemberList() {
           {/* 削除ボタン */}
           <Button
             onClick={() => handleDeleteMember(index)}
-            variant="destructive"
-            className="cursor-pointer hover:bg-red-700"
+            className="cursor-pointer hover:bg-gray-800"
           >
             削除
           </Button>
