@@ -49,7 +49,7 @@ export default function ResultDetailCard({ person }) {
                 <li key={index}>
                   {item.to}さんに{" "}
                   <span className="font-bold">
-                    {formatCurrency(item.amount)}
+                    {formatCurrency(item.amount)}円
                   </span>
                 </li>
               ))}
@@ -76,7 +76,7 @@ export default function ResultDetailCard({ person }) {
                 <li key={index}>
                   {item.from}さんから{" "}
                   <span className="font-bold">
-                    {formatCurrency(item.amount)}
+                    {formatCurrency(item.amount)}円
                   </span>
                 </li>
               ))}
