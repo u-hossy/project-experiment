@@ -1,13 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// 精算結果アイテムの型定義
 interface ResultItem {
   from: string;
   to: string;
   amount: number;
 }
 
-// 擬似的な精算結果データ(Sampledataから取れるように明日変更します)
 const sampleResult: ResultItem[] = [
   { from: "B", to: "A", amount: 4500 },
   { from: "D", to: "A", amount: 14000 },
@@ -27,8 +25,8 @@ interface ResultDetailCardProps {
 }
 
 export default function ResultDetailCard({ person }: ResultDetailCardProps) {
-  const payments = sampleResult.filter((result) => result.from === person); // 支払うお金
-  const receipts = sampleResult.filter((result) => result.to === person); // 受け取るお金
+  const payments = sampleResult.filter((result) => result.from === person);
+  const receipts = sampleResult.filter((result) => result.to === person);
 
   const totalPayment = payments.reduce((sum, item) => sum + item.amount, 0);
   const totalReceipt = receipts.reduce((sum, item) => sum + item.amount, 0);
@@ -57,7 +55,7 @@ export default function ResultDetailCard({ person }: ResultDetailCardProps) {
             </ul>
           ) : (
             <p className="text-gray-500 text-sm">
-            {person}さんが支払うお金はありません。
+              {person}さんが支払うお金はありません。
             </p>
           )}
         </div>
@@ -79,7 +77,7 @@ export default function ResultDetailCard({ person }: ResultDetailCardProps) {
             </ul>
           ) : (
             <p className="text-gray-500 text-sm">
-            {person}さんに支払う人はいません。
+              {person}さんに支払う人はいません。
             </p>
           )}
         </div>
