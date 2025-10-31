@@ -137,7 +137,7 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
   };
 
   return (
-    <Card className="p-4 shadow-md">
+    <Card className="h-[450px] overflow-y-auto p-4 shadow-md">
       <CardHeader>
         <CardTitle>{payer.name}さんの送金先と金額</CardTitle>
       </CardHeader>
@@ -178,7 +178,12 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
                 onBlur={() => handleBlur(index)}
               />
               <span>円</span>
-              <Button onClick={() => handleDeleteBilling(index)}>削除</Button>
+              <Button
+                onClick={() => handleDeleteBilling(index)}
+                className="cursor-pointer hover:bg-gray-800"
+              >
+                削除
+              </Button>
             </div>
           );
         })}
