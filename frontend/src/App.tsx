@@ -12,6 +12,7 @@ function App() {
       <MemberList />
       <BillingTabList />
       <PaymentNetwork debts={datas} />
+      <Result />
     </div>
   );
 }
