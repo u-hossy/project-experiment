@@ -9,6 +9,9 @@ export default function MemberList() {
   const [members, setMembers] = useState<Person[]>([]);
   // 各inputへの参照を保持
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  // 最後に追加されたメンバーにフォーカスを当てるためのフラグ
+  const [shouldFocusLast, setShouldFocusLast] = useState(false);
+
 
   // メンバー追加関数
   const handleAddMember = async () => {
@@ -19,6 +22,14 @@ export default function MemberList() {
     });
     const newMember: Person = await res.json();
     setMembers((prev) => [...prev, newMember]);
+    // フォーカス予約
+    setShouldFocusLast(true);
+
+    // 次のレンダー後にフォーカスを当てる
+    setTimeout(() => {
+      const lastIndex = inputRefs.current.length - 1;
+      inputRefs.current[lastIndex]?.focus();
+    }, 0);
   };
 
   // 入力内容を更新する関数
@@ -49,10 +60,14 @@ export default function MemberList() {
     setMembers((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // Enterキー押下時の挙動
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     index: number,
   ) => {
+    // 日本語入力中のEnterは無視
+    if(e.nativeEvent.isComposing) return;
+
     if (e.key === "Enter") {
       e.preventDefault();
 
@@ -66,7 +81,17 @@ export default function MemberList() {
     }
   };
 
-  // メンバー追加時に自動で新しい欄にフォーカス
+  // メンバー追加後に自動フォーカス
+  useEffect(() => {
+    if (shouldFocusLast && members.length > 0) {
+      const lastIndex = members.length - 1;
+      inputRefs.current[lastIndex]?.focus();
+      // 一度だけ実行
+      setShouldFocusLast(false);
+    }
+  }, [members, shouldFocusLast])
+
+  // 初期データ取得
   useEffect(() => {
     const fetchMembers = async () => {
       const res = await fetch("http://localhost:3001/members");
