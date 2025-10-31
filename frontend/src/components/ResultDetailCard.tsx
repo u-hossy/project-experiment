@@ -22,14 +22,13 @@ const formatCurrency = (amount: number): string => {
   }).format(amount);
 };
 
-
 interface ResultDetailCardProps {
   person: string;
 }
 
 export default function ResultDetailCard({ person }: ResultDetailCardProps) {
-  const payments = sampleResult.filter((result) => result.from === person); // 支払うお金 (送金)
-  const receipts = sampleResult.filter((result) => result.to === person); // 受け取るお金 (受取)
+  const payments = sampleResult.filter((result) => result.from === person); // 支払うお金
+  const receipts = sampleResult.filter((result) => result.to === person); // 受け取るお金
 
   const totalPayment = payments.reduce((sum, item) => sum + item.amount, 0);
   const totalReceipt = receipts.reduce((sum, item) => sum + item.amount, 0);
@@ -40,13 +39,9 @@ export default function ResultDetailCard({ person }: ResultDetailCardProps) {
         <CardTitle className="text-xl">{person}さんの精算結果</CardTitle>
       </CardHeader>
 
-      {/* 46行目のクラス順序を修正: h-full, items-start, flex, min-h-[250px], gap-6, px-6, py-4 */}
-      <CardContent className="h-full items-start flex min-h-[250px] gap-6 px-6 py-4">
-
-        {/* 自分が支払う項目 (左側) */}
+      <CardContent className="flex h-full min-h-[250px] items-start gap-6 px-6 py-4">
         <div className="flex-1">
-          {/* 50行目のクラス順序を修正: mb-3, text-red-700, font-semibold, text-lg */}
-          <h3 className="mb-3 text-red-700 font-semibold text-lg">
+          <h3 className="mb-3 font-semibold text-lg text-red-700">
             支払うお金 ({formatCurrency(totalPayment)})
           </h3>
           {payments.length > 0 ? (
@@ -67,8 +62,6 @@ export default function ResultDetailCard({ person }: ResultDetailCardProps) {
           )}
         </div>
 
-
-        {/* 自分が受け取る項目 (右側) */}
         <div className="flex-1">
           <h3 className="mb-3 font-semibold text-green-700 text-lg">
             受け取るお金 ({formatCurrency(totalReceipt)})
