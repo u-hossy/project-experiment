@@ -29,7 +29,7 @@ export default function ExampleResultTab() {
             </TabsTrigger>
           ))}
         </TabsList>
-        
+
         {people.map((person) => (
           <TabsContent key={person} value={person}>
             <ResultDetailCard person={person} />
