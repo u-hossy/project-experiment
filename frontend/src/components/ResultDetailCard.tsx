@@ -11,8 +11,7 @@ const sampleResult = [
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("ja-JP", {
-    style: "currency",
-    currency: "JPY",
+    style: "decimal", 
     minimumFractionDigits: 0,
   }).format(amount);
 };
@@ -26,9 +25,6 @@ export default function ResultDetailCard({ person }) {
   const totalPayment = payments.reduce((sum, item) => sum + item.amount, 0);
   const totalReceipt = receipts.reduce((sum, item) => sum + item.amount, 0);
   
-  const netAmount = totalReceipt - totalPayment;
-  const netText = netAmount >= 0 ? "受け取る金額" : "支払う金額";
-  const netStyle = netAmount >= 0 ? "text-green-600" : "text-red-600";
     
   return (
     <Card className="mt-4">
@@ -36,9 +32,6 @@ export default function ResultDetailCard({ person }) {
         <CardTitle className="text-xl">
             {person}さんの精算結果
         </CardTitle>
-        <div className={`mt-2 text-2xl font-bold ${netStyle}`}>
-          {netText}: {formatCurrency(Math.abs(netAmount))}
-        </div>
       </CardHeader>
 
       <CardContent className="flex gap-6 p-6 h-full min-h-[250px] items-start">
