@@ -178,10 +178,11 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
                 onBlur={() => handleBlur(index)}
               />
               <span>円</span>
-              <Button 
+              <Button
                 onClick={() => handleDeleteBilling(index)}
-                className="cursor-pointer hover:bg-gray-800">
-                  削除
+                className="cursor-pointer hover:bg-gray-800"
+              >
+                削除
               </Button>
             </div>
           );

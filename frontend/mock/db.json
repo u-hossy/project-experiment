@@ -1,42 +1,4 @@
 {
-  "members": [
-    {
-      "id": "ff90",
-      "name": "satou"
-    },
-    {
-      "id": "9852",
-      "name": "suzuki"
-    },
-    {
-      "id": "e87a",
-      "name": "sasaki"
-    },
-    {
-      "id": "2fb6",
-      "name": "tokugawa"
-    },
-    {
-      "id": "554e",
-      "name": "tokugawa2"
-    },
-    {
-      "id": "523b",
-      "name": "tokugawa3"
-    }
-  ],
-  "billings": [
-    {
-      "id": "5b2b49a6-ffdd-432f-b752-e0ceccad07bf",
-      "payerId": "ff90",
-      "receiverId": "2fb6",
-      "amount": 600
-    },
-    {
-      "id": "d6c83ee7-c66c-47a1-8e0a-77a47794b15e",
-      "payerId": "ff90",
-      "receiverId": "9852",
-      "amount": 90000
-    }
-  ]
+  "members": [],
+  "billings": []
 }
