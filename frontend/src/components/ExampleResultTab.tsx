@@ -18,13 +18,18 @@ export default function ExampleResultTab() {
   return (
     <div className="p-4">
       <Tabs defaultValue={people[0]} className="w-full">
-        <TabsList>
+        <TabsList className="flex w-full justify-start gap-2 overflow-x-auto whitespace-nowrap">
           {people.map((person) => (
-            <TabsTrigger key={person} value={person}>
-              {person}
+            <TabsTrigger
+              key={person}
+              value={person}
+              className="min-w-[80px] flex-shrink-0 px-3 py-1"
+            >
+              {person}さん
             </TabsTrigger>
           ))}
         </TabsList>
+        
         {people.map((person) => (
           <TabsContent key={person} value={person}>
             <ResultDetailCard person={person} />
