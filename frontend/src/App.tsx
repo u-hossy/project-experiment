@@ -7,7 +7,7 @@ import MemberList from "./components/MemberList";
 import PaymentNetwork from "./components/NetworkGraph";
 import { sampleResult } from "./data/sampleData";
 import useMemberExist from "./hooks/useMemberExist";
-import { datas } from "./tmp/tmp_datas";
+import { data } from "./tmp/tmp_data";
 
 function App() {
   const isMemberExist = useMemberExist();
@@ -38,7 +38,7 @@ function App() {
       )}
       {isMemberExist ? (
         <CardWrapper title="ネットワークグラフ">
-          <PaymentNetwork debts={datas} />
+          <PaymentNetwork debts={data} />
         </CardWrapper>
       ) : (
         <CardWrapper title="ネットワークグラフ（例）">
