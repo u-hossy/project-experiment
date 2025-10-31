@@ -1,8 +1,8 @@
-import BillingTabList from "./components/BillingTabList";
+import Result from "./components/ExampleResultTab"; 
 import Header from "./components/Header";
 import MemberList from "./components/MemberList";
-import PaymentNetwork from "./components/NetworkGraph";
-import Result from "./components/ExampleResultTab";
+import PaymentNetwork from "./components/NetworkGraph"; 
+import BillingTabList from "./components/BillingTabList"; 
 import { datas } from "./tmp/tmp_datas";
 
 function App() {

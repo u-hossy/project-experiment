@@ -43,15 +43,15 @@ export default function ResultDetailCard({ person }: ResultDetailCardProps) {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="flex gap-6 py-4 px-6 h-full min-h-[250px] items-start">
+      <CardContent className="flex **h-full min-h-[250px] items-start** gap-6 px-6 py-4">
         
         {/* 自分が支払う項目 (左側) */}
         <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-3 text-red-700">
+          <h3 className="**mb-3 font-semibold** text-lg **text-red-700**">
             支払うお金 ({formatCurrency(totalPayment)})
           </h3>
           {payments.length > 0 ? (
-            <ul className="list-disc list-inside space-y-2 ml-4">
+            <ul className="**ml-4 list-inside list-disc space-y-2**">
               {payments.map((item, index) => (
                 <li key={index}>
                   {item.to}さんに{" "}
@@ -62,7 +62,7 @@ export default function ResultDetailCard({ person }: ResultDetailCardProps) {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-gray-500">
+            <p className="**text-gray-500 text-sm**">
             {person}さんが支払うお金はありません。
             </p>
           )}
@@ -71,11 +71,11 @@ export default function ResultDetailCard({ person }: ResultDetailCardProps) {
 
         {/* 自分が受け取る項目 (右側) */}
         <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-3 text-green-700">
+          <h3 className="**mb-3 font-semibold text-green-700** text-lg">
             受け取るお金 ({formatCurrency(totalReceipt)})
           </h3>
           {receipts.length > 0 ? (
-            <ul className="list-disc list-inside space-y-2 ml-4">
+            <ul className="**ml-4 list-inside list-disc space-y-2**">
               {receipts.map((item, index) => (
                 <li key={index}>
                   {item.from}さんから{" "}
@@ -86,7 +86,7 @@ export default function ResultDetailCard({ person }: ResultDetailCardProps) {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-gray-500">
+            <p className="**text-gray-500 text-sm**">
             {person}さんに支払う人はいません。
             </p>
           )}
