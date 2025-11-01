@@ -8,7 +8,7 @@ import json
 from .temp import algorithm1, algorithm2
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
 class CalculateWarikanView(View):
 
     def post(self, request, *args, **kwargs):
@@ -27,7 +27,9 @@ class CalculateWarikanView(View):
             elif algo_id == 2:
                 output_data = algorithm2.process_warikan_json(input_data)
             else:
-                return JsonResponse({"error": f"Invalid algorithm_id: {algo_id}"}, status=400)
+                return JsonResponse(
+                    {"error": f"Invalid algorithm_id: {algo_id}"}, status=400
+                )
 
             # 結果をJSONで返す
             return JsonResponse(output_data, safe=False)
@@ -40,3 +42,9 @@ class CalculateWarikanView(View):
     def get(self, request, *args, **kwargs):
         # GETリクエストは禁止
         return JsonResponse({"error": "Only POST method is allowed"}, status=405)
+
+
+class HealthCheckView(View):
+
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({"status": "ok"}, status=200)
