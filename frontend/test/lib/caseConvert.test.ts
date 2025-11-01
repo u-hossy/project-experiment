@@ -1,6 +1,8 @@
 import { expect, test } from "vitest";
 import { toCamelCaseObject, toSnakeCaseObject } from "@/lib/caseConvert";
 
+import type { Payment } from "@/types/payment";
+
 test("convert snake case object to camel case object", () => {
   const before = {
     id: 0,
@@ -9,7 +11,7 @@ test("convert snake case object to camel case object", () => {
     paid_for: 1,
   };
 
-  const after = {
+  const after: Payment = {
     id: 0,
     amount: 8000,
     paidBy: 0,
