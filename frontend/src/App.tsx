@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BillingTabList from "./components/BillingTabList";
 import CardWrapper from "./components/CardWrapper";
 import ExampleBillingTabList from "./components/ExampleBillingTabList";
@@ -18,6 +18,20 @@ function App() {
 
   // メンバーが存在するかチェック
   const isMemberExist = members.some((m) => m.name !== "");
+
+  // 不用意な再読み込み、離脱を防ぐ
+  useEffect(() => {
+    if (!isMemberExist) return
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  });
 
   // 各セクションへの参照
   const memberSectionRef = useRef<HTMLDivElement>(null);
