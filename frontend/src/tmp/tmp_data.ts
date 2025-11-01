@@ -1,4 +1,4 @@
-export const datas = [
+export const data = [
   { from: "a", to: "b", amount: 2000 },
   { from: "a", to: "c", amount: 2000 },
   { from: "a", to: "d", amount: 2000 },
