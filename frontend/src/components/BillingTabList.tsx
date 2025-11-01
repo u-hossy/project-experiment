@@ -32,7 +32,7 @@ export default function BillingTabList() {
               <TabsTrigger
                 key={person.id}
                 value={`p${person.id}`}
-                className="min-w-[80px] flex-shrink-0 px-3 py-1"
+                className="min-w-20 shrink-0 px-3 py-1"
               >
                 {person.name}
               </TabsTrigger>
