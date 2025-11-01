@@ -12,6 +12,16 @@ cd frontend
 pnpm install
 ```
 
+### `.env`ファイルの作成
+
+以下のコマンドで`.env`ファイルを作成した後に、`.env`の`VITE_API_ENDPOINT`に API の URI を記載してください。
+
+> `VITE_API_ENDPOINT=http://localhost:8000`の形式です。
+
+```bash
+cp .env.template .env
+```
+
 ### 開発サーバーの立ち上げ
 
 リアルタイムで編集の内容を確認できる開発サーバーを立ち上げるには以下のコマンドを実行してください。
