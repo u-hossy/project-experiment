@@ -146,57 +146,64 @@ export default function BillingDetailCard({
   };
 
   return (
-    <Card className="h-[450px] overflow-y-auto p-4 shadow-md">
+    <Card className="h-[450px] overflow-y-auto shadow-md">
       <CardHeader>
         <CardTitle>{paidBy.name}さんからの請求の入力</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-0">
         {details.map((detail, index) => {
           const isSelectable = detail.paidFor !== -1;
           return (
             <div
               key={detail.id !== -1 ? detail.id : `new-${index}`}
-              className="flex items-center gap-3"
+              className="border-b py-3 last:border-b-0"
             >
-              <Select
-                value={detail.paidFor === -1 ? "" : String(detail.paidFor)}
-                onValueChange={(v) => handleReceiverChange(index, v)}
-              >
-                <SelectTrigger className="w-[140px]">
-                  <SelectValue placeholder="請求先" />
-                </SelectTrigger>
-                <SelectContent>
-                  {members
-                    .filter((p) => p.id !== paidBy.id && p.name !== "")
-                    .map((p) => (
-                      <SelectItem key={p.id} value={String(p.id)}>
-                        {p.name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-              <Input
-                type="number"
-                disabled={!isSelectable}
-                placeholder="金額"
-                className="w-[120px]"
-                value={detail.amount}
-                onChange={(e) =>
-                  handleAmountChange(
-                    index,
-                    e.target.value === "" ? "" : Number(e.target.value),
-                  )
-                }
-                onBlur={() => handleBlur(index)}
-              />
-              <span>円</span>
-              <Button
-                variant="destructive"
-                onClick={() => handleDeleteBilling(index)}
-                className="cursor-pointer"
-              >
-                削除
-              </Button>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="flex items-center gap-2">
+                  <Select
+                    value={detail.paidFor === -1 ? "" : String(detail.paidFor)}
+                    onValueChange={(v) => handleReceiverChange(index, v)}
+                  >
+                    <SelectTrigger className="w-32">
+                      <SelectValue placeholder="請求先" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {members
+                        .filter((p) => p.id !== paidBy.id && p.name !== "")
+                        .map((p) => (
+                          <SelectItem key={p.id} value={String(p.id)}>
+                            {p.name}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                  <span>さんから</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    disabled={!isSelectable}
+                    placeholder="金額"
+                    className="w-24"
+                    value={detail.amount}
+                    onChange={(e) =>
+                      handleAmountChange(
+                        index,
+                        e.target.value === "" ? "" : Number(e.target.value),
+                      )
+                    }
+                    onBlur={() => handleBlur(index)}
+                  />
+                  <span>円もらう</span>
+                  <Button
+                    variant="destructive"
+                    onClick={() => handleDeleteBilling(index)}
+                    className="cursor-pointer"
+                  >
+                    削除
+                  </Button>
+                </div>
+              </div>
             </div>
           );
         })}

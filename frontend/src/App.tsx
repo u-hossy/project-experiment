@@ -34,9 +34,9 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8 px-8 pt-20 pb-48">
+    <div className="flex flex-col items-center gap-8 px-2 pt-20 pb-48">
       <Header />
-      <main className="w-full min-w-80 max-w-4xl">
+      <main className="w-full min-w-80 max-w-3xl">
         <CardWrapper
           ref={memberSectionRef}
           title="メンバーの追加"

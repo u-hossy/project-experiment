@@ -104,7 +104,7 @@ export default function MemberList({
   }, [members, shouldFocusLast]);
 
   return (
-    <div className="p-4">
+    <>
       {members.map((member, index) => (
         <div key={member.id} className="mb-2 flex items-center gap-2">
           <Input
@@ -140,6 +140,6 @@ export default function MemberList({
         <PlusIcon />
         メンバーを追加
       </Button>
-    </div>
+    </>
   );
 }
