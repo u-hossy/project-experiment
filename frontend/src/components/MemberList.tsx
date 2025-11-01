@@ -51,13 +51,16 @@ export default function MemberList({
   const handleDeleteMember = (index: number) => {
     const targetMember = members[index];
 
-    // アラートの表示
-    if (
-      !confirm(
-        `${targetMember.name}さんを削除しますか？\n関連する請求も削除されます。`,
-      )
-    )
-      return;
+    // 名前が空白でない場合のみアラートを表示
+    if (targetMember.name.trim() !== "") {
+      if (
+        !confirm(
+          `${targetMember.name}さんを削除しますか？\n関連する請求も削除されます。`,
+        )
+      ) {
+        return;
+      }
+    }
 
     // メンバーを削除
     setMembers((prev) => prev.filter((_, i) => i !== index));
