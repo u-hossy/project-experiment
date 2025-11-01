@@ -1,7 +1,7 @@
 import BillingTabList from "./components/BillingTabList";
 import CardWrapper from "./components/CardWrapper";
 import ExampleBillingTabList from "./components/ExampleBillingTabList";
-import ExampleResultTable from "./components/ExampleResultTable";
+import Result from "./components/ExampleResultTab";
 import Header from "./components/Header";
 import MemberList from "./components/MemberList";
 import PaymentNetwork from "./components/NetworkGraph";
@@ -33,7 +33,7 @@ function App() {
         </CardWrapper>
       ) : (
         <CardWrapper title="計算結果（例）">
-          <ExampleResultTable />
+          <Result />
         </CardWrapper>
       )}
       {isMemberExist ? (
