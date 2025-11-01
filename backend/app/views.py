@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 # アルゴリズムをインポート
-from .temp import algorithm1, algorithm2
+from .lib import algorithm1, algorithm2
 
 
 @method_decorator(csrf_exempt, name="dispatch")
