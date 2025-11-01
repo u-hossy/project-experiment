@@ -1,4 +1,7 @@
 .env
 
-core/__pycache__/*
+__pycache__/
+*.py[cod]
+
+
 *.sqlite3
