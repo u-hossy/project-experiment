@@ -66,7 +66,7 @@ export default function NetworkGraph({ debts }: Props) {
         height: 60,
         "background-color": "data(color)",
         label: "data(label)",
-        color: "#00000000",
+        color: "rgba(0, 0, 0, 0)",
         "text-valign": "center",
         "font-size": "15px",
       },
