@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import BillingTabList from "./components/BillingTabList";
 import CardWrapper from "./components/CardWrapper";
-import ExampleBillingTabList from "./components/ExampleBillingTabList";
-import Result from "./components/ExampleResultTab";
 import Header from "./components/Header";
 import MemberList from "./components/MemberList";
 import PaymentNetwork from "./components/NetworkGraph";
@@ -11,6 +9,7 @@ import { sampleResult } from "./data/sampleData";
 import { data } from "./tmp/tmp_data";
 import type { Member } from "./types/member";
 import type { Payment } from "./types/payment";
+import Result from "./components/Result";
 
 function App() {
   const [members, setMembers] = useState<Member[]>([]);
@@ -73,7 +72,6 @@ function App() {
           />
         </CardWrapper>
 
-        {isMemberExist ? (
           <CardWrapper
             ref={billingSectionRef}
             title="請求の追加"
@@ -83,6 +81,7 @@ function App() {
                 onClick={() => scrollToSection(resultSectionRef)}
                 size="lg"
                 className="cursor-pointer"
+                disabled={!isMemberExist || !payments}
               >
                 次へ
               </Button>
@@ -94,60 +93,22 @@ function App() {
               setPayments={setPayments}
             />
           </CardWrapper>
-        ) : (
-          <CardWrapper
-            ref={billingSectionRef}
-            title="精算(例)"
-            description="これは精算の入力例です。実際に使用する場合は、まずメンバーを追加してください。"
-          >
-            <ExampleBillingTabList />
-          </CardWrapper>
-        )}
 
-        {isMemberExist ? (
           <CardWrapper
             ref={resultSectionRef}
             title="計算結果"
-            description="最適化された精算結果を表示します。送金回数と送金金額が最小になるように計算されています。"
-            nextButton={
-              <Button
-                onClick={() => scrollToSection(networkSectionRef)}
-                size="lg"
-                className="cursor-pointer"
-              >
-                次へ
-              </Button>
-            }
-          >
-            <p>テスト</p>
-          </CardWrapper>
-        ) : (
-          <CardWrapper
-            ref={resultSectionRef}
-            title="計算結果"
-            description="これは計算結果の表示例です。実際のデータを入力すると、ここに最適化された精算結果が表示されます。"
+            description="計算結果を表示します。"
           >
             <Result />
           </CardWrapper>
-        )}
 
-        {isMemberExist ? (
           <CardWrapper
             ref={networkSectionRef}
             title="ネットワークグラフ"
-            description="精算のお金の流れを視覚的に表示します。矢印の向きが送金の方向、太さが金額を表しています。"
+            description="精算のお金の流れを視覚的に表示します。矢印の向きがお金を渡す方向になります。"
           >
             <PaymentNetwork debts={data} />
           </CardWrapper>
-        ) : (
-          <CardWrapper
-            ref={networkSectionRef}
-            title="ネットワークグラフ(例)"
-            description="これはネットワークグラフの表示例です。お金の流れを視覚的に確認できます。"
-          >
-            <PaymentNetwork debts={sampleResult} />
-          </CardWrapper>
-        )}
       </main>
     </div>
   );
