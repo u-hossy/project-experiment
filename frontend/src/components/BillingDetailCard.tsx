@@ -148,7 +148,7 @@ export default function BillingDetailCard({
   return (
     <Card className="h-[450px] overflow-y-auto shadow-md">
       <CardHeader>
-        <CardTitle>{paidBy.name}さんからの請求の入力</CardTitle>
+        <CardTitle>{paidBy.name}さんが受け取る金額の入力</CardTitle>
       </CardHeader>
       <CardContent className="space-y-0">
         {details.map((detail, index) => {
