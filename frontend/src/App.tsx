@@ -1,9 +1,10 @@
 // App.tsx
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import { useState } from "react";
-import MembersPage from "./pages/MembersPage";
-import BillingPage from "./pages/BillingPage";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AlgorithmPage from "./pages/AlgorithmPage";
+import BillingPage from "./pages/BillingPage";
+import MembersPage from "./pages/MembersPage";
 import ResultPage from "./pages/ResultPage";
 import type { Member } from "./types/member";
 import type { Payment } from "./types/payment";

@@ -14,10 +14,10 @@ export default function ResultPage({ members, results }: Props) {
 
   return (
     <div className="w-full min-w-80 max-w-3xl p-4">
-      <h2 className="text-xl font-semibold mb-4">結果表示</h2>
+      <h2 className="mb-4 font-semibold text-xl">結果表示</h2>
       <Result members={members} results={results} />
 
-      <div className="flex gap-4 mt-4">
+      <div className="mt-4 flex gap-4">
         <Button onClick={() => navigate("/algorithm")} variant="outline">
           戻る
         </Button>

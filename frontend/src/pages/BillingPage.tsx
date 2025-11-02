@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "../components/ui/button";
 import BillingTabList from "../components/BillingTabList";
+import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
 
@@ -10,16 +10,24 @@ interface BillingPageProps {
   setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
 }
 
-export default function BillingPage({ members, payments, setPayments }: BillingPageProps) {
+export default function BillingPage({
+  members,
+  payments,
+  setPayments,
+}: BillingPageProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-6">
-      <h2 className="text-xl font-semibold mb-4">請求の追加</h2>
+    <div className="mx-auto w-full max-w-3xl p-6">
+      <h2 className="mb-4 font-semibold text-xl">請求の追加</h2>
 
-      <BillingTabList members={members} payments={payments} setPayments={setPayments} />
+      <BillingTabList
+        members={members}
+        payments={payments}
+        setPayments={setPayments}
+      />
 
-      <div className="flex gap-4 mt-4">
+      <div className="mt-4 flex gap-4">
         <Button onClick={() => navigate("/members")} variant="outline">
           戻る
         </Button>
