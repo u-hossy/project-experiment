@@ -179,17 +179,23 @@ def process_warikan_json(input_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         #支払ってもらった人は借りだから残高をプラス
         sagaku[paid_for_user] += amount
     
-    torihiki = solve(sagaku)
+    solve_input_data = [
+        {"user": user_id, "amount": int(round(amount))}
+        for user_id, amount in sagaku.items() if abs(amount) > 0.5 # わずかな差額は無視
+    ]
+    
+    torihiki = solve(solve_input_data)
 
     output_json_list = []
 
-    for j, (users, amount) in enumerate(torihiki):
-        from_user = users[0] #借りた人(kari)
-        to_user = users[1] #貸した人(kashi)
+    for j, result in enumerate(torihiki):
+        from_user = result["from_user"] #借りた人(kari)
+        to_user = result["to_user"] #貸した人(kashi)
+        amnt = result["amount"]
 
         output_json_list.append({
             "id": j,
-            "amount": int(round(amount)),
+            "amount": amnt,
             "paid_by": from_user,
             "paid_for": to_user
         })
