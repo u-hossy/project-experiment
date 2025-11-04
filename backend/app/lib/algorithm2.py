@@ -2,6 +2,7 @@
 
 from typing import List, Dict, Tuple, Any
 import json
+from collections import defaultdict
 
 # 送金結果を格納するデータ構造の型エイリアス
 TransferResult = Dict[str, any]
@@ -159,3 +160,37 @@ def format_results_to_json_string(results: List[Dict[str, Any]]) -> str:
     """
     # ensure_ascii=False で日本語なども適切に処理
     return json.dumps(results, indent=4, ensure_ascii=False)
+
+def process_warikan_json(input_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    sagaku = defaultdict(float)
+
+    payments_list = input_data.get("payments", [])
+
+    for payment in payments_list:
+        amount = payment.get("amount", 0)
+        paid_by_user = payment.get("paid_by")
+        paid_for_user = payment.get("paid_for")
+
+        if amount == 0 or paid_by_user is None or paid_for_user is None:
+            continue
+        
+        #支払った人は貸しだから残高をマイナス
+        sagaku[paid_by_user] -= amount
+        #支払ってもらった人は借りだから残高をプラス
+        sagaku[paid_for_user] += amount
+    
+    torihiki = solve(sagaku)
+
+    output_json_list = []
+
+    for j, (users, amount) in enumerate(torihiki):
+        from_user = users[0] #借りた人(kari)
+        to_user = users[1] #貸した人(kashi)
+
+        output_json_list.append({
+            "id": j,
+            "amount": int(round(amount)),
+            "paid_by": from_user,
+            "paid_for": to_user
+        })
+    return output_json_list
