@@ -63,7 +63,7 @@ export default function BillingDetailCard({
         id: newId,
         paidBy: paidBy.id,
         paidFor: newValue,
-        amount: Number(detail.amount) || 0,
+        amount: "",
       };
       setPayments((prev) => [...prev, newPayment]);
 
