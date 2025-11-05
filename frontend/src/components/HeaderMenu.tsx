@@ -16,7 +16,12 @@ export function HeaderMenu() {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" aria-label="Open menu" size="icon-sm">
+        <Button
+          variant="outline"
+          aria-label="Open menu"
+          size="icon-sm"
+          className="cursor-pointer"
+        >
           <MoreHorizontalIcon />
         </Button>
       </DropdownMenuTrigger>

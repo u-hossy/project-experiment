@@ -1,25 +1,32 @@
 import { PlusIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import type { Person } from "../type/person";
+import type { Member } from "../types/member";
+import type { Payment } from "../types/payment";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-export default function MemberList() {
-  // メンバー名の配列を状態として管理
-  const [members, setMembers] = useState<Person[]>([]);
+interface MemberListProps {
+  members: Member[];
+  setMembers: React.Dispatch<React.SetStateAction<Member[]>>;
+  setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
+}
+
+export default function MemberList({
+  members,
+  setMembers,
+  setPayments,
+}: MemberListProps) {
   // 各inputへの参照を保持
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   // 最後に追加されたメンバーにフォーカスを当てるためのフラグ
   const [shouldFocusLast, setShouldFocusLast] = useState(false);
 
   // メンバー追加関数
-  const handleAddMember = async () => {
-    const res = await fetch("http://localhost:3001/members", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: "" }),
-    });
-    const newMember: Person = await res.json();
+  const handleAddMember = () => {
+    const newMember: Member = {
+      id: members.length > 0 ? Math.max(...members.map((m) => m.id)) + 1 : 0,
+      name: "",
+    };
     setMembers((prev) => [...prev, newMember]);
     // フォーカス予約
     setShouldFocusLast(true);
@@ -32,31 +39,40 @@ export default function MemberList() {
   };
 
   // 入力内容を更新する関数
-  const handleChange = async (index: number, value: string) => {
-    const updated = [...members];
-    updated[index].name = value;
-    setMembers(updated);
-
-    const target = updated[index];
-
-    await fetch(`http://localhost:3001/members/${target.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: value }),
+  const handleChange = (index: number, value: string) => {
+    setMembers((prev) => {
+      const updated = [...prev];
+      updated[index].name = value;
+      return updated;
     });
   };
 
   // メンバー削除関数
-  const handleDeleteMember = async (index: number) => {
-    const target = members[index];
-    // アラートの表示
-    if (!confirm("本当に削除しますか？")) return;
+  const handleDeleteMember = (index: number) => {
+    const targetMember = members[index];
 
-    await fetch(`http://localhost:3001/members/${target.id}`, {
-      method: "DELETE",
-    });
+    // 名前が空白でない場合のみアラートを表示
+    if (targetMember.name.trim() !== "") {
+      if (
+        !confirm(
+          `${targetMember.name}さんを削除しますか？\n関連する請求も削除されます。`,
+        )
+      ) {
+        return;
+      }
+    }
 
+    // メンバーを削除
     setMembers((prev) => prev.filter((_, i) => i !== index));
+
+    // 削除するメンバーに関連するpaymentsも削除
+    setPayments((prev) =>
+      prev.filter(
+        (payment) =>
+          payment.paidBy !== targetMember.id &&
+          payment.paidFor !== targetMember.id,
+      ),
+    );
   };
 
   // Enterキー押下時の挙動
@@ -90,20 +106,10 @@ export default function MemberList() {
     }
   }, [members, shouldFocusLast]);
 
-  // 初期データ取得
-  useEffect(() => {
-    const fetchMembers = async () => {
-      const res = await fetch("http://localhost:3001/members");
-      const data: Person[] = await res.json();
-      setMembers(data);
-    };
-    fetchMembers();
-  }, []);
-
   return (
-    <div className="p-4">
+    <>
       {members.map((member, index) => (
-        <div key={index} className="mb-2 flex items-center gap-2">
+        <div key={member.id} className="mb-2 flex items-center gap-2">
           <Input
             //各inputを登録
             ref={(el) => {
@@ -119,8 +125,9 @@ export default function MemberList() {
 
           {/* 削除ボタン */}
           <Button
+            variant="destructive"
             onClick={() => handleDeleteMember(index)}
-            className="cursor-pointer hover:bg-gray-800"
+            className="cursor-pointer"
           >
             削除
           </Button>
@@ -136,6 +143,6 @@ export default function MemberList() {
         <PlusIcon />
         メンバーを追加
       </Button>
-    </div>
+    </>
   );
 }

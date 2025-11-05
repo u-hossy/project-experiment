@@ -1,50 +1,49 @@
-import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Person } from "@/type/person";
+import type { Member } from "@/types/member";
+import type { Payment } from "@/types/payment";
 import BillingDetailCard from "./BillingDetailCard";
 
-export default function BillingTabList() {
-  const [people, setPeople] = useState<Person[]>([]);
+interface BillingTabListProps {
+  members: Member[];
+  payments: Payment[];
+  setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
+}
 
-  useEffect(() => {
-    const fetchPeople = () => {
-      fetch("http://localhost:3001/members")
-        .then((res) => res.json())
-        .then((data) => setPeople(data));
-    };
+export default function BillingTabList({
+  members,
+  payments,
+  setPayments,
+}: BillingTabListProps) {
+  const filteredMembers = members.filter((member) => member.name !== "");
 
-    fetchPeople();
+  if (filteredMembers.length === 0) {
+    return null;
+  }
 
-    const interval = setInterval(fetchPeople, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return !people.length ? (
-    <></>
-  ) : (
-    <div className="p-4">
-      <Tabs defaultValue={`p${people[0].id}`} className="w-full">
-        <TabsList className="flex w-full justify-start gap-2 overflow-x-auto whitespace-nowrap">
-          {people
-            .filter((person) => person.name !== "")
-            .map((person) => (
-              <TabsTrigger
-                key={person.id}
-                value={`p${person.id}`}
-                className="min-w-20 shrink-0 px-3 py-1"
-              >
-                {person.name}
-              </TabsTrigger>
-            ))}
-        </TabsList>
-
-        {people.map((person) => (
-          <TabsContent key={person.id} value={`p${person.id}`}>
-            <BillingDetailCard payer={person} />
-          </TabsContent>
+  return (
+    <Tabs defaultValue={`tab-${filteredMembers[0].id}`} className="w-full">
+      <TabsList className="flex w-full justify-start gap-2 overflow-x-auto whitespace-nowrap">
+        {filteredMembers.map((member) => (
+          <TabsTrigger
+            key={member.id}
+            value={`tab-${member.id}`}
+            className="min-w-20 shrink-0 px-3 py-1"
+          >
+            {member.name}
+          </TabsTrigger>
         ))}
-      </Tabs>
-    </div>
+      </TabsList>
+
+      {filteredMembers.map((member) => (
+        <TabsContent key={member.id} value={`tab-${member.id}`}>
+          <BillingDetailCard
+            paidBy={member}
+            members={members}
+            payments={payments}
+            setPayments={setPayments}
+          />
+        </TabsContent>
+      ))}
+    </Tabs>
   );
 }

@@ -8,76 +8,77 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Billing } from "@/type/billing";
-import type { Person } from "@/type/person";
+import type { Member } from "@/types/member";
+import type { Payment } from "@/types/payment";
 import { Button } from "./ui/button";
 
-type BillingDetailCardProps = {
-  payer: Person;
-};
+interface BillingDetailCardProps {
+  paidBy: Member;
+  members: Member[];
+  payments: Payment[];
+  setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
+}
 
-export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
-  const [people, setPeople] = useState<Person[]>([]);
-  const [details, setDetails] = useState([
-    { id: crypto.randomUUID(), receiverId: "", amount: "" as number | "" },
-  ]);
+export default function BillingDetailCard({
+  paidBy,
+  members,
+  payments,
+  setPayments,
+}: BillingDetailCardProps) {
+  const [details, setDetails] = useState<
+    Array<{ id: number; paidFor: number; amount: number | "" }>
+  >([{ id: -1, paidFor: -1, amount: "" }]);
 
+  // payerに関連するpaymentsをdetailsに反映
   useEffect(() => {
-    const loadData = async () => {
-      const resPeople = await fetch("http://localhost:3001/members");
-      const resBilling = await fetch("http://localhost:3001/billings");
+    const payerPayments = payments.filter((p) => p.paidBy === paidBy.id);
 
-      const peopleData = await resPeople.json();
-      const billingData = await resBilling.json();
+    const newDetails = [
+      ...payerPayments.map((p) => ({
+        id: p.id,
+        paidFor: p.paidFor,
+        amount: p.amount,
+      })),
+      { id: -1, paidFor: -1, amount: "" as number | "" },
+    ];
 
-      setPeople(peopleData);
+    setDetails(newDetails);
+  }, [payments, paidBy.id]);
 
-      const payerBilling = billingData.filter(
-        (b: Billing) => b.payerId === payer.id,
-      );
-
-      const newDetails = [
-        ...payerBilling.map((b: Billing) => ({
-          id: b.id,
-          receiverId: b.receiverId,
-          amount: b.amount,
-        })),
-        { id: crypto.randomUUID(), receiverId: "", amount: "" },
-      ];
-
-      setDetails(newDetails);
-    };
-
-    loadData();
-  }, [payer.id]);
-
-  const handleReceiverChange = async (index: number, value: string) => {
-    const newValue = value === "none" ? "" : value;
+  const handleReceiverChange = (index: number, value: string) => {
+    const newValue = value === "none" ? -1 : Number(value);
     setDetails((prev) => {
       const updated = [...prev];
-      updated[index].receiverId = newValue;
+      updated[index].paidFor = newValue;
       return updated;
     });
 
-    const d = details[index];
-    const billing: Billing = {
-      id: d.id,
-      payerId: payer.id,
-      receiverId: newValue,
-      amount: Number(d.amount),
-    };
+    const detail = details[index];
 
-    const res = await fetch(`http://localhost:3001/billings/${d.id}`);
-    const methohd = res.ok ? "PATCH" : "POST";
-    const url = res.ok
-      ? `http://localhost:3001/billings/${d.id}`
-      : `http://localhost:3001/billings`;
+    if (detail.id === -1) {
+      // 新規作成
+      const newId =
+        payments.length > 0 ? Math.max(...payments.map((p) => p.id)) + 1 : 0;
+      const newPayment: Payment = {
+        id: newId,
+        paidBy: paidBy.id,
+        paidFor: newValue,
+        amount: "",
+      };
+      setPayments((prev) => [...prev, newPayment]);
 
-    await fetch(url, {
-      method: methohd,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(billing),
-    });
+      // detailsのidも更新
+      setDetails((prev) => {
+        const updated = [...prev];
+        updated[index].id = newId;
+        return updated;
+      });
+    } else {
+      // 既存を更新
+      setPayments((prev) =>
+        prev.map((p) => (p.id === detail.id ? { ...p, paidFor: newValue } : p)),
+      );
+    }
   };
 
   const handleAmountChange = (index: number, v: number | "") => {
@@ -87,103 +88,122 @@ export default function BillingDetailCard({ payer }: BillingDetailCardProps) {
 
       const last = updated[updated.length - 1];
       if (last.amount !== "") {
-        updated.push({ id: crypto.randomUUID(), receiverId: "", amount: "" });
+        updated.push({ id: -1, paidFor: -1, amount: "" });
       }
 
       return updated;
     });
   };
 
-  const handleBlur = async (index: number) => {
-    const d = details[index];
+  const handleBlur = (index: number) => {
+    const detail = details[index];
 
-    const billing: Billing = {
-      id: d.id,
-      payerId: payer.id,
-      receiverId: d.receiverId,
-      amount: Number(d.amount),
-    };
+    if (detail.id === -1 && detail.paidFor !== -1 && detail.amount !== "") {
+      // 新規作成
+      const newId =
+        payments.length > 0 ? Math.max(...payments.map((p) => p.id)) + 1 : 0;
+      const newPayment: Payment = {
+        id: newId,
+        paidBy: paidBy.id,
+        paidFor: detail.paidFor,
+        amount: Number(detail.amount),
+      };
+      setPayments((prev) => [...prev, newPayment]);
 
-    const res = await fetch(`http://localhost:3001/billings/${d.id}`);
-    const method = res.ok ? "PATCH" : "POST";
-    const url = res.ok
-      ? `http://localhost:3001/billings/${d.id}`
-      : `http://localhost:3001/billings`;
+      // detailsのidも更新
+      setDetails((prev) => {
+        const updated = [...prev];
+        updated[index].id = newId;
+        return updated;
+      });
+    } else if (detail.id !== -1) {
+      // 既存を更新
+      setPayments((prev) =>
+        prev.map((p) =>
+          p.id === detail.id ? { ...p, amount: Number(detail.amount) || 0 } : p,
+        ),
+      );
+    }
 
-    await fetch(url, {
-      method: method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(billing),
-    });
-
-    if (index === details.length - 1) {
-      setDetails((prev) => [
-        ...prev,
-        { id: crypto.randomUUID(), receiverId: "", amount: "" },
-      ]);
+    if (
+      index === details.length - 1 &&
+      (detail.paidFor !== -1 || detail.amount !== "")
+    ) {
+      setDetails((prev) => [...prev, { id: -1, paidFor: -1, amount: "" }]);
     }
   };
 
-  const handleDeleteBilling = async (index: number) => {
+  const handleDeleteBilling = (index: number) => {
     const target = details[index];
 
     if (!confirm("本当に削除しますか？")) return;
 
-    await fetch(`http://localhost:3001/billings/${target.id}`, {
-      method: "DELETE",
-    });
+    if (target.id !== -1) {
+      setPayments((prev) => prev.filter((p) => p.id !== target.id));
+    }
 
     setDetails((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
-    <Card className="h-[450px] overflow-y-auto p-4 shadow-md">
+    <Card className="h-[450px] overflow-y-auto shadow-md">
       <CardHeader>
-        <CardTitle>{payer.name}さんの送金先と金額</CardTitle>
+        <CardTitle>{paidBy.name}さんが受け取る金額の入力</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-0">
         {details.map((detail, index) => {
-          const isSelectable = detail.receiverId !== "";
+          const isSelectable = detail.paidFor !== -1;
           return (
-            <div key={index} className="flex items-center gap-3">
-              <Select
-                value={detail.receiverId}
-                onValueChange={(v) => handleReceiverChange(index, v)}
-              >
-                <SelectTrigger className="w-[140px]">
-                  <SelectValue placeholder="送金先" />
-                </SelectTrigger>
-                <SelectContent>
-                  {people
-                    .filter((p) => p.id !== payer.id && p.name !== "")
-                    .map((p) => (
-                      <SelectItem key={p.id} value={p.id}>
-                        {p.name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-              <Input
-                type="number"
-                disabled={!isSelectable}
-                placeholder="金額"
-                className="w-[120px]"
-                value={detail.amount}
-                onChange={(e) =>
-                  handleAmountChange(
-                    index,
-                    e.target.value === "" ? "" : Number(e.target.value),
-                  )
-                }
-                onBlur={() => handleBlur(index)}
-              />
-              <span>円</span>
-              <Button
-                onClick={() => handleDeleteBilling(index)}
-                className="cursor-pointer hover:bg-gray-800"
-              >
-                削除
-              </Button>
+            <div
+              key={detail.id !== -1 ? detail.id : `new-${index}`}
+              className="border-b py-3 last:border-b-0"
+            >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="flex items-center gap-2">
+                  <Select
+                    value={detail.paidFor === -1 ? "" : String(detail.paidFor)}
+                    onValueChange={(v) => handleReceiverChange(index, v)}
+                  >
+                    <SelectTrigger className="w-32">
+                      <SelectValue placeholder="請求先" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {members
+                        .filter((p) => p.id !== paidBy.id && p.name !== "")
+                        .map((p) => (
+                          <SelectItem key={p.id} value={String(p.id)}>
+                            {p.name}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                  <span>さんから</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    disabled={!isSelectable}
+                    placeholder="金額"
+                    className="w-24"
+                    value={detail.amount}
+                    onChange={(e) =>
+                      handleAmountChange(
+                        index,
+                        e.target.value === "" ? "" : Number(e.target.value),
+                      )
+                    }
+                    onBlur={() => handleBlur(index)}
+                  />
+                  <span>円もらう</span>
+                  <Button
+                    variant="destructive"
+                    onClick={() => handleDeleteBilling(index)}
+                    className="cursor-pointer"
+                  >
+                    削除
+                  </Button>
+                </div>
+              </div>
             </div>
           );
         })}

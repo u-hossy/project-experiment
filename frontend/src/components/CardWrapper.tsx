@@ -1,20 +1,27 @@
 import { forwardRef } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-type CardWrapperProps = React.ComponentProps<typeof Card> & {
+interface CardWrapperProps extends React.ComponentProps<typeof Card> {
   title: string;
+  description?: string;
   children: React.ReactNode;
   nextButton?: React.ReactNode;
-};
+}
 
 const CardWrapper = forwardRef<HTMLDivElement, CardWrapperProps>(
-  ({ title, children, nextButton, className, ...props }, ref) => {
+  ({ title, description, children, nextButton, className, ...props }, ref) => {
     return (
       <Card
         ref={ref}
         className={cn(
-          "mx-8 mb-8 flex scroll-mt-20 flex-col shadow-md",
+          "mb-8 flex w-full scroll-mt-20 flex-col shadow-md",
           className,
         )}
         {...props}
@@ -23,6 +30,7 @@ const CardWrapper = forwardRef<HTMLDivElement, CardWrapperProps>(
           <CardTitle className="font-bold text-2xl tracking-wide">
             {title}
           </CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
         </CardHeader>
         <CardContent className="flex flex-col">
           <div>{children}</div>
