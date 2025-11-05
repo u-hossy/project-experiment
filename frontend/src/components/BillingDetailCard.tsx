@@ -97,9 +97,6 @@ export default function BillingDetailCard({
         );
       }
 
-
-    
-
       const last = updated[updated.length - 1];
       if (last.amount !== "" && last.paidFor !== -1) {
         updated.push({ id: -1, paidFor: -1, amount: "" });
