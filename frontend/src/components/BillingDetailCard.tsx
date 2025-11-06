@@ -86,8 +86,19 @@ export default function BillingDetailCard({
       const updated = [...prev];
       updated[index].amount = v;
 
+      const detail = updated[index];
+
+      // 支払い情報が既存なら即時反映
+      if (detail.id !== -1 && v !== "") {
+        setPayments((prevPayments) =>
+          prevPayments.map((p) =>
+            p.id === detail.id ? { ...p, amount: Number(v) } : p,
+          ),
+        );
+      }
+
       const last = updated[updated.length - 1];
-      if (last.amount !== "") {
+      if (last.amount !== "" && last.paidFor !== -1) {
         updated.push({ id: -1, paidFor: -1, amount: "" });
       }
 
