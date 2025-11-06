@@ -196,7 +196,7 @@ def process_warikan_json(input_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         output_json_list.append({
             "id": j,
             "amount": amnt,
-            "paid_by": to_user,
-            "paid_for": from_user
+            "paid_by": from_user,
+            "paid_for": to_user
         })
     return output_json_list
