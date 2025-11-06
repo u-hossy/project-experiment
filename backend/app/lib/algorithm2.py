@@ -174,10 +174,10 @@ def process_warikan_json(input_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         if amount == 0 or paid_by_user is None or paid_for_user is None:
             continue
         
-        #支払った人は貸しだから残高をマイナス
-        sagaku[paid_by_user] -= amount
-        #支払ってもらった人は借りだから残高をプラス
-        sagaku[paid_for_user] += amount
+        #支払った人は貸しだから残高をプラス
+        sagaku[paid_by_user] += amount
+        #支払ってもらった人は借りだから残高をマイナス
+        sagaku[paid_for_user] -= amount
     
     solve_input_data = [
         {"user": user_id, "amount": int(round(amount))}
