@@ -185,14 +185,17 @@ def process_warikan_json(input_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     ]
     
     torihiki = solve(solve_input_data)
+    
+    # 統合処理を追加
+    merged_results = defaultdict(int)
+    for result in torihiki:
+        key = (result["from_user"], result["to_user"])
+        merged_results[key] += result["amount"]
+        
 
     output_json_list = []
 
-    for j, result in enumerate(torihiki):
-        from_user = result["from_user"] #借りた人(kari)
-        to_user = result["to_user"] #貸した人(kashi)
-        amnt = result["amount"]
-
+    for j, ((from_user, to_user), amnt) in enumerate(merged_results.items()):
         output_json_list.append({
             "id": j,
             "amount": amnt,
