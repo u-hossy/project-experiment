@@ -5,7 +5,15 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 # アルゴリズムをインポート
-from .lib import algorithm1, algorithm2
+from .lib import algorithm1, algorithm2 #, algorithm3 # 今後追加のアルゴリズムがあればここに追加
+
+
+ALGORITHM_MAP = {
+    1: algorithm1.process_warikan_json,
+    2: algorithm2.process_warikan_json,
+    # 3: algorithm3.process_warikan_json,
+    # 今後追加のアルゴリズムがあればここに追加
+}
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -22,10 +30,10 @@ class CalculateWarikanView(View):
             output_data = None  # 結果を格納する変数
 
             # アルゴリズムの選択と実行
-            if algo_id == 1:
-                output_data = algorithm1.process_warikan_json(input_data)
-            elif algo_id == 2:
-                output_data = algorithm2.process_warikan_json(input_data)
+            process_function = ALGORITHM_MAP.get(algo_id) # 辞書から、IDに対応する関数を取得
+
+            if process_function:
+                output_data = process_function(input_data)
             else:
                 return JsonResponse(
                     {"error": f"Invalid algorithm_id: {algo_id}"}, status=400
