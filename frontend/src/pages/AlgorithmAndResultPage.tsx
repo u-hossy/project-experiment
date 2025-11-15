@@ -1,0 +1,94 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Result from "../components/Result";
+import SelectAlgorithm from "@/components/SelectAlgorithm";
+import { Button } from "../components/ui/button";
+import { fetchResult } from "@/lib/fetchResult";
+import type { Member } from "../types/member";
+import type { Payment } from "@/types/payment";
+import type { Result as ResultType } from "../types/result";
+import CardWrapper from "../components/CardWrapper";
+
+
+type Props = {
+  payments: Payment[];
+  members: Member[];
+};
+
+export default function AlgorithmAndResultPage({ payments, members }: Props) {
+  const navigate = useNavigate();
+  const [algorithmId, setAlgorithmId] = useState<number | undefined>(undefined);
+  const [results, setResults] = useState<ResultType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async () => {
+    if (!algorithmId) return setError("アルゴリズムを選択してください");
+    if (payments.length === 0) return setError("請求を追加してください");
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const fetchedResults = await fetchResult({ algorithmId, payments });
+      setResults(fetchedResults);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "計算中にエラーが発生しました");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-full min-w-80 max-w-3xl p-4">
+
+<CardWrapper
+          title="アルゴリズムの選択"
+          description="計算を行うアルゴリズムを選択して、「計算実行」を押すと計算が実行されます！"
+          nextButton={null}
+        >
+          <SelectAlgorithm
+            algorithmId={algorithmId}
+            setAlgorithmId={setAlgorithmId}
+          />
+
+          {error && (
+            <div className="mt-4 rounded-md bg-destructive/10 p-3 text-destructive text-sm">
+              {error}
+            </div>
+          )}
+
+          <div className="mt-4 flex gap-4">
+            <Button onClick={() => navigate("/billing")} variant="outline">
+              戻る
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={isLoading || payments.length === 0}
+              size="lg"
+            >
+              {isLoading ? "計算中..." : "計算実行"}
+            </Button>
+          </div>
+          </CardWrapper>
+        
+
+            <CardWrapper
+        title="結果表示"
+        nextButton={null} // ボタンは下で自作
+      >
+      <h2 className="mb-4 font-semibold text-xl">結果表示</h2>
+      <Result members={members} results={results} />
+
+      <div className="mt-4 flex gap-4">
+        <Button onClick={() => navigate("/algorithm")} variant="outline">
+          戻る
+        </Button>
+        <Button onClick={() => navigate("/network")} size="lg">
+          ネットワークを表示
+        </Button>
+      </div>
+      </CardWrapper>
+    </div>
+  );
+}
