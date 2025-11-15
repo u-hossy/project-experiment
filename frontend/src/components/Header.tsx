@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { HeaderMenu } from "./HeaderMenu";
-import { Link } from "react-router-dom";
 
 export default function Header({
   className,
