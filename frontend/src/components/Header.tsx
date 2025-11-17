@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import StaticNavBar from "./StaticNavBar.tsx";
 import { HeaderMenu } from "./HeaderMenu";
 import NavBar from "./NavBar.tsx";
+import StaticNavBar from "./StaticNavBar.tsx";
 
 export default function Header({
   className,
@@ -24,20 +24,18 @@ export default function Header({
           />
           <span className="font-bold text-sm md:text-lg">割り勘くん</span>
         </div>
-<div className="flex-1 flex justify-center max-w-[60%] md:max-w-none">
+        <div className="flex max-w-[60%] flex-1 justify-center md:max-w-none">
+          {/* スマホだけ表示 */}
+          <div className="block w-full md:hidden">
+            <NavBar />
+          </div>
 
-  {/* スマホだけ表示 */}
-  <div className="block md:hidden w-full">
-    <NavBar />
-  </div>
+          {/* PCだけ表示 */}
+          <div className="hidden md:block">
+            <StaticNavBar />
+          </div>
+        </div>
 
-  {/* PCだけ表示 */}
-  <div className="hidden md:block">
-    <StaticNavBar />
-  </div>
-</div>
-
-  
         <HeaderMenu />
       </div>
     </header>

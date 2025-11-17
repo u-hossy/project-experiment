@@ -15,17 +15,11 @@ export default function NavButton({
   return (
     <Link
       to={to}
-      className={`
-        flex items-center gap-2 px-4 py-2
-        rounded-lg text-gray-700 font-medium
-        hover:bg-gray-200 active:bg-gray-300
-        transition
-        w-40 justify-center
-        ${className}
+      className={`flex w-40 items-center justify-center gap-2 rounded-lg px-4 py-2 font-medium text-gray-700 transition hover:bg-gray-200 active:bg-gray-300 ${className}
       `}
     >
-      <img src={icon} className="w-6 h-6" />
-      <span className="flex-1 text-center whitespace-nowrap">{label}</span>
+      <img src={icon} className="h-6 w-6" />
+      <span className="flex-1 whitespace-nowrap text-center">{label}</span>
     </Link>
   );
 }
