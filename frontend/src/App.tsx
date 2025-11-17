@@ -14,7 +14,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="flex flex-col items-center gap-8 px-2 pt-20 pb-48">
-        <Header />
+        <Header/>
         <Routes>
           <Route path="/" element={<Navigate to="/members" replace />} />
           <Route
