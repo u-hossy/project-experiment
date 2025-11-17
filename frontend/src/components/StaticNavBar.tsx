@@ -17,7 +17,7 @@ export default function StaticNavBar() {
         to="/algorithmAndresults"
         icon="/calculator.svg"
         label="計算結果"
-      />
+      />    
     </nav>
   );
 }
