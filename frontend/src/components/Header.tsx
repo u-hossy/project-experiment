@@ -15,7 +15,7 @@ export default function Header({
       )}
       {...props}
     >
-      <div className="flex h-16 w-full items-center justify-between px-1">
+      <div className="flex h-16 w-full items-center justify-between px-4">
         <div className="flex items-center">
           <img
             src="/wallet.svg"
