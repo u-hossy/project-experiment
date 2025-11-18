@@ -119,3 +119,13 @@
     background-color: #f0efef;
   }
 }
+
+/* Chrome, Safari, Edge */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+.scrollbar-none {
+  scrollbar-width: none;
+}

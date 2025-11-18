@@ -36,7 +36,7 @@ export default function BillingPage({
             戻る
           </Button>
           <Button
-            onClick={() => navigate("/algorithm")}
+            onClick={() => navigate("/algorithmAndresults")}
             disabled={payments.length === 0}
             size="lg"
           >

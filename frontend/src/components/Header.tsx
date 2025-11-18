@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { HeaderMenu } from "./HeaderMenu";
+import NavBar from "./NavBar.tsx";
+import StaticNavBar from "./StaticNavBar.tsx";
 
 export default function Header({
   className,
@@ -14,21 +15,27 @@ export default function Header({
       )}
       {...props}
     >
-      <div className="flex h-20 w-full items-center justify-between px-4">
+      <div className="flex h-16 w-full items-center justify-between px-4">
         <div className="flex items-center">
           <img
             src="/wallet.svg"
             alt="割り勘アイコン"
             className="mr-2 h-6 w-6"
           />
-          <span className="font-bold text-lg">割り勘くん</span>
+          <span className="font-bold text-sm md:text-lg">割り勘くん</span>
         </div>
-        <div className="flex items-center space-x-5">
-          <Link to="/members">メンバーを追加</Link>
-          <Link to="/billing">請求を追加</Link>
-          <Link to="/algorithmAndresults">計算結果</Link>
-          <Link to="/"></Link>
+        <div className="flex max-w-[60%] flex-1 justify-center md:max-w-none">
+          {/* スマホだけ表示 */}
+          <div className="block w-full md:hidden">
+            <NavBar />
+          </div>
+
+          {/* PCだけ表示 */}
+          <div className="hidden md:block">
+            <StaticNavBar />
+          </div>
         </div>
+
         <HeaderMenu />
       </div>
     </header>
