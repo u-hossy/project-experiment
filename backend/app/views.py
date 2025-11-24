@@ -4,6 +4,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+# CRUD処理のために追加
+from rest_framework import viewsets
+from . import models
+from . import serializers
+
 # アルゴリズムをインポート
 from .lib import algorithm1, algorithm2 #, algorithm3 # 今後追加のアルゴリズムがあればここに追加
 
@@ -56,3 +61,29 @@ class HealthCheckView(View):
 
     def get(self, request, *args, **kwargs):
         return JsonResponse({"status": "ok"}, status=200)
+
+
+#　CRUD処理
+class EventsViewSet(viewsets.ModelViewSet):
+    # 作成日時の新しい順に取得
+    queryset = models.Events.objects.all().order_by('-created_at')
+    serializer_class = serializers.EventsSerializer
+    
+    # URLの識別子を 'id' ではなく 'url_end_code' に変更
+    lookup_field = 'url_end_code'
+
+
+class MembersViewSet(viewsets.ModelViewSet):
+    queryset = models.Members.objects.all().order_by('id')
+    serializer_class = serializers.MembersSerializer
+
+
+class PaymentsViewSet(viewsets.ModelViewSet):
+    queryset = models.Payments.objects.all().order_by('id')
+    serializer_class = serializers.PaymentsSerializer
+
+
+class ResultsViewSet(viewsets.ModelViewSet):
+    queryset = models.Results.objects.all().order_by('id')
+    serializer_class = serializers.ResultsSerializer
+    
