@@ -66,3 +66,4 @@ class CalculateWarikanView(View):
 class HealthCheckView(View):
     def get(self, request, *args, **kwargs):
         return JsonResponse({"status": "ok"}, status=200)
+    
