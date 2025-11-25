@@ -1,5 +1,5 @@
 /* メッセージの受信と送信のイベント管理の実装 */
-import { useCallback, useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState} from "react";
 
 /* 送受信するデータ型の設定 */
 export type MemberId = number;
@@ -42,20 +42,20 @@ export const useWebSocket = (url: string) => {
             try {
                 const data = JSON.parse(event.data) as WsMessage;
                 onMessageRef.current?.(data);
-            } catch (error) {
-                console.error('Failed to parse WebSocket message:', event.data);
+            } catch (_error) {
+                console.error("Failed to parse WebSocket message:", event.data);
             }
         };
 
-        ws.addEventListener('open', handleOpen);
-        ws.addEventListener('close', handleClose);
-        ws.addEventListener('message', handleMessage);
+        ws.addEventListener("open", handleOpen);
+        ws.addEventListener("close", handleClose);
+        ws.addEventListener("message", handleMessage);
 
         return () => {
             ws.close();
-            ws.removeEventListener('open', handleOpen);
-            ws.removeEventListener('close', handleClose);
-            ws.removeEventListener('message', handleMessage);
+            ws.removeEventListener("open", handleOpen);
+            ws.removeEventListener("close", handleClose);
+            ws.removeEventListener("message", handleMessage);
         };
     }, [url]);
 
@@ -67,7 +67,7 @@ export const useWebSocket = (url: string) => {
     /* メッセージ送信時 */
     const sendMessage = useCallback((msg: WsMessage) => {
         if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-            console.error('WebSocket is not connected.');
+            console.error("WebSocket is not connected.");
             return;
         }
         wsRef.current.send(JSON.stringify(msg));
