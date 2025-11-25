@@ -1,7 +1,6 @@
 "use client";
 
 import { MoreHorizontalIcon } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import LogoutButton from "./LogoutButton";
 
 export function HeaderMenu() {
   return (
@@ -30,7 +30,7 @@ export function HeaderMenu() {
         <DropdownMenuGroup>
           <DropdownMenuItem>はじめから</DropdownMenuItem>
           <DropdownMenuItem>ダウンロード</DropdownMenuItem>
-          <DropdownMenuItem>新しい割り勘</DropdownMenuItem>
+          <LogoutButton />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
