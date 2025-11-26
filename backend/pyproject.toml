@@ -10,7 +10,8 @@ requires-python = ">=3.12"
 dependencies = [
     "django (>=5.2.7,<6.0.0)",
     "python-dotenv (>=1.1.1,<2.0.0)",
-    "django-cors-headers (>=4.9.0,<5.0.0)"
+    "django-cors-headers (>=4.9.0,<5.0.0)",
+    "djangorestframework (>=3.16.1,<4.0.0)"
 ]
 
 [tool.poetry]
