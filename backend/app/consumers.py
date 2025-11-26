@@ -24,7 +24,6 @@ class WarikanConsumer(AsyncWebsocketConsumer):
         )
 
     # Viewから送られてきたメッセージを受け取るメソッド
-    # (views.py で指定した "type": "chat_message" と名前を合わせる必要があります)
     async def chat_message(self, event):
         message = event['message']
 
