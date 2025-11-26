@@ -18,7 +18,7 @@ export interface Payment {
 
 export type WsMessage = Member | Payment;
 
-/* WebSocket接続を管理するカスタムフック */
+/* 接続を管理するカスタムフック */
 export const useChatHandler = (url: string) => {
   const wsRef = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
