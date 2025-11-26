@@ -24,27 +24,35 @@ function App() {
 
   // サーバーからメッセージが届いた時の処理
   useEffect(() => {
-    if (lastMessage !== null) {
-      try {
-        const data = JSON.parse(lastMessage.data);
-        const serverMessage = data.message;
-        
-        console.log("サーバーからの通知:", serverMessage);
+    if (!lastMessage?.data) return;
 
-        // サーバーからどんなデータが来たかで更新し分ける
-        // サーバーが「最新のpaymentsリスト」を送ってきた場合
-        if (serverMessage.payments) {
-            setPayments(serverMessage.payments);
+    try {
+      const data = JSON.parse(lastMessage.data);
+      const serverMessage = (data as any)?.message;
+
+      console.log("サーバーからの通知:", serverMessage);
+
+      if (serverMessage && typeof serverMessage === "object") {
+        // payments が配列なら更新
+        if (Array.isArray(serverMessage.payments)) {
+          setPayments(serverMessage.payments);
+        } else if (serverMessage.payments !== undefined) {
+          console.error("Invalid payments format (expected array):", serverMessage.payments);
         }
-        
-        // サーバーが「最新のmembersリスト」を送ってきた場合
-        if (serverMessage.members) {
-            setMembers(serverMessage.members);
+
+        // members が配列なら更新
+        if (Array.isArray(serverMessage.members)) {
+          setMembers(serverMessage.members);
+        } else if (serverMessage.members !== undefined) {
+          console.error("Invalid members format (expected array):", serverMessage.members);
         }
-        
-      } catch (e) {
-        console.error("メッセージの解析に失敗:", e);
+      } else {
+        console.error("serverMessage is not an object:", serverMessage);
       }
+
+    } catch (e) {
+      console.error("メッセージの解析に失敗:", e);
+      console.error("raw lastMessage.data:", lastMessage.data);
     }
   }, [lastMessage]);
 
