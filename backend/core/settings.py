@@ -47,10 +47,10 @@ from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1), #アクセストークンの有効期限を1分に設定
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7), #リフレッシュトークンの有効期限を7日に設定
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': False,
+    'ROTATE_REFRESH_TOKENS': True, # レフレッシュトークンをローテーション管理
+    'BLACKLIST_AFTER_ROTATION': True, # 古くなったリフレッシュトークンのブラックリスト化
     
-    'AUTH_COOKIE': "access_token",
+
     'AUTH_COOKIE_REFRESH': "refresh_token",
     'AUTH_COOKIE_SECURE': False, # 本番では True
     'AUTH_COOKIE_SAMESITE': "Lax",
