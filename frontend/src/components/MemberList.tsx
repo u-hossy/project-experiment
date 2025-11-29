@@ -45,7 +45,21 @@ export default function MemberList({
       updated[index].name = value;
       return updated;
     });
-  };
+  }
+
+  const handleBlur = async (index: number) => {
+    const target = members[index];
+
+    await fetch(`http://127.0.0.1:8000/api/v1/members/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        event_id: 1,
+        member_id: target.id,
+        name: target.name,
+      }),
+    });
+  }
 
   // メンバー削除関数
   const handleDeleteMember = (index: number) => {
@@ -119,6 +133,7 @@ export default function MemberList({
             value={member.name}
             placeholder={`メンバー${index + 1}`}
             onChange={(e) => handleChange(index, e.target.value)}
+            onBlur={() => handleBlur(index)}
             onKeyDown={(e) => handleKeyDown(e, index)}
             className="rounded-md border px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
