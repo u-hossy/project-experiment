@@ -6,6 +6,8 @@ import json
 
 # CRUD処理のために追加
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import action
 from . import models
 from . import serializers
 
@@ -77,13 +79,46 @@ class MembersViewSet(viewsets.ModelViewSet):
     queryset = models.Members.objects.all().order_by('id')
     serializer_class = serializers.MembersSerializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        event_code = self.request.query_params.get("event_id")
+        if event_code:
+            qs = qs.filter(event_id=event_code)
+        return qs
+    
+    @action(detail=False, methods=["delete"])
+    def delete_by_key(self, request):
+        event_id = request.query_params.get("event_id")
+        member_id = request.query_params.get("member_id")
+
+        deleted, _ = models.Members.objects.filter(
+            event_id=event_id,
+            member_id=member_id
+        ).delete()
+
+        return Response({"status": "deleted"}, status=200)
+
 
 class PaymentsViewSet(viewsets.ModelViewSet):
     queryset = models.Payments.objects.all().order_by('id')
     serializer_class = serializers.PaymentsSerializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        event_code = self.request.query_params.get("event_id")
+        if event_code:
+            qs = qs.filter(event_id=event_code)
+        return qs
+
 
 class ResultsViewSet(viewsets.ModelViewSet):
     queryset = models.Results.objects.all().order_by('id')
     serializer_class = serializers.ResultsSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        event_code = self.request.query_params.get("event_id")
+        if event_code:
+            qs = qs.filter(event_id=event_code)
+        return qs
     

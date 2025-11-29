@@ -4,6 +4,7 @@ import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useParams } from "react-router-dom";
 
 interface MemberListProps {
   members: Member[];
@@ -20,6 +21,7 @@ export default function MemberList({
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   // 最後に追加されたメンバーにフォーカスを当てるためのフラグ
   const [shouldFocusLast, setShouldFocusLast] = useState(false);
+  const { eventId } = useParams(); 
 
   // メンバー追加関数
   const handleAddMember = () => {
@@ -50,19 +52,40 @@ export default function MemberList({
   const handleBlur = async (index: number) => {
     const target = members[index];
 
-    await fetch(`http://127.0.0.1:8000/api/v1/members/`, {
-      method: "POST",
+    if (!target.name.trim()) return;
+
+    if (!target.dbId) {
+      const res = await fetch(`http://127.0.0.1:8000/api/v1/members/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          event_id: eventId,
+          member_id: target.id,
+          name: target.name,
+        }),
+      });
+      const created = await res.json();
+
+      setMembers(prev => {
+        const updated = [...prev];
+        updated[index].dbId = created.id;
+        return updated;
+      })
+
+      return;
+    }
+
+    await fetch(`http://127.0.0.1:8000/api/v1/members/${target.dbId}/`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
-        event_id: 1,
-        member_id: target.id,
         name: target.name,
       }),
     });
   }
 
   // メンバー削除関数
-  const handleDeleteMember = (index: number) => {
+  const handleDeleteMember = async (index: number) => {
     const targetMember = members[index];
 
     // 名前が空白でない場合のみアラートを表示
@@ -74,6 +97,12 @@ export default function MemberList({
       ) {
         return;
       }
+    }
+
+    if (targetMember.dbId) {
+      await fetch(`http://127.0.0.1:8000/api/v1/members/delete_by_key/?event_id=${eventId}&member_id=${targetMember.id}`, {
+        method: "DELETE",
+      });
     }
 
     // メンバーを削除
@@ -119,6 +148,23 @@ export default function MemberList({
       setShouldFocusLast(false);
     }
   }, [members, shouldFocusLast]);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      const res = await fetch(`http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`);
+      const data = await res.json();
+
+      const loadedMembers: Member[] = data.map((m: any) => ({
+        id: m.member_id,   
+        name: m.name,
+        dbId: m.id      
+      }));
+
+      setMembers(loadedMembers);
+    };
+
+    fetchMembers();
+  }, [eventId, setMembers]);
 
   return (
     <>
