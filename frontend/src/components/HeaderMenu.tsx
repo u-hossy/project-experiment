@@ -1,7 +1,7 @@
 "use client";
 
 import { MoreHorizontalIcon } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,6 +13,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function HeaderMenu() {
+  const navigate = useNavigate();
+
+  const handleCreateEvent = async () => {
+    const res = await fetch(`http://127.0.0.1:8000/api/v1/events/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+
+    const data = await res.json();
+    const code = data.url_end_code;
+
+    navigate(`/${code}/members`);
+  };
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -28,9 +45,12 @@ export function HeaderMenu() {
       <DropdownMenuContent className="w-40" align="end">
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuItem>はじめから</DropdownMenuItem>
-          <DropdownMenuItem>ダウンロード</DropdownMenuItem>
-          <DropdownMenuItem>新しい割り勘</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate("/top")}>
+            topページへ
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleCreateEvent}>
+            はじめから
+          </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
