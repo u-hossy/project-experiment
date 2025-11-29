@@ -8,12 +8,17 @@ const links = [
 ];
 
 export default function NavBar() {
-  const { eventId } = useParams(); 
+  const { eventId } = useParams();
   return (
     <div className="scrollbar-none w-full touch-pan-x overflow-x-auto whitespace-nowrap">
       <div className="flex gap-4 px-1 py-2">
         {links.map((l, i) => (
-          <NavButton key={i} to={`/${eventId}/${l.to}`} icon={l.icon} label={l.label} />
+          <NavButton
+            key={i}
+            to={`/${eventId}/${l.to}`}
+            icon={l.icon}
+            label={l.label}
+          />
         ))}
       </div>
     </div>

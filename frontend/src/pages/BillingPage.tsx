@@ -33,7 +33,10 @@ export default function BillingPage({
         />
 
         <div className="mt-4 flex gap-4">
-          <Button onClick={() => navigate(`/${eventId}/members`)} variant="outline">
+          <Button
+            onClick={() => navigate(`/${eventId}/members`)}
+            variant="outline"
+          >
             戻る
           </Button>
           <Button

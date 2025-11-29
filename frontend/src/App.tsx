@@ -3,8 +3,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ResultPage from "./pages/AlgorithmAndResultPage";
 import BillingPage from "./pages/BillingPage";
-import TopPage from "./pages/TopPage";
 import MemberPage from "./pages/MembersPage";
+import TopPage from "./pages/TopPage";
 import type { Member } from "./types/member";
 import type { Payment } from "./types/payment";
 

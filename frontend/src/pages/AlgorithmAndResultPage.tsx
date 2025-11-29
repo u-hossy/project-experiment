@@ -60,7 +60,10 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         )}
 
         <div className="mt-4 flex gap-4">
-          <Button onClick={() => navigate(`/${eventId}/billing`)} variant="outline">
+          <Button
+            onClick={() => navigate(`/${eventId}/billing`)}
+            variant="outline"
+          >
             戻る
           </Button>
           <Button
@@ -81,7 +84,10 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         <Result members={members} results={results} />
 
         <div className="mt-4 flex gap-4">
-          <Button onClick={() => navigate(`/${eventId}/algorithm`)} variant="outline">
+          <Button
+            onClick={() => navigate(`/${eventId}/algorithm`)}
+            variant="outline"
+          >
             戻る
           </Button>
           <Button onClick={() => navigate(`/${eventId}/network`)} size="lg">

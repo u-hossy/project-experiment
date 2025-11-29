@@ -17,7 +17,7 @@ export default function TopPage() {
     const code = data.url_end_code;
 
     navigate(`/${code}/members`);
-  }
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4 text-center">
