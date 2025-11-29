@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Layout from "./components/Layout";
 import ResultPage from "./pages/AlgorithmAndResultPage";
 import BillingPage from "./pages/BillingPage";
-import MemberPage from "./pages/MembersPage";
 import HomePage from "./pages/Homepage";
-import Layout from "./components/Layout";
+import MemberPage from "./pages/MembersPage";
 import type { Member } from "./types/member";
 import type { Payment } from "./types/payment";
 
@@ -14,16 +14,11 @@ function App() {
 
   return (
     <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout/>}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/homepage" replace />} />
 
-          <Route
-            path="homepage"
-            element={
-              <HomePage/>
-            }
-          />
+          <Route path="homepage" element={<HomePage />} />
           <Route
             path="members"
             element={
@@ -48,8 +43,8 @@ function App() {
             path="algorithmAndresults"
             element={<ResultPage members={members} payments={payments} />}
           />
-          </Route>
-        </Routes>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
