@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
 import ResultPage from "./pages/AlgorithmAndResultPage";
 import BillingPage from "./pages/BillingPage";
 import MemberPage from "./pages/MembersPage";
+import HomePage from "./pages/Homepage";
+import Layout from "./components/Layout";
 import type { Member } from "./types/member";
 import type { Payment } from "./types/payment";
 
@@ -13,12 +14,18 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex flex-col items-center gap-8 px-2 pt-20 pb-48">
-        <Header />
         <Routes>
-          <Route path="/" element={<Navigate to="/members" replace />} />
+          <Route path="/" element={<Layout/>}>
+          <Route index element={<Navigate to="/homepage" replace />} />
+
           <Route
-            path="/members"
+            path="homepage"
+            element={
+              <HomePage/>
+            }
+          />
+          <Route
+            path="members"
             element={
               <MemberPage
                 members={members}
@@ -28,7 +35,7 @@ function App() {
             }
           />
           <Route
-            path="/billing"
+            path="billing"
             element={
               <BillingPage
                 members={members}
@@ -38,11 +45,11 @@ function App() {
             }
           />
           <Route
-            path="/algorithmAndresults"
+            path="algorithmAndresults"
             element={<ResultPage members={members} payments={payments} />}
           />
+          </Route>
         </Routes>
-      </div>
     </BrowserRouter>
   );
 }
