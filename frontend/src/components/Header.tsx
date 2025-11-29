@@ -1,8 +1,8 @@
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { HeaderMenu } from "./HeaderMenu";
 import NavBar from "./NavBar.tsx";
 import StaticNavBar from "./StaticNavBar.tsx";
-import { Link } from "react-router-dom";
 
 export default function Header({
   className,
@@ -17,7 +17,7 @@ export default function Header({
       {...props}
     >
       <div className="flex h-16 w-full items-center justify-between px-4">
-        <Link to="/top" className="flex items-center cursor-pointer">
+        <Link to="/top" className="flex cursor-pointer items-center">
           <img
             src="/wallet.svg"
             alt="割り勘アイコン"
