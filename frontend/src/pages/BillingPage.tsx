@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BillingTabList from "../components/BillingTabList";
 import CardWrapper from "../components/CardWrapper";
 import { Button } from "../components/ui/button";
@@ -17,6 +17,7 @@ export default function BillingPage({
   setPayments,
 }: BillingPageProps) {
   const navigate = useNavigate();
+  const { eventId } = useParams();
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
@@ -32,11 +33,11 @@ export default function BillingPage({
         />
 
         <div className="mt-4 flex gap-4">
-          <Button onClick={() => navigate("/members")} variant="outline">
+          <Button onClick={() => navigate(`/${eventId}/members`)} variant="outline">
             戻る
           </Button>
           <Button
-            onClick={() => navigate("/algorithmAndresults")}
+            onClick={() => navigate(`/${eventId}/algorithmAndresults`)}
             disabled={payments.length === 0}
             size="lg"
           >

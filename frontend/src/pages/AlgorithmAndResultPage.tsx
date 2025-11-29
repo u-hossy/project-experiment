@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
 import { fetchResult } from "@/lib/fetchResult";
 import type { Payment } from "@/types/payment";
@@ -20,6 +20,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
   const [results, setResults] = useState<ResultType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { eventId } = useParams();
 
   const handleSubmit = async () => {
     if (!algorithmId) return setError("アルゴリズムを選択してください");
@@ -59,7 +60,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         )}
 
         <div className="mt-4 flex gap-4">
-          <Button onClick={() => navigate("/billing")} variant="outline">
+          <Button onClick={() => navigate(`/${eventId}/billing`)} variant="outline">
             戻る
           </Button>
           <Button
@@ -80,10 +81,10 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         <Result members={members} results={results} />
 
         <div className="mt-4 flex gap-4">
-          <Button onClick={() => navigate("/algorithm")} variant="outline">
+          <Button onClick={() => navigate(`/${eventId}/algorithm`)} variant="outline">
             戻る
           </Button>
-          <Button onClick={() => navigate("/network")} size="lg">
+          <Button onClick={() => navigate(`/${eventId}/network`)} size="lg">
             ネットワークを表示
           </Button>
         </div>

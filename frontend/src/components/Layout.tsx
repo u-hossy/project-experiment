@@ -6,7 +6,7 @@ function Layout() {
   const location = useLocation();
 
   // ヘッダーを非表示にしたいパスのリスト
-  const noHeaderPaths = ["/homepage"];
+  const noHeaderPaths = ["/top"];
 
   // 現在のパスが非表示リストに含まれているかチェック
   const shouldHideHeader = noHeaderPaths.includes(location.pathname);

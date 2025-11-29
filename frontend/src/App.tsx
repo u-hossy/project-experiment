@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ResultPage from "./pages/AlgorithmAndResultPage";
 import BillingPage from "./pages/BillingPage";
-import HomePage from "./pages/Homepage";
+import TopPage from "./pages/TopPage";
 import MemberPage from "./pages/MembersPage";
 import type { Member } from "./types/member";
 import type { Payment } from "./types/payment";
@@ -16,11 +16,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/homepage" replace />} />
+          <Route index element={<Navigate to="/top" replace />} />
 
-          <Route path="homepage" element={<HomePage />} />
+          <Route path="top" element={<TopPage />} />
           <Route
-            path="members"
+            path=":eventId/members"
             element={
               <MemberPage
                 members={members}
@@ -30,7 +30,7 @@ function App() {
             }
           />
           <Route
-            path="billing"
+            path=":eventId/billing"
             element={
               <BillingPage
                 members={members}
@@ -40,7 +40,7 @@ function App() {
             }
           />
           <Route
-            path="algorithmAndresults"
+            path=":eventId/algorithmAndresults"
             element={<ResultPage members={members} payments={payments} />}
           />
         </Route>
