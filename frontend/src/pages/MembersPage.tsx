@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CardWrapper from "../components/CardWrapper";
 import MemberList from "../components/MemberList";
 import { Button } from "../components/ui/button";
@@ -17,6 +17,7 @@ export default function MembersPage({
   setPayments,
 }: MembersPageProps) {
   const navigate = useNavigate();
+  const { eventId } = useParams();
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
@@ -33,7 +34,7 @@ export default function MembersPage({
 
         <div className="mt-4 flex gap-4">
           <Button
-            onClick={() => navigate("/billing")}
+            onClick={() => navigate(`/${eventId}/billing`)}
             size="lg"
             disabled={!members.length}
           >
