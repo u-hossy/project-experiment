@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"; // useEffectを追加
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
-import Header from "./components/Header";
 import Layout from "./components/Layout";
 import ResultPage from "./pages/AlgorithmAndResultPage";
 import BillingPage from "./pages/BillingPage";
