@@ -1,3 +1,10 @@
+export const sampleMembers = [
+  { id: 1, name: "A" },
+  { id: 2, name: "B" },
+  { id: 3, name: "C" },
+  { id: 4, name: "D" },
+];
+
 export const samplePayments = [
   { from: "A", to: "A", amount: 8000 },
   { from: "A", to: "B", amount: 8000 },
