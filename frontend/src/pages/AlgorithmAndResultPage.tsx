@@ -11,6 +11,7 @@ import Result from "../components/Result";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
+import NetworkGraph from "@/components/NetworkGraph";
 
 type Props = {
   payments: Payment[];
@@ -101,12 +102,12 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         title="結果表示"
         nextButton={null} // ボタンは下で自作
       >
-        <h2 className="mb-4 font-semibold text-xl">結果表示</h2>
+        {/* <h2 className="mb-4 font-semibold text-xl">結果表示</h2> */}
         <Result members={members} results={results} />
 
         <div className="mt-4 flex gap-4">
           <Button
-            onClick={() => navigate(`/${eventId}/algorithm`)}
+            onClick={() => navigate(`/${eventId}/billing`)}
             variant="outline"
           >
             戻る
@@ -114,7 +115,21 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         </div>
       </CardWrapper>
 
-      
+      <CardWrapper
+        title="ネットワークグラフ"
+        nextButton={null}
+      >
+        <NetworkGraph results={results}/>
+        <div className="mt-4 flex gap-4">
+          <Button
+            onClick={() => navigate(`/${eventId}/billing`)}
+            variant="outline"
+          >
+            戻る
+          </Button>
+        </div>
+      </CardWrapper>
+
     </div>
   );
 }
