@@ -101,17 +101,6 @@ export default function BillingDetailCard({
       const updated = [...prev];
       updated[index].amount = v;
 
-      const detail = updated[index];
-
-      // 支払い情報が既存なら即時反映
-      if (detail.id !== -1 && v !== "") {
-        setPayments((prevPayments) =>
-          prevPayments.map((p) =>
-            p.id === detail.id ? { ...p, amount: Number(v) } : p,
-          ),
-        );
-      }
-
       const last = updated[updated.length - 1];
       if (last.amount !== "" && last.paidFor !== -1) {
         updated.push({ id: -1, paidFor: -1, amount: "" });
@@ -132,6 +121,17 @@ export default function BillingDetailCard({
         ),
       );
     }
+
+    await fetch(`http://127.0.0.1:8000/api/v1/payments/patch_by_key/`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_id: eventId,
+        payment_id: detail.id,
+        amount: detail.amount,
+        note: "",
+      }),
+    });
 
     if (
       index === details.length - 1 &&
