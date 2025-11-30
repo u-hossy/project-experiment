@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,7 +12,6 @@ import {
 import type { Member } from "@/types/member";
 import type { Payment } from "@/types/payment";
 import { Button } from "./ui/button";
-import { useParams } from "react-router-dom";
 
 interface BillingDetailCardProps {
   paidBy: Member;
@@ -29,7 +29,7 @@ export default function BillingDetailCard({
   const [details, setDetails] = useState<
     Array<{ id: number; paidFor: number; amount: number | "" }>
   >([{ id: -1, paidFor: -1, amount: "" }]);
-  const {eventId} = useParams();
+  const { eventId } = useParams();
 
   // payerに関連するpaymentsをdetailsに反映
   useEffect(() => {

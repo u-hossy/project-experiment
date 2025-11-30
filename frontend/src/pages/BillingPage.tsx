@@ -1,16 +1,28 @@
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BillingTabList from "../components/BillingTabList";
 import CardWrapper from "../components/CardWrapper";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
-import { useEffect } from "react";
 
 interface BillingPageProps {
   members: Member[];
   payments: Payment[];
   setMembers: React.Dispatch<React.SetStateAction<Member[]>>;
   setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
+}
+
+interface MemberResponse {
+  member_id: number;
+  name: string;
+}
+
+interface PaymentResponse {
+  payment_id: number;
+  paid_by: number;
+  paid_for: number;
+  amount: number;
 }
 
 export default function BillingPage({
@@ -25,24 +37,28 @@ export default function BillingPage({
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`)
       .then((res) => res.json())
-      .then((data) => setPayments(
-        data.map((p: any) => ({
-          id: p.payment_id,
-          paidBy: p.paid_by,
-          paidFor: p.paid_for,
-          amount: p.amount,
-        }))
-      ));
-    
+      .then((data) =>
+        setPayments(
+          (data as PaymentResponse[]).map((p) => ({
+            id: p.payment_id,
+            paidBy: p.paid_by,
+            paidFor: p.paid_for,
+            amount: p.amount,
+          })),
+        ),
+      );
+
     fetch(`http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`)
       .then((res) => res.json())
-      .then((data) => setMembers(
-        data.map((p: any) => ({
-          id: p.member_id,
-          name: p.name,
-        }))
-      ));
-  }, [eventId]);
+      .then((data) =>
+        setMembers(
+          (data as MemberResponse[]).map((p) => ({
+            id: p.member_id,
+            name: p.name,
+          })),
+        ),
+      );
+  }, [eventId, setMembers, setPayments]);
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
