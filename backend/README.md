@@ -8,21 +8,21 @@
 curl -sSL https://install.python-poetry.org/ | python3 -
 ```
 
-### 2. 依存関係のインストール
+### 2. 仮想環境への PATH を通す
 
 ```bash
 cd backend
-poetry install
-```
-
-### 3. 仮想環境への PATH を通す
-
-```bash
 poetry env activate
 ```
 
 上記コマンドの出力結果(`source`コマンド)をターミナル上でそのまま入力してください。
 実行後`which python3`などの出力が`.venv`内のものになっているなど、普段と違う Python が使われていれば成功です。
+
+### 3. 依存関係のインストール
+
+```bash
+poetry install
+```
 
 ### 4. `.env`ファイルを用意する
 
@@ -78,4 +78,8 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
+以下のコマンドで管理者アカウントを作成
 
+```bash
+python3 manage.py createsuperuser
+```

@@ -26,7 +26,7 @@ export default function SelectAlgorithm({
           計算アルゴリズム
         </label>
         <Select
-          value={algorithmId?.toString()}
+          value={algorithmId?.toString() ?? ""}
           onValueChange={(value) => setAlgorithmId(Number(value))}
         >
           <SelectTrigger id={selectId}>

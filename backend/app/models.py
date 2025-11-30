@@ -24,7 +24,10 @@ class Events(models.Model): #清算イベント全体を管理
         return self.url_end_code
     
 class Members(models.Model):    #メンバーテーブル
-    event_id = models.ForeignKey(Events, related_name='members', on_delete=models.CASCADE)
+    event_id = models.ForeignKey(Events, 
+                                 to_field='url_end_code', 
+                                 related_name='members', 
+                                 on_delete=models.CASCADE)
     member_id = models.IntegerField()
     name = models.CharField(max_length=50)
 
@@ -33,7 +36,10 @@ class Members(models.Model):    #メンバーテーブル
     
 
 class Payments(models.Model):   #支払いテーブル
-    event_id = models.ForeignKey(Events, related_name='payments', on_delete=models.CASCADE)
+    event_id = models.ForeignKey(Events, 
+                                 to_field='url_end_code', 
+                                 related_name='payments', 
+                                 on_delete=models.CASCADE)
     payment_id = models.IntegerField()
     paid_by = models.IntegerField()
     paid_for = models.IntegerField()
@@ -45,7 +51,10 @@ class Payments(models.Model):   #支払いテーブル
     
 
 class Results(models.Model):    #結果テーブル
-    event_id = models.ForeignKey(Events, related_name='results', on_delete=models.CASCADE)
+    event_id = models.ForeignKey(Events, 
+                                 to_field='url_end_code', 
+                                 related_name='results', 
+                                 on_delete=models.CASCADE)
     result_id = models.IntegerField()
     paid_by = models.IntegerField()
     paid_for = models.IntegerField()
