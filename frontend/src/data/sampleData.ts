@@ -1,4 +1,4 @@
-export const sampleBillings = [
+export const samplePayments = [
   { from: "A", to: "A", amount: 8000 },
   { from: "A", to: "B", amount: 8000 },
   { from: "A", to: "C", amount: 8000 },

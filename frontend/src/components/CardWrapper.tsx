@@ -9,7 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 
 interface CardWrapperProps extends React.ComponentProps<typeof Card> {
-  title: string;
+  title?: string;
   description?: string;
   children: React.ReactNode;
   nextButton?: React.ReactNode;
