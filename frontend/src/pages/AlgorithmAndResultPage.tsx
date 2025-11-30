@@ -115,7 +115,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       </CardWrapper>
 
       <CardWrapper title="ネットワークグラフ" nextButton={null}>
-        <NetworkGraph results={results} />
+        <NetworkGraph members={members} results={results} />
         <div className="mt-4 flex gap-4">
           <Button
             onClick={() => navigate(`/${eventId}/billing`)}

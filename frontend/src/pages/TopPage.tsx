@@ -16,12 +16,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { algorithms } from "@/data/algorithms";
-import { sampleMembers } from "@/data/sampleData";
+import { sampleMembers, sampleResults } from "@/data/sampleData";
 import { cn } from "@/lib/utils";
 
 export default function TopPage() {
   return (
-    <div className="w-full min-w-80 max-w-3xl p-4 pt-60">
+    <div className="w-full min-w-80 max-w-6xl p-4 pt-60">
       <TopPageHeader />
       <Card className={cn("mb-8 flex w-full scroll-mt-20 flex-col shadow-md")}>
         <CardHeader>
@@ -167,16 +167,16 @@ export default function TopPage() {
               <CardWrapper title="結果表示" nextButton={null}>
                 <ExampleResultTable />
               </CardWrapper>
-              {/* <CardWrapper title="ネットワークグラフ"> */}
-              {/* <NetworkGraph results={results} />
+              <CardWrapper title="ネットワークグラフ">
+              <NetworkGraph members={sampleMembers} results={sampleResults} />
                   <div className="mt-4 flex gap-4">
                     <Button
                       variant="outline"
                     >
                       戻る
                     </Button>
-                  </div> */}
-              {/* </CardWrapper> */}
+                  </div>
+              </CardWrapper>
             </div>
             <Card
               className={cn(
