@@ -71,6 +71,7 @@ function App() {
               <BillingPage
                 members={members}
                 payments={payments}
+                setMembers={setMembers}
                 setPayments={setPayments}
               />
             }
