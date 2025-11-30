@@ -1,12 +1,11 @@
-import type { Result } from "@/types/result";
 import CytoscapeComponent from "react-cytoscapejs";
+import type { Result } from "@/types/result";
 
 interface Props {
   results: Result[];
-};
+}
 
 export default function NetworkGraph({ results }: Props) {
-
   if (results.length === 0) {
     return (
       <div className="p-8 text-center">

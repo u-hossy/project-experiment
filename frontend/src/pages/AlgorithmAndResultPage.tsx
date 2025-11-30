@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import NetworkGraph from "@/components/NetworkGraph";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
 import { deleteResult } from "@/lib/deleteResult";
 import { fetchResult } from "@/lib/fetchResult";
@@ -11,7 +12,6 @@ import Result from "../components/Result";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
-import NetworkGraph from "@/components/NetworkGraph";
 
 type Props = {
   payments: Payment[];
@@ -114,11 +114,8 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         </div>
       </CardWrapper>
 
-      <CardWrapper
-        title="ネットワークグラフ"
-        nextButton={null}
-      >
-        <NetworkGraph results={results}/>
+      <CardWrapper title="ネットワークグラフ" nextButton={null}>
+        <NetworkGraph results={results} />
         <div className="mt-4 flex gap-4">
           <Button
             onClick={() => navigate(`/${eventId}/billing`)}
@@ -128,7 +125,6 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
           </Button>
         </div>
       </CardWrapper>
-
     </div>
   );
 }
