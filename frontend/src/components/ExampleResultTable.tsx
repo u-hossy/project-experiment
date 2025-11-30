@@ -11,7 +11,9 @@ import { samplePayments } from "@/data/sampleData";
 export default function ExampleResultTable() {
   const people = Array.from(
     new Set(
-      samplePayments.map((s) => s.from).concat(samplePayments.map((s) => s.to)),
+      samplePayments
+        .map((s) => s.paidBy)
+        .concat(samplePayments.map((s) => s.paidFor)),
     ),
   );
   return (

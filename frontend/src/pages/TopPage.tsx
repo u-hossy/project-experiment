@@ -4,13 +4,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@radix-ui/react-select";
+} from "@/components/ui/select";
 import { PlusIcon } from "lucide-react";
 import CardWrapper from "@/components/CardWrapper";
 import ExampleBillingTabList from "@/components/ExampleBillingTabList";
 import ExampleResultTable from "@/components/ExampleResultTable";
 import NetworkGraph from "@/components/NetworkGraph";
-import SelectAlgorithm from "@/components/SelectAlgorithm";
 import TopPageHeader from "@/components/TopPageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { algorithms } from "@/data/algorithms";
 import { sampleMembers, sampleResults } from "@/data/sampleData";
 import { cn } from "@/lib/utils";
+import { useId } from "react";
 
 export default function TopPage() {
   return (
@@ -62,6 +62,9 @@ export default function TopPage() {
                   <PlusIcon />
                   メンバーを追加
                 </Button>
+                <div className="mt-4 flex gap-4">
+                  <Button size="lg">次へ</Button>
+                </div>
               </>
             </CardWrapper>
             <Card
@@ -79,7 +82,9 @@ export default function TopPage() {
                   <p>説明①</p>
                 </div>
               </CardHeader>
-              <CardContent>test</CardContent>
+              <CardContent>
+                まずは建て替え精算を行うメンバーを追加してください。「次へ」を押すと請求追加画面に移動します。
+              </CardContent>
             </Card>
           </div>
           <img
@@ -90,6 +95,10 @@ export default function TopPage() {
           <div className="flex flex-col items-center gap-6 md:flex-row md:justify-center">
             <CardWrapper title="請求の追加" nextButton={null}>
               <ExampleBillingTabList />
+              <div className="mt-4 flex gap-4">
+                <Button>戻る</Button>
+                <Button size="lg">次へ</Button>
+              </div>
             </CardWrapper>
             <Card
               className={cn(
@@ -106,7 +115,9 @@ export default function TopPage() {
                   <p>説明②</p>
                 </div>
               </CardHeader>
-              <CardContent>test</CardContent>
+              <CardContent>
+                各メンバーに請求したい金額を入力してください
+              </CardContent>
             </Card>
           </div>
           <img
@@ -118,11 +129,11 @@ export default function TopPage() {
             <CardWrapper title="アルゴリズムの選択" nextButton={null}>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label htmlFor={undefined} className="font-medium text-sm">
+                  <label htmlFor={useId()} className="font-medium text-sm">
                     計算アルゴリズム
                   </label>
                   <Select value={""}>
-                    <SelectTrigger id={undefined}>
+                    <SelectTrigger id={useId()}>
                       <SelectValue placeholder="アルゴリズムを選択してください" />
                     </SelectTrigger>
                     <SelectContent>
@@ -137,6 +148,10 @@ export default function TopPage() {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+              <div className="mt-4 flex gap-4">
+                <Button variant="outline">戻る</Button>
+                <Button size="lg">計算実行</Button>
               </div>
             </CardWrapper>
             <Card
@@ -154,7 +169,9 @@ export default function TopPage() {
                   <p>説明➂</p>
                 </div>
               </CardHeader>
-              <CardContent>test</CardContent>
+              <CardContent>
+                計算を行うアルゴリズムを選択して、「計算実行」を押すと計算が実行されます！「戻る」を押すと請求追加画面に移動します。
+              </CardContent>
             </Card>
           </div>
           <img
@@ -168,14 +185,10 @@ export default function TopPage() {
                 <ExampleResultTable />
               </CardWrapper>
               <CardWrapper title="ネットワークグラフ">
-              <NetworkGraph members={sampleMembers} results={sampleResults} />
-                  <div className="mt-4 flex gap-4">
-                    <Button
-                      variant="outline"
-                    >
-                      戻る
-                    </Button>
-                  </div>
+                <NetworkGraph members={sampleMembers} results={sampleResults} />
+                <div className="mt-4 flex gap-4">
+                  <Button variant="outline">戻る</Button>
+                </div>
               </CardWrapper>
             </div>
             <Card
@@ -193,7 +206,9 @@ export default function TopPage() {
                   <p>説明④</p>
                 </div>
               </CardHeader>
-              <CardContent>test</CardContent>
+              <CardContent>
+                計算結果とネットワークグラフが表示されます。「CSVダウンロード」を押すと計算結果をcsv形式でダウンロードできます
+              </CardContent>
             </Card>
           </div>
         </CardContent>

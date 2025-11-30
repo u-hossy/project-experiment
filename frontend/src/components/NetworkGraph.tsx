@@ -1,6 +1,6 @@
 import CytoscapeComponent from "react-cytoscapejs";
-import type { Result } from "@/types/result";
 import type { Member } from "@/types/member";
+import type { Result } from "@/types/result";
 
 interface Props {
   members: Member[];
@@ -21,7 +21,11 @@ export default function NetworkGraph({ members, results }: Props) {
   const idToName = Object.fromEntries(members.map((m) => [m.id, m.name]));
 
   const people = Array.from(
-    new Set(results.map((r) => idToName[r.paidBy]).concat(results.map((r) => idToName[r.paidFor]))),
+    new Set(
+      results
+        .map((r) => idToName[r.paidBy])
+        .concat(results.map((r) => idToName[r.paidFor])),
+    ),
   );
 
   const randomColor = () => {

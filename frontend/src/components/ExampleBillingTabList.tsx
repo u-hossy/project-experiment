@@ -5,7 +5,9 @@ import ExampleBillingDetailCard from "./ExampleBillingDetailCard";
 export default function ExampleBillingTabList() {
   const people = Array.from(
     new Set(
-      samplePayments.map((s) => s.from).concat(samplePayments.map((s) => s.to)),
+      samplePayments
+        .map((s) => s.paidBy)
+        .concat(samplePayments.map((s) => s.paidFor)),
     ),
   );
 

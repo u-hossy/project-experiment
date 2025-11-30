@@ -11,7 +11,7 @@ import { samplePayments } from "@/data/sampleData";
 import { Button } from "./ui/button";
 
 type ExampleBillingDetailCardProps = {
-  payer: string;
+  payer: number;
 };
 
 export default function ExampleBillingDetailCard({
@@ -19,7 +19,9 @@ export default function ExampleBillingDetailCard({
 }: ExampleBillingDetailCardProps) {
   const people = Array.from(
     new Set(
-      samplePayments.map((s) => s.from).concat(samplePayments.map((s) => s.to)),
+      samplePayments
+        .map((s) => s.paidBy)
+        .concat(samplePayments.map((s) => s.paidFor)),
     ),
   );
 
@@ -30,12 +32,12 @@ export default function ExampleBillingDetailCard({
       </CardHeader>
       <CardContent className="space-y-3">
         {samplePayments
-          .filter((b) => b.from === payer)
+          .filter((b) => b.paidBy === payer)
           .map((detail, index) => {
-            const isSelectable = detail.to !== "";
+            const isSelectable = detail.paidFor !== "";
             return (
               <div key={index} className="flex items-center gap-3">
-                <Select value={detail.to}>
+                <Select value={detail.paidFor}>
                   <SelectTrigger className="w-[140px]">
                     <SelectValue placeholder="送金先" />
                   </SelectTrigger>
