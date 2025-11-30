@@ -11,6 +11,7 @@ import {
 import type { Member } from "@/types/member";
 import type { Payment } from "@/types/payment";
 import { Button } from "./ui/button";
+import { useParams } from "react-router-dom";
 
 interface BillingDetailCardProps {
   paidBy: Member;
@@ -28,6 +29,7 @@ export default function BillingDetailCard({
   const [details, setDetails] = useState<
     Array<{ id: number; paidFor: number; amount: number | "" }>
   >([{ id: -1, paidFor: -1, amount: "" }]);
+  const {eventId} = useParams();
 
   // payerに関連するpaymentsをdetailsに反映
   useEffect(() => {
@@ -45,7 +47,7 @@ export default function BillingDetailCard({
     setDetails(newDetails);
   }, [payments, paidBy.id]);
 
-  const handleReceiverChange = (index: number, value: string) => {
+  const handleReceiverChange = async (index: number, value: string) => {
     const newValue = value === "none" ? -1 : Number(value);
     setDetails((prev) => {
       const updated = [...prev];
@@ -66,6 +68,19 @@ export default function BillingDetailCard({
         amount: "",
       };
       setPayments((prev) => [...prev, newPayment]);
+
+      await fetch("http://127.0.0.1:8000/api/v1/payments/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event_id: eventId,
+          payment_id: newPayment.id,
+          paid_by: newPayment.paidBy,
+          paid_for: newPayment.paidFor,
+          amount: 0,
+          note: "",
+        }),
+      });
 
       // detailsのidも更新
       setDetails((prev) => {
@@ -106,28 +121,10 @@ export default function BillingDetailCard({
     });
   };
 
-  const handleBlur = (index: number) => {
+  const handleBlur = async (index: number) => {
     const detail = details[index];
 
-    if (detail.id === -1 && detail.paidFor !== -1 && detail.amount !== "") {
-      // 新規作成
-      const newId =
-        payments.length > 0 ? Math.max(...payments.map((p) => p.id)) + 1 : 0;
-      const newPayment: Payment = {
-        id: newId,
-        paidBy: paidBy.id,
-        paidFor: detail.paidFor,
-        amount: Number(detail.amount),
-      };
-      setPayments((prev) => [...prev, newPayment]);
-
-      // detailsのidも更新
-      setDetails((prev) => {
-        const updated = [...prev];
-        updated[index].id = newId;
-        return updated;
-      });
-    } else if (detail.id !== -1) {
+    if (detail.id !== -1) {
       // 既存を更新
       setPayments((prev) =>
         prev.map((p) =>
@@ -144,13 +141,20 @@ export default function BillingDetailCard({
     }
   };
 
-  const handleDeleteBilling = (index: number) => {
+  const handleDeleteBilling = async (index: number) => {
     const target = details[index];
 
     if (!confirm("本当に削除しますか？")) return;
 
     if (target.id !== -1) {
       setPayments((prev) => prev.filter((p) => p.id !== target.id));
+
+      await fetch(
+        `http://127.0.0.1:8000/api/v1/payments/delete_by_key/?event_id=${eventId}&payment_id=${target.id}`,
+        {
+          method: "DELETE",
+        },
+      );
     }
 
     setDetails((prev) => prev.filter((_, i) => i !== index));

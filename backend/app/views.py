@@ -119,6 +119,18 @@ class PaymentsViewSet(viewsets.ModelViewSet):
         if event_code:
             qs = qs.filter(event_id=event_code)
         return qs
+    
+    @action(detail=False, methods=["delete"])
+    def delete_by_key(self, request):
+        event_id = request.query_params.get("event_id")
+        payment_id = request.query_params.get("payment_id")
+
+        deleted, _ = models.Payments.objects.filter(
+            event_id=event_id,
+            payment_id=payment_id
+        ).delete()
+
+        return Response({"status": "deleted"}, status=200)
 
 
 class ResultsViewSet(viewsets.ModelViewSet):
