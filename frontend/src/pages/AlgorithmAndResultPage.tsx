@@ -111,11 +111,10 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
           >
             戻る
           </Button>
-          <Button onClick={() => navigate(`/${eventId}/network`)} size="lg">
-            ネットワークを表示
-          </Button>
         </div>
       </CardWrapper>
+
+      
     </div>
   );
 }

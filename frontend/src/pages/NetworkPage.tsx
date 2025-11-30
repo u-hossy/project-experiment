@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import NetworkGraph from "../components/NetworkGraph";
 import { Button } from "../components/ui/button";
-import { data } from "../tmp/tmp_data";
+import { data } from "../data/tmp_data";
 
 export default function NetworkPage() {
   const navigate = useNavigate();
