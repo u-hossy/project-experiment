@@ -5,8 +5,8 @@ function downloadCsv(csv: string, filename = "result.csv") {
   link.href = url;
   link.download = filename;
   document.body.appendChild(link);
-  link.click();  
+  link.click();
   link.remove();
 }
 
-export { downloadCsv }
+export { downloadCsv };

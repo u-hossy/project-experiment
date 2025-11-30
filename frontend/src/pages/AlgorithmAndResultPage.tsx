@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
 import { deleteResult } from "@/lib/deleteResult";
+import { downloadCsv } from "@/lib/downloadCsv";
 import { fetchResult } from "@/lib/fetchResult";
+import { generateCsv } from "@/lib/generateCsv";
 import { getResult } from "@/lib/getResult";
 import { saveResult } from "@/lib/saveResult";
 import type { Payment } from "@/types/payment";
@@ -11,8 +13,6 @@ import Result from "../components/Result";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
-import { generateCsv } from "@/lib/generateCsv";
-import { downloadCsv } from "@/lib/downloadCsv";
 
 type Props = {
   payments: Payment[];
@@ -56,7 +56,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
   const handleCsvExport = () => {
     const csv = generateCsv(members, results);
     downloadCsv(csv);
-  }
+  };
 
   useEffect(() => {
     const loadSavedResults = async () => {
