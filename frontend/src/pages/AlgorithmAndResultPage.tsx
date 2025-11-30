@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
+import { deleteResult } from "@/lib/deleteResult";
 import { fetchResult } from "@/lib/fetchResult";
+import { getResult } from "@/lib/getResult";
+import { saveResult } from "@/lib/saveResult";
 import type { Payment } from "@/types/payment";
 import CardWrapper from "../components/CardWrapper";
 import Result from "../components/Result";
@@ -30,8 +33,15 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
     setError(null);
 
     try {
+      if (eventId) {
+        await deleteResult(eventId);
+      }
       const fetchedResults = await fetchResult({ algorithmId, payments });
       setResults(fetchedResults);
+
+      if (eventId) {
+        await saveResult(eventId, fetchedResults);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "計算中にエラーが発生しました",
@@ -40,6 +50,17 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const loadSavedResults = async () => {
+      if (!eventId) return;
+      const saved = await getResult(eventId);
+      if (saved.length > 0) {
+        setResults(saved);
+      }
+    };
+    loadSavedResults();
+  }, [eventId]);
 
   return (
     <div className="w-full min-w-80 max-w-3xl p-4">
