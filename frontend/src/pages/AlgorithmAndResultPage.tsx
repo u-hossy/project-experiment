@@ -102,7 +102,6 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         title="結果表示"
         nextButton={null} // ボタンは下で自作
       >
-        {/* <h2 className="mb-4 font-semibold text-xl">結果表示</h2> */}
         <Result members={members} results={results} />
 
         <div className="mt-4 flex gap-4">
