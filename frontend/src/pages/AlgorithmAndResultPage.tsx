@@ -11,6 +11,8 @@ import Result from "../components/Result";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
+import { generateCsv } from "@/lib/generateCsv";
+import { downloadCsv } from "@/lib/downloadCsv";
 
 type Props = {
   payments: Payment[];
@@ -50,6 +52,11 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       setIsLoading(false);
     }
   };
+
+  const handleCsvExport = () => {
+    const csv = generateCsv(members, results);
+    downloadCsv(csv);
+  }
 
   useEffect(() => {
     const loadSavedResults = async () => {
@@ -111,8 +118,8 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
           >
             戻る
           </Button>
-          <Button onClick={() => navigate(`/${eventId}/network`)} size="lg">
-            ネットワークを表示
+          <Button onClick={handleCsvExport} size="lg">
+            CSV出力
           </Button>
         </div>
       </CardWrapper>
