@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
+import { deleteResult } from "@/lib/deleteResult";
 import { fetchResult } from "@/lib/fetchResult";
+import { getResult } from "@/lib/getResult";
+import { saveResult } from "@/lib/saveResult";
 import type { Payment } from "@/types/payment";
 import CardWrapper from "../components/CardWrapper";
 import Result from "../components/Result";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
-import { saveResult } from "@/lib/saveResult";
-import { getResult } from "@/lib/getResult";
-import { deleteResult } from "@/lib/deleteResult";
 
 type Props = {
   payments: Payment[];
