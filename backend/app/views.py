@@ -122,3 +122,10 @@ class ResultsViewSet(viewsets.ModelViewSet):
             qs = qs.filter(event_id=event_code)
         return qs
     
+    @action(detail=False, methods=["delete"])
+    def delete_by_event(self, request):
+        event_id = request.query_params.get("event_id")
+
+        deleted, _ = models.Results.objects.filter(event_id=event_id).delete()
+        return Response({"status": "deleted", "count": deleted}, status=200)
+    
