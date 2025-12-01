@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import CardWrapper from "./CardWrapper";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 
@@ -38,13 +37,13 @@ export default function TopPageHeader({
       </div>
       <Card
         className={cn(
-          "mx-auto mb-8 w-[90%] max-w-md bg-gray-100 shadow-md",
+          "-mt-4 mx-auto mb-5 w-[90%] max-w-md bg-gray-100 shadow-md",
           className,
         )}
       >
-        <CardContent className="flex flex-col">
+        <CardContent className="flex flex-col p-1">
           <div className="text-center">
-            <p className="mb-8 text-black text-lg">
+            <p className="mb-4 text-black text-lg">
               頻繁に起こる建て替えを最適化します。
             </p>
             <Button

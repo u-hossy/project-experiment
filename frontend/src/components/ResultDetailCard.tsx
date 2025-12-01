@@ -13,12 +13,14 @@ interface ResultDetailCardProps {
   personId: MemberId;
   members: Member[];
   results: Result[];
+  height?: string;
 }
 
 export default function ResultDetailCard({
   personId,
   members,
   results,
+  height = "250px",
 }: ResultDetailCardProps) {
   const person = members.find((m) => m.id === personId);
   const personName = person?.name || `メンバー${personId}`;
@@ -40,7 +42,10 @@ export default function ResultDetailCard({
         <CardTitle className="text-xl">{personName}さんの精算結果</CardTitle>
       </CardHeader>
 
-      <CardContent className="flex h-full min-h-[250px] items-start gap-6 px-6 py-4">
+      <CardContent
+        className="flex h-full items-start gap-6 px-6 py-4"
+        style={{ minHeight: height }}
+      >
         <div className="flex-1">
           <h3 className="mb-3 font-semibold text-lg text-red-700">
             支払うお金 ({formatCurrency(totalPayment)}円)

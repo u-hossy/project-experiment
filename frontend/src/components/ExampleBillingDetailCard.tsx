@@ -21,7 +21,7 @@ export default function ExampleBillingDetailCard({
   const payerPayments = samplePayments.filter((p) => p.paidBy === paidBy.id);
 
   return (
-    <Card className="h-[450px] overflow-y-auto shadow-md">
+    <Card className="h-[330px] overflow-y-auto shadow-md">
       <CardHeader>
         <CardTitle>{paidBy.name}さんが受け取る金額の入力</CardTitle>
       </CardHeader>

@@ -181,9 +181,14 @@ export default function TopPage() {
           />
           <div className="flex flex-col items-center gap-6 md:flex-row md:justify-center">
             <CardWrapper title="結果表示" nextButton={null}>
-              <ResultTab members={sampleMembers} results={sampleResults} />
+              <ResultTab
+                members={sampleMembers}
+                results={sampleResults}
+                height="150px"
+              />
               <div className="mt-4 flex gap-4">
                 <Button variant="outline">戻る</Button>
+                <Button size="lg">CSV出力</Button>
               </div>
             </CardWrapper>
             <Card
@@ -208,7 +213,14 @@ export default function TopPage() {
           </div>
           <div className="flex flex-col items-center gap-6 md:flex-row md:justify-center">
             <CardWrapper title="ネットワークグラフ">
-              <NetworkGraph members={sampleMembers} results={sampleResults} />
+              <div className="flex w-full justify-center">
+                <NetworkGraph
+                  members={sampleMembers}
+                  results={sampleResults}
+                  height="300px"
+                  width="300px"
+                />
+              </div>
               <div className="mt-4 flex gap-4">
                 <Button variant="outline">戻る</Button>
               </div>
