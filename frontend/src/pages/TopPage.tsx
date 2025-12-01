@@ -1,3 +1,13 @@
+import { PlusIcon } from "lucide-react";
+import { useId } from "react";
+import CardWrapper from "@/components/CardWrapper";
+import ExampleBillingTabList from "@/components/ExampleBillingTabList";
+import NetworkGraph from "@/components/NetworkGraph";
+import ResultTab from "@/components/ResultTab";
+import TopPageHeader from "@/components/TopPageHeader";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -5,19 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusIcon } from "lucide-react";
-import CardWrapper from "@/components/CardWrapper";
-import ExampleBillingTabList from "@/components/ExampleBillingTabList";
-import ExampleResultTable from "@/components/ExampleResultTable";
-import NetworkGraph from "@/components/NetworkGraph";
-import TopPageHeader from "@/components/TopPageHeader";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { algorithms } from "@/data/algorithms";
 import { sampleMembers, sampleResults } from "@/data/sampleData";
 import { cn } from "@/lib/utils";
-import { useId } from "react";
 
 export default function TopPage() {
   return (
@@ -180,17 +180,12 @@ export default function TopPage() {
             className="mx-auto my-4 h-15 w-15"
           />
           <div className="flex flex-col items-center gap-6 md:flex-row md:justify-center">
-            <div>
-              <CardWrapper title="結果表示" nextButton={null}>
-                <ExampleResultTable />
-              </CardWrapper>
-              <CardWrapper title="ネットワークグラフ">
-                <NetworkGraph members={sampleMembers} results={sampleResults} />
-                <div className="mt-4 flex gap-4">
-                  <Button variant="outline">戻る</Button>
-                </div>
-              </CardWrapper>
-            </div>
+            <CardWrapper title="結果表示" nextButton={null}>
+              <ResultTab members={sampleMembers} results={sampleResults} />
+              <div className="mt-4 flex gap-4">
+                <Button variant="outline">戻る</Button>
+              </div>
+            </CardWrapper>
             <Card
               className={cn(
                 "mb-8 flex w-full scroll-mt-20 flex-col bg-gray-100 shadow-md",
@@ -207,7 +202,34 @@ export default function TopPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                計算結果とネットワークグラフが表示されます。「CSVダウンロード」を押すと計算結果をcsv形式でダウンロードできます。「戻る」を押すと請求追加画面に移動します。
+                計算結果が表示されます。「CSVダウンロード」を押すと計算結果をcsv形式でダウンロードできます。「戻る」を押すと請求追加画面に移動します。
+              </CardContent>
+            </Card>
+          </div>
+          <div className="flex flex-col items-center gap-6 md:flex-row md:justify-center">
+            <CardWrapper title="ネットワークグラフ">
+              <NetworkGraph members={sampleMembers} results={sampleResults} />
+              <div className="mt-4 flex gap-4">
+                <Button variant="outline">戻る</Button>
+              </div>
+            </CardWrapper>
+            <Card
+              className={cn(
+                "mb-8 flex w-full scroll-mt-20 flex-col bg-gray-100 shadow-md",
+              )}
+            >
+              <CardHeader className="font-bold text-2xl tracking-wide">
+                <div className="flex h-16 w-full items-center px-4">
+                  <img
+                    src="/lightbulb.svg"
+                    alt="BookOpenアイコン"
+                    className="mr-1 h-8 w-8"
+                  />
+                  <p>説明⑤</p>
+                </div>
+              </CardHeader>
+              <CardContent>
+                ネットワークグラフが表示されます。グラフの拡大や移動ができます。「戻る」を押すと請求追加画面に移動します。
               </CardContent>
             </Card>
           </div>

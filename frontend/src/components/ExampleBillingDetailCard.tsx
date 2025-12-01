@@ -8,19 +8,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { sampleMembers, samplePayments } from "@/data/sampleData";
-import { Button } from "./ui/button";
 import type { Member } from "@/types/member";
+import { Button } from "./ui/button";
 
 interface ExampleBillingDetailCardProps {
   paidBy: Member;
-};
+}
 
 export default function ExampleBillingDetailCard({
   paidBy,
 }: ExampleBillingDetailCardProps) {
-    const payerPayments = samplePayments.filter((p) => p.paidBy === paidBy.id);
+  const payerPayments = samplePayments.filter((p) => p.paidBy === paidBy.id);
 
-return (
+  return (
     <Card className="h-[450px] overflow-y-auto shadow-md">
       <CardHeader>
         <CardTitle>{paidBy.name}さんが受け取る金額の入力</CardTitle>
@@ -62,10 +62,7 @@ return (
                     value={detail.amount}
                   />
                   <span>円もらう</span>
-                  <Button
-                    variant="destructive"
-                    className="cursor-pointer"
-                  >
+                  <Button variant="destructive" className="cursor-pointer">
                     削除
                   </Button>
                 </div>

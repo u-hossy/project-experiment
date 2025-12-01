@@ -3,7 +3,6 @@ import { sampleMembers } from "@/data/sampleData";
 import ExampleBillingDetailCard from "./ExampleBillingDetailCard";
 
 export default function ExampleBillingTabList() {
-
   return (
     <Tabs defaultValue={`tab-${sampleMembers[0].id}`} className="w-full">
       <TabsList className="flex w-full justify-start gap-2 overflow-x-auto whitespace-nowrap">
@@ -20,9 +19,7 @@ export default function ExampleBillingTabList() {
 
       {sampleMembers.map((member) => (
         <TabsContent key={member.id} value={`tab-${member.id}`}>
-          <ExampleBillingDetailCard
-            paidBy={member}
-          />
+          <ExampleBillingDetailCard paidBy={member} />
         </TabsContent>
       ))}
     </Tabs>
