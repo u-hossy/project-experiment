@@ -9,6 +9,7 @@ test("convert snake case object to camel case object", () => {
     amount: 8000,
     paid_by: 0,
     paid_for: 1,
+    memo: "",
   };
 
   const after: Payment = {
