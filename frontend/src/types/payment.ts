@@ -5,6 +5,7 @@ interface Payment {
   amount: number | "";
   paidBy: MemberId;
   paidFor: MemberId;
+  memo: string;
 }
 
 export type { Payment };

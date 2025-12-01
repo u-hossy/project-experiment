@@ -23,6 +23,7 @@ interface PaymentResponse {
   paid_by: number;
   paid_for: number;
   amount: number;
+  note: string;
 }
 
 export default function BillingPage({
@@ -44,6 +45,7 @@ export default function BillingPage({
             paidBy: p.paid_by,
             paidFor: p.paid_for,
             amount: p.amount,
+            memo: p.note,
           })),
         ),
       );

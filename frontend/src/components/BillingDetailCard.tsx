@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import type { Member } from "@/types/member";
 import type { Payment } from "@/types/payment";
+import { DialogMemo } from "./DialogMemo";
 import { Button } from "./ui/button";
 
 interface BillingDetailCardProps {
@@ -27,8 +28,8 @@ export default function BillingDetailCard({
   setPayments,
 }: BillingDetailCardProps) {
   const [details, setDetails] = useState<
-    Array<{ id: number; paidFor: number; amount: number | "" }>
-  >([{ id: -1, paidFor: -1, amount: "" }]);
+    Array<{ id: number; paidFor: number; amount: number | ""; memo: string }>
+  >([{ id: -1, paidFor: -1, amount: "", memo: "" }]);
   const { eventId } = useParams();
 
   // payerに関連するpaymentsをdetailsに反映
@@ -40,8 +41,9 @@ export default function BillingDetailCard({
         id: p.id,
         paidFor: p.paidFor,
         amount: p.amount,
+        memo: p.memo,
       })),
-      { id: -1, paidFor: -1, amount: "" as number | "" },
+      { id: -1, paidFor: -1, amount: "" as number | "", memo: "" },
     ];
 
     setDetails(newDetails);
@@ -66,6 +68,7 @@ export default function BillingDetailCard({
         paidBy: paidBy.id,
         paidFor: newValue,
         amount: "",
+        memo: "",
       };
       setPayments((prev) => [...prev, newPayment]);
 
@@ -103,7 +106,7 @@ export default function BillingDetailCard({
 
       const last = updated[updated.length - 1];
       if (last.amount !== "" && last.paidFor !== -1) {
-        updated.push({ id: -1, paidFor: -1, amount: "" });
+        updated.push({ id: -1, paidFor: -1, amount: "", memo: "" });
       }
 
       return updated;
@@ -137,7 +140,10 @@ export default function BillingDetailCard({
       index === details.length - 1 &&
       (detail.paidFor !== -1 || detail.amount !== "")
     ) {
-      setDetails((prev) => [...prev, { id: -1, paidFor: -1, amount: "" }]);
+      setDetails((prev) => [
+        ...prev,
+        { id: -1, paidFor: -1, amount: "", memo: "" },
+      ]);
     }
   };
 
@@ -210,6 +216,13 @@ export default function BillingDetailCard({
                     onBlur={() => handleBlur(index)}
                   />
                   <span>円もらう</span>
+                  <DialogMemo
+                    index={index}
+                    disabled={!isSelectable}
+                    details={details}
+                    setDetails={setDetails}
+                    setPayments={setPayments}
+                  />
                   <Button
                     variant="destructive"
                     onClick={() => handleDeleteBilling(index)}
