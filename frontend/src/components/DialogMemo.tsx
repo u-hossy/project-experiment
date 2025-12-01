@@ -92,7 +92,7 @@ export function DialogMemo({
         >
           <img
             src="/notebook-text.svg"
-            alt="割り勘アイコン"
+            alt="ノートアイコン"
             className="mr-2 ml-2 h-9 w-9"
           />
         </div>
