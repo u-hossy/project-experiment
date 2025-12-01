@@ -3,7 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import NetworkGraph from "@/components/NetworkGraph";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
 import { deleteResult } from "@/lib/deleteResult";
+import { downloadCsv } from "@/lib/downloadCsv";
 import { fetchResult } from "@/lib/fetchResult";
+import { generateCsv } from "@/lib/generateCsv";
 import { getResult } from "@/lib/getResult";
 import { saveResult } from "@/lib/saveResult";
 import type { Payment } from "@/types/payment";
@@ -50,6 +52,11 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleCsvExport = () => {
+    const csv = generateCsv(members, results);
+    downloadCsv(csv);
   };
 
   useEffect(() => {
@@ -110,6 +117,9 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
             variant="outline"
           >
             戻る
+          </Button>
+          <Button onClick={handleCsvExport} size="lg">
+            CSV出力
           </Button>
         </div>
       </CardWrapper>
