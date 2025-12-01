@@ -1,5 +1,4 @@
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { useParams } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +7,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import type { Payment } from "@/types/payment";
 
 export function ExampleDialogMemo() {
   return (

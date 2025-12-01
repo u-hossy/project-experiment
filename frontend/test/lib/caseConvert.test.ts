@@ -16,6 +16,7 @@ test("convert snake case object to camel case object", () => {
     amount: 8000,
     paidBy: 0,
     paidFor: 1,
+    memo: "",
   };
 
   expect(toCamelCaseObject(before)).toStrictEqual(after);
