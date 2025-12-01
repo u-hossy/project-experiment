@@ -1,3 +1,4 @@
+import { DialogDescription } from "@radix-ui/react-dialog";
 import { useParams } from "react-router-dom";
 import {
   Dialog,
@@ -8,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import type { Payment } from "@/types/payment";
-import { DialogDescription } from "@radix-ui/react-dialog";
 
 interface DialogMemoProps {
   index: number;
@@ -56,7 +56,9 @@ export function DialogMemo({
       // 既存を更新
       setPayments((prev) =>
         prev.map((p) =>
-          p.id === detail.id ? { ...p, amount: Number(detail.amount) || 0 } : p,
+          p.id === detail.id
+            ? { ...p, amount: Number(detail.amount) || 0, memo: detail.memo }
+            : p,
         ),
       );
     }
@@ -98,7 +100,9 @@ export function DialogMemo({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>メモ</DialogTitle>
-          <DialogDescription>入力後に閉じると自動で保存されます。</DialogDescription>
+          <DialogDescription>
+            入力後に閉じると自動で保存されます。
+          </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-2">
           <div className="grid flex-1 gap-2">
