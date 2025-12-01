@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -62,7 +63,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173" # React開発サーバー(デプロイする時はここにデプロイ先を追加)
+    "http://localhost:5173", # React開発サーバー(デプロイする時はここにデプロイ先を追加)
+    "http://localhost:5174"
 ]
 ROOT_URLCONF = "core.urls"
 
