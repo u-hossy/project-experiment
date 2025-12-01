@@ -12,11 +12,11 @@ interface MemberListProps {
   setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
 }
 
-type MemberResponse = {
+interface MemberResponse {
   member_id: number;
   name: string;
   id: number;
-};
+}
 
 export default function MemberList({
   members,

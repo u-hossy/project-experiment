@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import NetworkGraph from "@/components/NetworkGraph";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
 import { deleteResult } from "@/lib/deleteResult";
 import { downloadCsv } from "@/lib/downloadCsv";
@@ -108,18 +109,29 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         title="結果表示"
         nextButton={null} // ボタンは下で自作
       >
-        <h2 className="mb-4 font-semibold text-xl">結果表示</h2>
         <Result members={members} results={results} />
 
         <div className="mt-4 flex gap-4">
           <Button
-            onClick={() => navigate(`/${eventId}/algorithm`)}
+            onClick={() => navigate(`/${eventId}/billing`)}
             variant="outline"
           >
             戻る
           </Button>
           <Button onClick={handleCsvExport} size="lg">
             CSV出力
+          </Button>
+        </div>
+      </CardWrapper>
+
+      <CardWrapper title="ネットワークグラフ" nextButton={null}>
+        <NetworkGraph results={results} />
+        <div className="mt-4 flex gap-4">
+          <Button
+            onClick={() => navigate(`/${eventId}/billing`)}
+            variant="outline"
+          >
+            戻る
           </Button>
         </div>
       </CardWrapper>
