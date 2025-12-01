@@ -1,11 +1,20 @@
 import CytoscapeComponent from "react-cytoscapejs";
+import type { Member } from "@/types/member";
 import type { Result } from "@/types/result";
 
 interface Props {
+  members: Member[];
   results: Result[];
+  height?: string;
+  width?: string;
 }
 
-export default function NetworkGraph({ results }: Props) {
+export default function NetworkGraph({
+  members,
+  results,
+  height = "500px",
+  width = "500px",
+}: Props) {
   if (results.length === 0) {
     return (
       <div className="p-8 text-center">
@@ -16,8 +25,14 @@ export default function NetworkGraph({ results }: Props) {
     );
   }
 
+  const idToName = Object.fromEntries(members.map((m) => [m.id, m.name]));
+
   const people = Array.from(
-    new Set(results.map((r) => r.paidBy).concat(results.map((r) => r.paidFor))),
+    new Set(
+      results
+        .map((r) => idToName[r.paidBy])
+        .concat(results.map((r) => idToName[r.paidFor])),
+    ),
   );
 
   const randomColor = () => {
@@ -29,7 +44,7 @@ export default function NetworkGraph({ results }: Props) {
     );
   };
 
-  const colorMap = new Map<number, string>();
+  const colorMap = new Map<string, string>();
   people.forEach((p) => {
     colorMap.set(p, randomColor());
   });
@@ -45,10 +60,10 @@ export default function NetworkGraph({ results }: Props) {
   const edges = results.map((r, i) => ({
     data: {
       id: `e-${i}`,
-      source: r.paidBy,
-      target: r.paidFor,
+      source: idToName[r.paidBy],
+      target: idToName[r.paidFor],
       label: `${r.amount}円`,
-      color: colorMap.get(r.paidBy),
+      color: colorMap.get(idToName[r.paidBy]),
     },
   }));
 
@@ -92,9 +107,10 @@ export default function NetworkGraph({ results }: Props) {
   return (
     <div
       style={{
-        width: "calc(100% - 48px)",
+        width: width,
+        // width: "100%",
         margin: "0 24px",
-        height: "500px",
+        height: height,
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.25)",
         borderRadius: "8px",
         background: "#ffffff",

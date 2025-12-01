@@ -10,7 +10,7 @@ import { getResult } from "@/lib/getResult";
 import { saveResult } from "@/lib/saveResult";
 import type { Payment } from "@/types/payment";
 import CardWrapper from "../components/CardWrapper";
-import Result from "../components/Result";
+import ResultTab from "../components/ResultTab";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
@@ -109,7 +109,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         title="結果表示"
         nextButton={null} // ボタンは下で自作
       >
-        <Result members={members} results={results} />
+        <ResultTab members={members} results={results} />
 
         <div className="mt-4 flex gap-4">
           <Button
@@ -125,7 +125,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       </CardWrapper>
 
       <CardWrapper title="ネットワークグラフ" nextButton={null}>
-        <NetworkGraph results={results} />
+        <NetworkGraph members={members} results={results} />
         <div className="mt-4 flex gap-4">
           <Button
             onClick={() => navigate(`/${eventId}/billing`)}
