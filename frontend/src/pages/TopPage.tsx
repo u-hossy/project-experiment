@@ -116,7 +116,7 @@ export default function TopPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                各メンバーに請求したい金額を入力してください
+                各メンバーに請求したい金額を入力してください。「次へ」を押すと計算結果画面に、「戻る」を押すとメンバー追加画面に移動します。
               </CardContent>
             </Card>
           </div>
@@ -207,7 +207,7 @@ export default function TopPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                計算結果とネットワークグラフが表示されます。「CSVダウンロード」を押すと計算結果をcsv形式でダウンロードできます
+                計算結果とネットワークグラフが表示されます。「CSVダウンロード」を押すと計算結果をcsv形式でダウンロードできます。「戻る」を押すと請求追加画面に移動します。
               </CardContent>
             </Card>
           </div>
