@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import BillingPage from "../pages/BillingPage";
-import { useChatHandler } from "../hooks/useChatHandler";
 import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 
 interface Props {
   members: Member[];
@@ -12,15 +11,12 @@ interface Props {
 }
 
 export default function BillingWrapper({ members, payments, setPayments }: Props) {
-  const { eventId } = useParams();
-  const ws = useChatHandler(`ws://localhost:8000/ws/warikan/${eventId}/`);
+  const ws = useSharedChatHandler();
 
   useEffect(() => {
-    ws.setOnMessage((raw: { message: Member | Payment }) => {
-      const msg = raw.message;
-      if ("amount" in msg) {
-        setPayments((prev) => [...prev, msg]);
-      }
+    ws.onMessage({
+      onPayment: (p) => setPayments(prev => [...prev, p]),
+      onMember: (m) => console.log("member received:", m)
     });
   }, [ws, setPayments]);
 

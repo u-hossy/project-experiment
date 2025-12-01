@@ -1,10 +1,11 @@
-import { useState } from "react"; // useEffectを追加
+import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ResultPage from "./pages/AlgorithmAndResultPage";
 import TopPage from "./pages/TopPage";
 import type { Member } from "./types/member";
 import type { Payment } from "./types/payment";
+import EventRoot from "./components/EventRoot";
 import MembersWrapper from "./websocket/MembersWrapper";
 import BillingWrapper from "./websocket/BillingWrapper";
 
@@ -21,8 +22,9 @@ function App() {
           <Route index element={<Navigate to="/top" replace />} />
 
           <Route path="top" element={<TopPage />} />
+          <Route path=":eventId" element={<EventRoot/>}>
           <Route
-            path=":eventId/members"
+            path=":members"
             element={
               <MembersWrapper
                 members={members}
@@ -32,7 +34,7 @@ function App() {
             }
           />
           <Route
-            path=":eventId/billing"
+            path="billing"
             element={
               <BillingWrapper
                 members={members}
@@ -42,9 +44,10 @@ function App() {
             }
           />
           <Route
-            path=":eventId/algorithmAndresults"
+            path=":algorithmAndresults"
             element={<ResultPage members={members} payments={payments} />}
           />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

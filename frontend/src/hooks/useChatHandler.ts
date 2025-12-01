@@ -5,21 +5,20 @@ import { useWebSocket } from "./useWebSocket";
 import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
 
-export type WsMessage = Member | Payment;
+export type WsMessage = 
+  | { type: "member_added"; member: Member}
+  | { type: "payment_added"; payment: Payment};
 
-interface RawWsMessage {
-  message: WsMessage;
-}
+
 
 export const useChatHandler = (url: string) => {
-  const ws = useWebSocket<RawWsMessage>(url);
+  const ws = useWebSocket<WsMessage>(url);
 
   const onMessage = useCallback(
     (handlers: { onMember?: (m: Member) => void; onPayment?: (p: Payment) => void }) => {
       ws.setOnMessage((raw) => {
-        const msg = raw.message;
-        if ("name" in msg) handlers.onMember?.(msg as Member);
-        if ("amount" in msg) handlers.onPayment?.(msg as Payment);
+        if (raw.type === "member_added") handlers.onMember?.(raw.member);
+        if (raw.type === "payment_added") handlers.onPayment?.(raw.payment);
       });
     },
     [ws]
@@ -27,8 +26,8 @@ export const useChatHandler = (url: string) => {
 
   return {
     isConnected: ws.isConnected,
-    sendMessage: ws.sendMessage,
+    sendMessage: (msg: WsMessage) => ws.sendMessage(msg),
     onMessage,
-    setOnMessage: ws.setOnMessage, 
+
   };
 };
