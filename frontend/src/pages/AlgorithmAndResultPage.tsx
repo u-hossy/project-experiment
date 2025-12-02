@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import NetworkGraph from "@/components/NetworkGraph";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
 import { deleteResult } from "@/lib/deleteResult";
+import { downloadCsv } from "@/lib/downloadCsv";
 import { fetchResult } from "@/lib/fetchResult";
+import { generateCsv } from "@/lib/generateCsv";
 import { getResult } from "@/lib/getResult";
 import { saveResult } from "@/lib/saveResult";
 import type { Payment } from "@/types/payment";
 import CardWrapper from "../components/CardWrapper";
-import Result from "../components/Result";
+import ResultTab from "../components/ResultTab";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
@@ -49,6 +52,11 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleCsvExport = () => {
+    const csv = generateCsv(members, results);
+    downloadCsv(csv);
   };
 
   useEffect(() => {
@@ -101,18 +109,29 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         title="結果表示"
         nextButton={null} // ボタンは下で自作
       >
-        <h2 className="mb-4 font-semibold text-xl">結果表示</h2>
-        <Result members={members} results={results} />
+        <ResultTab members={members} results={results} />
 
         <div className="mt-4 flex gap-4">
           <Button
-            onClick={() => navigate(`/${eventId}/algorithm`)}
+            onClick={() => navigate(`/${eventId}/billing`)}
             variant="outline"
           >
             戻る
           </Button>
-          <Button onClick={() => navigate(`/${eventId}/network`)} size="lg">
-            ネットワークを表示
+          <Button onClick={handleCsvExport} size="lg">
+            CSV出力
+          </Button>
+        </div>
+      </CardWrapper>
+
+      <CardWrapper title="ネットワークグラフ" nextButton={null}>
+        <NetworkGraph members={members} results={results} />
+        <div className="mt-4 flex gap-4">
+          <Button
+            onClick={() => navigate(`/${eventId}/billing`)}
+            variant="outline"
+          >
+            戻る
           </Button>
         </div>
       </CardWrapper>

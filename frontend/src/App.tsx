@@ -39,6 +39,7 @@ function App() {
               <BillingWrapper
                 members={members}
                 payments={payments}
+                setMembers={setMembers}
                 setPayments={setPayments}
               />
             }

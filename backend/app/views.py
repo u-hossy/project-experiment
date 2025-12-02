@@ -119,6 +119,34 @@ class PaymentsViewSet(viewsets.ModelViewSet):
         if event_code:
             qs = qs.filter(event_id=event_code)
         return qs
+    
+    @action(detail=False, methods=["delete"])
+    def delete_by_key(self, request):
+        event_id = request.query_params.get("event_id")
+        payment_id = request.query_params.get("payment_id")
+
+        deleted, _ = models.Payments.objects.filter(
+            event_id=event_id,
+            payment_id=payment_id
+        ).delete()
+
+        return Response({"status": "deleted"}, status=200)
+    
+    @action(detail=False, methods=["patch"])
+    def patch_by_key(self, request):
+        event_id = request.data.get("event_id")
+        payment_id = request.data.get("payment_id")
+
+        try:
+            obj = models.Payments.objects.get(event_id=event_id, payment_id=payment_id)
+        except models.Payments.DoesNotExist:
+            return Response({"error": "payment not found"}, status=404)
+
+        serializer = self.get_serializer(obj, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=200)
 
 
 class ResultsViewSet(viewsets.ModelViewSet):

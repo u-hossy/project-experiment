@@ -1,18 +1,38 @@
 import CytoscapeComponent from "react-cytoscapejs";
+import type { Member } from "@/types/member";
+import type { Result } from "@/types/result";
 
-type Debt = {
-  from: string;
-  to: string;
-  amount: number;
-};
+interface Props {
+  members: Member[];
+  results: Result[];
+  height?: string;
+  width?: string;
+}
 
-type Props = {
-  debts: Debt[];
-};
+export default function NetworkGraph({
+  members,
+  results,
+  height = "500px",
+  width = "500px",
+}: Props) {
+  if (results.length === 0) {
+    return (
+      <div className="p-8 text-center">
+        <p className="text-muted-foreground">
+          アルゴリズムを選択して送信すると、ネットワークグラフがここに表示されます。
+        </p>
+      </div>
+    );
+  }
 
-export default function NetworkGraph({ debts }: Props) {
+  const idToName = Object.fromEntries(members.map((m) => [m.id, m.name]));
+
   const people = Array.from(
-    new Set(debts.map((d) => d.from).concat(debts.map((d) => d.to))),
+    new Set(
+      results
+        .map((r) => idToName[r.paidBy])
+        .concat(results.map((r) => idToName[r.paidFor])),
+    ),
   );
 
   const randomColor = () => {
@@ -37,13 +57,13 @@ export default function NetworkGraph({ debts }: Props) {
     },
   }));
 
-  const edges = debts.map((d, i) => ({
+  const edges = results.map((r, i) => ({
     data: {
       id: `e-${i}`,
-      source: d.from,
-      target: d.to,
-      label: `${d.amount}円`,
-      color: colorMap.get(d.from),
+      source: idToName[r.paidBy],
+      target: idToName[r.paidFor],
+      label: `${r.amount}円`,
+      color: colorMap.get(idToName[r.paidBy]),
     },
   }));
 
@@ -87,9 +107,10 @@ export default function NetworkGraph({ debts }: Props) {
   return (
     <div
       style={{
-        width: "calc(100% - 48px)",
+        width: width,
+        // width: "100%",
         margin: "0 24px",
-        height: "500px",
+        height: height,
         boxShadow: "0 4px 12px rgba(0, 0, 0, 0.25)",
         borderRadius: "8px",
         background: "#ffffff",
