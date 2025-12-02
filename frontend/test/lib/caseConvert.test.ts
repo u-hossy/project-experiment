@@ -9,6 +9,7 @@ test("convert snake case object to camel case object", () => {
     amount: 8000,
     paid_by: 0,
     paid_for: 1,
+    memo: "",
   };
 
   const after: Payment = {
@@ -16,6 +17,7 @@ test("convert snake case object to camel case object", () => {
     amount: 8000,
     paidBy: 0,
     paidFor: 1,
+    memo: "",
   };
 
   expect(toCamelCaseObject(before)).toStrictEqual(after);

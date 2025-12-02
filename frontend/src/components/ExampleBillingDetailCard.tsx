@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { sampleMembers, samplePayments } from "@/data/sampleData";
 import type { Member } from "@/types/member";
+import { ExampleDialogMemo } from "./ExampleDialogMemo";
 import { Button } from "./ui/button";
 
 interface ExampleBillingDetailCardProps {
@@ -36,7 +37,9 @@ export default function ExampleBillingDetailCard({
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="flex items-center gap-2">
                   <Select
-                    value={detail.paidFor === -1 ? "" : String(detail.paidFor)}
+                    defaultValue={
+                      detail.paidFor === -1 ? "" : String(detail.paidFor)
+                    }
                   >
                     <SelectTrigger className="w-32">
                       <SelectValue placeholder="請求先" />
@@ -59,9 +62,10 @@ export default function ExampleBillingDetailCard({
                     disabled={!isSelectable}
                     placeholder="金額"
                     className="w-24"
-                    value={detail.amount}
+                    defaultValue={detail.amount}
                   />
                   <span>円もらう</span>
+                  <ExampleDialogMemo />{" "}
                   <Button variant="destructive" className="cursor-pointer">
                     削除
                   </Button>

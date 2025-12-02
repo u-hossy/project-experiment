@@ -45,7 +45,7 @@ export default function TopPage() {
                     <Input
                       //各inputを登録
                       type="text"
-                      value={member.name}
+                      defaultValue={member.name}
                       placeholder={`メンバー${index + 1}`}
                       className="rounded-md border px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
@@ -116,7 +116,7 @@ export default function TopPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                各メンバーに請求したい金額を入力してください。「次へ」を押すと計算結果画面に、「戻る」を押すとメンバー追加画面に移動します。
+                各メンバーに請求したい金額を入力してください。ノートアイコンを押すことで請求に関する簡単なメモを残すことができます。「次へ」を押すと計算結果画面に、「戻る」を押すとメンバー追加画面に移動します。
               </CardContent>
             </Card>
           </div>
@@ -132,7 +132,7 @@ export default function TopPage() {
                   <label htmlFor={useId()} className="font-medium text-sm">
                     計算アルゴリズム
                   </label>
-                  <Select value={""}>
+                  <Select>
                     <SelectTrigger id={useId()}>
                       <SelectValue placeholder="アルゴリズムを選択してください" />
                     </SelectTrigger>
