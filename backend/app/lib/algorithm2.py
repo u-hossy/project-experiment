@@ -1,5 +1,3 @@
-# algorithm2.py
-
 from typing import List, Dict, Tuple, Any
 import json
 from collections import defaultdict
@@ -144,6 +142,104 @@ def solve(data: List[Dict[str, any]]) -> List[TransferResult]:
 
     return results
 
+# --- 新規追加/変更部分 ---
+
+def optimize_for_minimum_coins(final_results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    清算結果リストを精査し、4, 8, 9 の位の金額を双方向の受け渡しに分割することで、
+    移動する紙幣・硬貨の枚数を最小化する。（お釣り方式の導入）
+
+    例: AからBへ400円の受け渡しがあった場合、「AからBへ500円」「BからAへ100円」の二つの受け渡しに分割する。
+    """
+    optimized_results: List[Dict[str, Any]] = []
+    
+    # 処理する単位 (1, 10, 100, 1000...) - 大きい単位から処理
+    denominations = [10000, 1000, 100, 10, 1] 
+
+    for original_transaction in final_results:
+        from_user = original_transaction["paid_by"]
+        to_user = original_transaction["paid_for"]
+        amount = original_transaction["amount"] #区別
+        
+        remaining_amount = amount
+
+        for d in denominations:
+            if remaining_amount == 0:
+                break
+                
+            # 現在の単位dで表現される金額部分を計算　(2500//1000)*1000=2000
+            current_d_amount = (remaining_amount // d) * d
+            
+            # d単位での最小化を試みる (4, 8, 9 の位を検出)
+            digit = current_d_amount // d
+            
+            new_transactions = []
+            is_optimized = False
+            
+            if digit == 4:
+                # 4d -> 5d と -1d に分割
+                new_transactions = [
+                    {"amount": 5 * d, "paid_by": from_user, "paid_for": to_user},
+                    {"amount": 1 * d, "paid_by": to_user, "paid_for": from_user} # 逆方向
+                ]
+                is_optimized = True
+                
+            elif digit == 8:
+                # 8d -> 10d と -2d に分割
+                new_transactions = [
+                    {"amount": 10 * d, "paid_by": from_user, "paid_for": to_user},
+                    {"amount": 2 * d, "paid_by": to_user, "paid_for": from_user} # 逆方向
+                ]
+                is_optimized = True
+
+            elif digit == 9:
+                # 9d -> 10d と -1d に分割
+                new_transactions = [
+                    {"amount": 10 * d, "paid_by": from_user, "paid_for": to_user},
+                    {"amount": 1 * d, "paid_by": to_user, "paid_for": from_user} # 逆方向
+                ]
+                is_optimized = True
+            
+            if is_optimized:
+                optimized_results.extend(new_transactions)
+                remaining_amount -= current_d_amount
+            else:
+                # 4, 8, 9 以外の部分は、そのまま元の取引として加える
+                if current_d_amount > 0:
+                    optimized_results.append({
+                        "amount": current_d_amount, 
+                        "paid_by": from_user, 
+                        "paid_for": to_user
+                    })
+                remaining_amount -= current_d_amount
+
+
+        # ループを抜けた後、remaining_amount が残っていた場合（1の位など）
+        if remaining_amount > 0:
+            optimized_results.append({
+                "amount": remaining_amount, 
+                "paid_by": from_user, 
+                "paid_for": to_user
+            })
+
+    # 双方向の取引が生成されたため、最終的な統合処理を再度行う
+    merged_results = defaultdict(int)
+    for result in optimized_results:
+        key = (result["paid_by"], result["paid_for"])
+        merged_results[key] += result["amount"]
+        
+    final_output_list = []
+    for ((from_user, to_user), amnt) in merged_results.items():
+        if amnt > 0: # 金額が0より大きい取引のみを採用
+            final_output_list.append({
+                "amount": amnt,
+                "paid_by": from_user,
+                "paid_for": to_user
+            })
+            
+    return final_output_list
+
+
 def load_data_from_json_string(json_data_str: str) -> List[Dict[str, Any]]:
     """
     JSON文字列から入力データをロードする。
@@ -184,22 +280,36 @@ def process_warikan_json(input_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         for user_id, amount in sagaku.items() if abs(amount) > 0.5 # わずかな差額は無視
     ]
     
+    # 1. 桁優先の清算アルゴリズムを実行
     torihiki = solve(solve_input_data)
     
-    # 統合処理を追加
-    merged_results = defaultdict(int)
+    # 2. 統合処理 (第一段階: solveの結果を統合)
+    merged_results_step1 = defaultdict(int)
     for result in torihiki:
         key = (result["from_user"], result["to_user"])
-        merged_results[key] += result["amount"]
+        merged_results_step1[key] += result["amount"]
         
+    # 第一段階の統合結果をリストに変換 (optimize_for_minimum_coinsへの入力形式)
+    output_json_list_step1 = []
+    for ((from_user, to_user), amnt) in merged_results_step1.items():
+        if amnt > 0:
+            output_json_list_step1.append({
+                "amount": amnt,
+                "paid_by": from_user,
+                "paid_for": to_user
+            })
 
+    # 3. 硬貨枚数最小化の最適化を実行
+    final_results_optimized = optimize_for_minimum_coins(output_json_list_step1)
+    
+    # 4. 最終的なJSONリストを生成 (IDを振り直す)
     output_json_list = []
-
-    for j, ((from_user, to_user), amnt) in enumerate(merged_results.items()):
+    for j, result in enumerate(final_results_optimized):
         output_json_list.append({
             "id": j,
-            "amount": amnt,
-            "paid_by": from_user,
-            "paid_for": to_user
+            "amount": result["amount"],
+            "paid_by": result["paid_by"],
+            "paid_for": result["paid_for"]
         })
+        
     return output_json_list
