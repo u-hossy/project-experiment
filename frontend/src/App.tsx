@@ -37,13 +37,13 @@ function App() {
               <BillingWrapper
                 members={members}
                 payments={payments}
-                setMembers={sestMembers}
+                setMembers={setMembers}
                 setPayments={setPayments}
               />
             }
           />
           <Route
-            path=":algorithmAndresults"
+            path="algorithmAndresults"
             element={<AlgorithmAndResultPage members={members} payments={payments} />}
           />
           </Route>
