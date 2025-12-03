@@ -4,6 +4,8 @@ import MemberList from "../components/MemberList";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
+import { ConnectAlert } from "@/components/ConnectAlert";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 
 interface MembersPageProps {
   members: Member[];
@@ -18,9 +20,11 @@ export default function MembersPage({
 }: MembersPageProps) {
   const navigate = useNavigate();
   const { eventId } = useParams();
+  const ws = useSharedChatHandler();
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
+      <ConnectAlert isConnected={ws.isConnected}/>
       <CardWrapper
         title="メンバーの追加"
         description="まずは建て替え精算を行うメンバーを追加してください"

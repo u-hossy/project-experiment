@@ -5,7 +5,8 @@ class WarikanConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # group_id を取得
         self.group_id = self.scope['url_route']['kwargs']['group_id']
-        self.room_group_name = f'warikan_{self.group_id}'
+        safe_group_id = self.group_id.replace("~", "_") 
+        self.room_group_name = f'warikan_{safe_group_id}'
 
         # グループに参加
         await self.channel_layer.group_add(

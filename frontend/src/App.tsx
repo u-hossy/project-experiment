@@ -43,7 +43,7 @@ function App() {
               }
             />
             <Route
-              path=":algorithmAndresults"
+              path="algorithmAndresults"
               element={<ResultPage members={members} payments={payments} />}
             />
           </Route>

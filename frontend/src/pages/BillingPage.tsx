@@ -5,6 +5,8 @@ import CardWrapper from "../components/CardWrapper";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
+import { ConnectAlert } from "@/components/ConnectAlert";
 
 interface BillingPageProps {
   members: Member[];
@@ -34,6 +36,7 @@ export default function BillingPage({
 }: BillingPageProps) {
   const navigate = useNavigate();
   const { eventId } = useParams();
+  const ws = useSharedChatHandler();
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`)
@@ -64,6 +67,7 @@ export default function BillingPage({
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
+      <ConnectAlert isConnected={ws.isConnected}/>
       <CardWrapper
         title="請求の追加"
         description="各メンバーに請求したい金額を入力してください"
