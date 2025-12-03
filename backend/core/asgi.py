@@ -14,13 +14,13 @@ application = ProtocolTypeRouter({
     # WebSocketリクエスト
     "websocket": AllowedHostsOriginValidator(
         OriginValidator(
-        AuthMiddlewareStack(
-        URLRouter(
-            app.routing.websocket_urlpatterns
-        )
-    ),
-        # 開発環境で許可するオリジン
-        ["http://localhost:5173", "http://localhost:5174"]
+            AuthMiddlewareStack(
+                URLRouter(
+                    app.routing.websocket_urlpatterns
+                )
+            ),
+            # 開発環境で許可するオリジン
+            ["http://localhost:5173"]
         )
     ),
 })

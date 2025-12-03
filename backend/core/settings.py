@@ -63,8 +63,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", # React開発サーバー(デプロイする時はここにデプロイ先を追加)
-    "http://localhost:5174"
+    "http://localhost:5173" # React開発サーバー(デプロイする時はここにデプロイ先を追加)
 ]
 ROOT_URLCONF = "core.urls"
 

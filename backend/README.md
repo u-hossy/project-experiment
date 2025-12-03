@@ -48,10 +48,27 @@ python3 -c "from django.core.management.utils import get_random_secret_key; prin
 
 > 必ず依存関係をインストールし、仮想環境に PATH を通してから実行してください
 
+### 1. redis の起動
+
+以下のコマンドで redis を起動します
+
+```bash
+sudo systemctl start redis-server
+sudo systemctl status redis-server
+```
+
+以下のように表示されていることを確認してください
+
+```bash
+Active: active (running)
+```
+
+### 2. サーバーの起動
+
 以下のコマンドでサーバーを起動します
 
 ```bash
-python3 manage.py runserver
+daphne core.asgi:application
 ```
 
 ## 仮想環境の PATH を deactivate する
