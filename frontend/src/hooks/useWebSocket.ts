@@ -9,7 +9,7 @@ interface UseWebSocketOptions {
 
 export function useWebSocket<T = unknown>(
   url: string,
-  options: UseWebSocketOptions = {}
+  options: UseWebSocketOptions = {},
 ) {
   const { reconnect = true, reconnectInterval = 3000 } = options;
 

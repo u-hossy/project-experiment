@@ -1,5 +1,5 @@
-import { useParams, Outlet } from 'react-router-dom';
-import { WebSocketProvider } from '../hooks/WebSocketContext';
+import { Outlet, useParams } from "react-router-dom";
+import { WebSocketProvider } from "../hooks/WebSocketContext";
 
 export default function EventRoot() {
   const { eventId } = useParams<{ eventId: string }>();

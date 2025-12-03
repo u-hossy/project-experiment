@@ -1,8 +1,8 @@
 import { useEffect } from "react";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import MembersPage from "../pages/MembersPage";
 import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
-import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 
 interface Props {
   members: Member[];
@@ -11,12 +11,16 @@ interface Props {
   setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
 }
 
-export default function MembersWrapper({ members,  setMembers, setPayments }: Props) {
+export default function MembersWrapper({
+  members,
+  setMembers,
+  setPayments,
+}: Props) {
   const ws = useSharedChatHandler();
   useEffect(() => {
     ws.onMessage({
-      onMember: (m: Member) => setMembers(prev => [...prev, m]),
-      onPayment: (p: Payment) => setPayments(prev => [...prev, p]),
+      onMember: (m: Member) => setMembers((prev) => [...prev, m]),
+      onPayment: (p: Payment) => setPayments((prev) => [...prev, p]),
     });
   }, [ws, setMembers, setPayments]);
 
@@ -28,4 +32,3 @@ export default function MembersWrapper({ members,  setMembers, setPayments }: Pr
     />
   );
 }
-
