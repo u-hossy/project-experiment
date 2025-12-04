@@ -57,6 +57,3 @@ class WarikanConsumer(AsyncWebsocketConsumer):
             "type": "payment_added",
             "payment": event["payment"]
         }))
-    
-
-        

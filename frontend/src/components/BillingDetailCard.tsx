@@ -13,6 +13,7 @@ import type { Member } from "@/types/member";
 import type { Payment } from "@/types/payment";
 import { DialogMemo } from "./DialogMemo";
 import { Button } from "./ui/button";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 
 interface BillingDetailCardProps {
   paidBy: Member;
@@ -31,6 +32,7 @@ export default function BillingDetailCard({
     Array<{ id: number; paidFor: number; amount: number | ""; memo: string }>
   >([{ id: -1, paidFor: -1, amount: "", memo: "" }]);
   const { eventId } = useParams();
+  const ws = useSharedChatHandler();
 
   // payerに関連するpaymentsをdetailsに反映
   useEffect(() => {
@@ -85,6 +87,15 @@ export default function BillingDetailCard({
         }),
       });
 
+      ws.sendMessage({
+        type: "member_added",
+        member: { id: 999, name: "テスト送信" },
+      });
+      ws.sendMessage({
+        type: "payment_added",
+        payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
+      });
+
       // detailsのidも更新
       setDetails((prev) => {
         const updated = [...prev];
@@ -136,6 +147,15 @@ export default function BillingDetailCard({
       }),
     });
 
+    ws.sendMessage({
+        type: "member_added",
+        member: { id: 999, name: "テスト送信" },
+      });
+      ws.sendMessage({
+        type: "payment_added",
+        payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
+      });
+
     if (
       index === details.length - 1 &&
       (detail.paidFor !== -1 || detail.amount !== "")
@@ -161,6 +181,14 @@ export default function BillingDetailCard({
           method: "DELETE",
         },
       );
+      ws.sendMessage({
+        type: "member_added",
+        member: { id: 999, name: "テスト送信" },
+      });
+      ws.sendMessage({
+        type: "payment_added",
+        payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
+      });
     }
 
     setDetails((prev) => prev.filter((_, i) => i !== index));

@@ -16,13 +16,13 @@ export default function MembersWrapper({
   setMembers,
   setPayments,
 }: Props) {
-  const ws = useSharedChatHandler();
-  useEffect(() => {
-    ws.onMessage({
-      onMember: (m: Member) => setMembers((prev) => [...prev, m]),
-      onPayment: (p: Payment) => setPayments((prev) => [...prev, p]),
-    });
-  }, [ws, setMembers, setPayments]);
+  // const ws = useSharedChatHandler();
+  // useEffect(() => {
+  //   ws.onMessage({
+  //     onMember: (m: Member) => setMembers((prev) => [...prev, m]),
+  //     onPayment: (p: Payment) => setPayments((prev) => [...prev, p]),
+  //   });
+  // }, [ws, setMembers, setPayments]);
 
   return (
     <MembersPage

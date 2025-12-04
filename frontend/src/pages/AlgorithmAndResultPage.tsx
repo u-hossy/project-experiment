@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ConnectAlert } from "@/components/ConnectAlert";
 import NetworkGraph from "@/components/NetworkGraph";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import { deleteResult } from "@/lib/deleteResult";
 import { downloadCsv } from "@/lib/downloadCsv";
 import { fetchResult } from "@/lib/fetchResult";
@@ -14,8 +16,6 @@ import ResultTab from "../components/ResultTab";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
-import { ConnectAlert } from "@/components/ConnectAlert";
-import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 
 type Props = {
   payments: Payment[];
@@ -75,7 +75,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
 
   return (
     <div className="w-full min-w-80 max-w-3xl p-4">
-      <ConnectAlert isConnected={ws.isConnected}/>
+      <ConnectAlert isConnected={ws.isConnected} />
       <CardWrapper
         title="アルゴリズムの選択"
         description="計算を行うアルゴリズムを選択して、「計算実行」を押すと計算が実行されます！"

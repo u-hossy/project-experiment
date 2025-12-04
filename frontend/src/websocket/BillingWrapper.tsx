@@ -17,14 +17,13 @@ export default function BillingWrapper({
   setMembers,
   setPayments,
 }: Props) {
-  const ws = useSharedChatHandler();
-
-  useEffect(() => {
-    ws.onMessage({
-      onPayment: (p) => setPayments((prev) => [...prev, p]),
-      onMember: (m) => console.log("member received:", m),
-    });
-  }, [ws, setPayments]);
+  // const ws = useSharedChatHandler();
+  // useEffect(() => {
+  //   ws.onMessage({
+  //     onPayment: (p) => setPayments((prev) => [...prev, p]),
+  //     onMember: (m) => console.log("member received:", m),
+  //   });
+  // }, [ws, setPayments]);
 
   return (
     <BillingPage
