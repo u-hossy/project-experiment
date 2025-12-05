@@ -8,9 +8,10 @@ export default function TopPageHeader({
   ...props
 }: React.ComponentProps<"header">) {
   const navigate = useNavigate();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   const handleCreateEvent = async () => {
-    const res = await fetch(`http://127.0.0.1:8000/api/v1/events/`, {
+    const res = await fetch(`${apiEndpoint}/api/v1/events/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -34,6 +34,11 @@ poetry install
 cp .env.template .env
 ```
 
+`.env`ファイルを作成した後に、`.env`の`CORS_ALLOWED_ORIGINS`に URI を記載してください。
+
+> `CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173`の形式です。
+
+
 ### `SECRET_KEY`の生成
 
 > 必ず依存関係をインストールし、仮想環境に PATH を通してから実行してください
@@ -48,10 +53,27 @@ python3 -c "from django.core.management.utils import get_random_secret_key; prin
 
 > 必ず依存関係をインストールし、仮想環境に PATH を通してから実行してください
 
+### 1. redis の起動
+
+以下のコマンドで redis を起動します
+
+```bash
+sudo systemctl start redis-server
+sudo systemctl status redis-server
+```
+
+以下のように表示されていることを確認してください
+
+```bash
+Active: active (running)
+```
+
+### 2. サーバーの起動
+
 以下のコマンドでサーバーを起動します
 
 ```bash
-python3 manage.py runserver
+daphne core.asgi:application
 ```
 
 ## 仮想環境の PATH を deactivate する
