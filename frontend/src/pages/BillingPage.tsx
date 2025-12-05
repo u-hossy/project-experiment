@@ -67,16 +67,24 @@ export default function BillingPage({
           })),
         ),
       );
-    }, [eventId, setPayments])
+  }, [eventId, setPayments]);
+
+  const handleMessage = useCallback(() => {
+    ws.onMessage({
+      onMember: fetchMembers,
+      onPayment: fetchPayments,
+    });
+  }, [fetchMembers, fetchPayments]);
   
-    useEffect(() => {
-      ws.onMessage({
-          onMember: () => fetchMembers(),
-          onPayment: () => fetchPayments(),
-        });
-      fetchMembers();
-      fetchPayments();
-    }, [fetchMembers, fetchPayments]);
+
+  useEffect(() => {
+    ws.onMessage({
+      onMember: () => fetchMembers(),
+      onPayment: () => fetchPayments(),
+    });
+    fetchMembers();
+    fetchPayments();
+  }, [fetchMembers, fetchPayments]);
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
