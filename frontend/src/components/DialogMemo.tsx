@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import type { Payment } from "@/types/payment";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 
 interface DialogMemoProps {
   index: number;
@@ -36,6 +37,7 @@ export function DialogMemo({
 }: DialogMemoProps) {
   const { eventId } = useParams();
   const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+  const ws = useSharedChatHandler();
   const handleMemoChange = (index: number, v: string) => {
     setDetails((prev) => {
       const updated = [...prev];
@@ -73,6 +75,10 @@ export function DialogMemo({
         note: detail.memo,
       }),
     });
+    ws.sendMessage({
+        type: "payment_added",
+        payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
+      });
 
     if (
       index === details.length - 1 &&
