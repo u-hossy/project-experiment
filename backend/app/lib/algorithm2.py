@@ -146,83 +146,80 @@ def solve(data: List[Dict[str, any]]) -> List[TransferResult]:
 
 def optimize_for_minimum_coins(final_results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
-    清算結果リストを精査し、4, 8, 9 の位の金額を双方向の受け渡しに分割することで、
-    移動する紙幣・硬貨の枚数を最小化する。（お釣り方式の導入）
-
-    例: AからBへ400円の受け渡しがあった場合、「AからBへ500円」「BからAへ100円」の二つの受け渡しに分割する。
+    清算結果リストを精査し、4, 8, 9 の位の金額を「繰り上げ払い＋お釣り（逆方向支払い）」に変換することで
+    硬貨・紙幣の枚数を最適化する。
     """
     optimized_results: List[Dict[str, Any]] = []
     
-    # 処理する単位 (1, 10, 100, 1000...) - 大きい単位から処理
+    # 処理する単位
     denominations = [10000, 1000, 100, 10, 1] 
 
     for original_transaction in final_results:
-        from_user = original_transaction["paid_by"]
-        to_user = original_transaction["paid_for"]
-        amount = original_transaction["amount"] #区別
+        # 現在の「支払う側」と「受け取る側」を変数で管理（途中で入れ替わるため）
+        current_payer = original_transaction["paid_by"]
+        current_receiver = original_transaction["paid_for"]
+        remaining_amount = original_transaction["amount"]
         
-        remaining_amount = amount
-
         for d in denominations:
             if remaining_amount == 0:
                 break
+            
+            # 現在の単位dでの商を計算 (例: 480 // 100 = 4)
+            quotient = remaining_amount // d
+            
+            # 支払い額と、反転するかどうかのフラグ
+            pay_amount = 0
+            should_reverse = False
+            
+            if quotient == 4:
+                # 4d -> 5d 支払って、差額を逆請求
+                pay_amount = (quotient + 1) * d # 500
+                should_reverse = True
                 
-            # 現在の単位dで表現される金額部分を計算　(2500//1000)*1000=2000
-            current_d_amount = (remaining_amount // d) * d
-            
-            # d単位での最小化を試みる (4, 8, 9 の位を検出)
-            digit = current_d_amount // d
-            
-            new_transactions = []
-            is_optimized = False
-            
-            if digit == 4:
-                # 4d -> 5d と -1d に分割
-                new_transactions = [
-                    {"amount": 5 * d, "paid_by": from_user, "paid_for": to_user},
-                    {"amount": 1 * d, "paid_by": to_user, "paid_for": from_user} # 逆方向
-                ]
-                is_optimized = True
-                
-            elif digit == 8:
-                # 8d -> 10d と -2d に分割
-                new_transactions = [
-                    {"amount": 10 * d, "paid_by": from_user, "paid_for": to_user},
-                    {"amount": 2 * d, "paid_by": to_user, "paid_for": from_user} # 逆方向
-                ]
-                is_optimized = True
+            elif quotient == 8:
+                # 8d -> 10d 支払って、差額を逆請求 (例: 800 -> 1000, お釣り200)
+                pay_amount = (quotient + 2) * d 
+                should_reverse = True
 
-            elif digit == 9:
-                # 9d -> 10d と -1d に分割
-                new_transactions = [
-                    {"amount": 10 * d, "paid_by": from_user, "paid_for": to_user},
-                    {"amount": 1 * d, "paid_by": to_user, "paid_for": from_user} # 逆方向
-                ]
-                is_optimized = True
-            
-            if is_optimized:
-                optimized_results.extend(new_transactions)
-                remaining_amount -= current_d_amount
+            elif quotient == 9:
+                # 9d -> 10d 支払って、差額を逆請求
+                pay_amount = (quotient + 1) * d 
+                should_reverse = True
+                
             else:
-                # 4, 8, 9 以外の部分は、そのまま元の取引として加える
-                if current_d_amount > 0:
-                    optimized_results.append({
-                        "amount": current_d_amount, 
-                        "paid_by": from_user, 
-                        "paid_for": to_user
-                    })
-                remaining_amount -= current_d_amount
+                # 4, 8, 9 以外は通常の支払い（反転なし）
+                pay_amount = quotient * d
+                should_reverse = False
+            
+            # 支払い処理
+            if pay_amount > 0:
+                optimized_results.append({
+                    "amount": pay_amount, 
+                    "paid_by": current_payer, 
+                    "paid_for": current_receiver
+                })
+                
+                if should_reverse:
+                    # 繰り上げ払いした場合、払いすぎた分が「新しい残高」となり、方向が逆転する
+                    # 例: 残480, 払500 -> 新残高 = 500 - 480 = 20
+                    remaining_amount = pay_amount - remaining_amount
+                    
+                    # 支払い交代（次のお釣りは、相手から自分へ払う）
+                    current_payer, current_receiver = current_receiver, current_payer
+                else:
+                    # 通常支払いの場合は単に減算
+                    remaining_amount -= pay_amount
 
-
-        # ループを抜けた後、remaining_amount が残っていた場合（1の位など）
+        # ループ終了後に端数が残っている場合（1の位など）
         if remaining_amount > 0:
             optimized_results.append({
                 "amount": remaining_amount, 
-                "paid_by": from_user, 
-                "paid_for": to_user
+                "paid_by": current_payer, 
+                "paid_for": current_receiver
             })
 
-    # 双方向の取引が生成されたため、最終的な統合処理を再度行う
+    # 同一方向の取引をマージする（A->B 500 と A->B 10 など）
+    # ※ A->B と B->A は別キーとして残るため、相殺されずに両方出力されます
     merged_results = defaultdict(int)
     for result in optimized_results:
         key = (result["paid_by"], result["paid_for"])
@@ -230,7 +227,7 @@ def optimize_for_minimum_coins(final_results: List[Dict[str, Any]]) -> List[Dict
         
     final_output_list = []
     for ((from_user, to_user), amnt) in merged_results.items():
-        if amnt > 0: # 金額が0より大きい取引のみを採用
+        if amnt > 0:
             final_output_list.append({
                 "amount": amnt,
                 "paid_by": from_user,
