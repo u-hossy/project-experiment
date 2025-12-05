@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ConnectAlert } from "@/components/ConnectAlert";
 import { useSharedChatHandler } from "@/hooks/WebSocketContext";
@@ -40,35 +40,8 @@ export default function BillingPage({
   const ws = useSharedChatHandler();
   const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
-  // useEffect(() => {
-  //   fetch(`${apiEndpoint}/api/v1/payments/?event_id=${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) =>
-  //       setPayments(
-  //         (data as PaymentResponse[]).map((p) => ({
-  //           id: p.payment_id,
-  //           paidBy: p.paid_by,
-  //           paidFor: p.paid_for,
-  //           amount: p.amount,
-  //           memo: p.note,
-  //         })),
-  //       ),
-  //     );
-
-  //   fetch(`${apiEndpoint}/api/v1/members/?event_id=${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) =>
-  //       setMembers(
-  //         (data as MemberResponse[]).map((p) => ({
-  //           id: p.member_id,
-  //           name: p.name,
-  //         })),
-  //       ),
-  //     );
-  // }, [eventId, setMembers, setPayments]);
-
   const fetchMembers = useCallback(() => {
-      fetch(`${apiEndpoint}/api/v1/members/?event_id=${eventId}`)
+    fetch(`${apiEndpoint}/api/v1/members/?event_id=${eventId}`)
       .then((res) => res.json())
       .then((data) =>
         setMembers(
@@ -78,10 +51,10 @@ export default function BillingPage({
           })),
         ),
       );
-    }, [eventId, setMembers]);
+  }, [eventId, setMembers]);
 
-    const fetchPayments = useCallback(() => {
-      fetch(`${apiEndpoint}/api/v1/payments/?event_id=${eventId}`)
+  const fetchPayments = useCallback(() => {
+    fetch(`${apiEndpoint}/api/v1/payments/?event_id=${eventId}`)
       .then((res) => res.json())
       .then((data) =>
         setPayments(

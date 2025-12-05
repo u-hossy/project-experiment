@@ -8,8 +8,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import type { Payment } from "@/types/payment";
 import { useSharedChatHandler } from "@/hooks/WebSocketContext";
+import type { Payment } from "@/types/payment";
 
 interface DialogMemoProps {
   index: number;
@@ -76,9 +76,9 @@ export function DialogMemo({
       }),
     });
     ws.sendMessage({
-        type: "payment_added",
-        payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
-      });
+      type: "payment_added",
+      payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
+    });
 
     if (
       index === details.length - 1 &&

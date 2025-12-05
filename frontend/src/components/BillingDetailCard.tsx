@@ -9,11 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import type { Member } from "@/types/member";
 import type { Payment } from "@/types/payment";
 import { DialogMemo } from "./DialogMemo";
 import { Button } from "./ui/button";
-import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 
 interface BillingDetailCardProps {
   paidBy: Member;
@@ -149,13 +149,13 @@ export default function BillingDetailCard({
     });
 
     ws.sendMessage({
-        type: "member_added",
-        member: { id: 999, name: "テスト送信" },
-      });
-      ws.sendMessage({
-        type: "payment_added",
-        payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
-      });
+      type: "member_added",
+      member: { id: 999, name: "テスト送信" },
+    });
+    ws.sendMessage({
+      type: "payment_added",
+      payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
+    });
 
     if (
       index === details.length - 1 &&

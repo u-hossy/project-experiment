@@ -47,9 +47,9 @@ export default function MembersPage({
 
   useEffect(() => {
     ws.onMessage({
-        onMember: () => fetchMembers(),
-        onPayment: () => fetchMembers(),
-      });
+      onMember: () => fetchMembers(),
+      onPayment: () => fetchMembers(),
+    });
     fetchMembers();
   }, [fetchMembers]);
 
