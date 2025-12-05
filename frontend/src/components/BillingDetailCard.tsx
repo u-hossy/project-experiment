@@ -33,6 +33,7 @@ export default function BillingDetailCard({
   >([{ id: -1, paidFor: -1, amount: "", memo: "" }]);
   const { eventId } = useParams();
   const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   // payerに関連するpaymentsをdetailsに反映
   useEffect(() => {
@@ -74,7 +75,7 @@ export default function BillingDetailCard({
       };
       setPayments((prev) => [...prev, newPayment]);
 
-      await fetch("http://127.0.0.1:8000/api/v1/payments/", {
+      await fetch(`${apiEndpoint}/api/v1/payments/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -136,7 +137,7 @@ export default function BillingDetailCard({
       );
     }
 
-    await fetch(`http://127.0.0.1:8000/api/v1/payments/patch_by_key/`, {
+    await fetch(`${apiEndpoint}/api/v1/payments/patch_by_key/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -176,7 +177,7 @@ export default function BillingDetailCard({
       setPayments((prev) => prev.filter((p) => p.id !== target.id));
 
       await fetch(
-        `http://127.0.0.1:8000/api/v1/payments/delete_by_key/?event_id=${eventId}&payment_id=${target.id}`,
+        `${apiEndpoint}/api/v1/payments/delete_by_key/?event_id=${eventId}&payment_id=${target.id}`,
         {
           method: "DELETE",
         },

@@ -24,6 +24,7 @@ export default function MemberList({
   const [shouldFocusLast, setShouldFocusLast] = useState(false);
   const { eventId } = useParams();
   const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   // メンバー追加関数
   const handleAddMember = () => {
@@ -57,7 +58,7 @@ export default function MemberList({
     if (!target.name.trim()) return;
 
     if (!target.dbId) {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/members/`, {
+      const res = await fetch(`${apiEndpoint}/api/v1/members/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -81,7 +82,7 @@ export default function MemberList({
       return;
     }
 
-    await fetch(`http://127.0.0.1:8000/api/v1/members/${target.dbId}/`, {
+    await fetch(`${apiEndpoint}/api/v1/members/${target.dbId}/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -111,7 +112,7 @@ export default function MemberList({
 
     if (targetMember.dbId) {
       await fetch(
-        `http://127.0.0.1:8000/api/v1/members/delete_by_key/?event_id=${eventId}&member_id=${targetMember.id}`,
+        `${apiEndpoint}/api/v1/members/delete_by_key/?event_id=${eventId}&member_id=${targetMember.id}`,
         {
           method: "DELETE",
         },

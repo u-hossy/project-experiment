@@ -28,10 +28,11 @@ export default function MembersPage({
   const navigate = useNavigate();
   const { eventId } = useParams();
   const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   const fetchMembers = useCallback(async () => {
     const res = await fetch(
-      `http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`,
+      `${apiEndpoint}/api/v1/members/?event_id=${eventId}`,
     );
     const data = await res.json();
 

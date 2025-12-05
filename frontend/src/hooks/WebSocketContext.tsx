@@ -14,7 +14,9 @@ export function WebSocketProvider({
   children,
   eventId,
 }: WebSocketProviderProps) {
-  const ws = useChatHandler(`ws://localhost:8000/ws/warikan/${eventId}/`);
+  const wsEndpoint = import.meta.env.VITE_WS_ENDPOINT;
+  const ws = useChatHandler(`${wsEndpoint}/warikan/${eventId}/`);
+  
 
   return (
     <WebSocketContext.Provider value={ws}>{children}</WebSocketContext.Provider>

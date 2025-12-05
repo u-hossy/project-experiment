@@ -62,10 +62,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", # React開発サーバー(デプロイする時はここにデプロイ先を追加)
-    "http://127.0.0.1:5173"
-]
+CORS_ALLOWED_ORIGINS = os.environ['CORS_ALLOWED_ORIGINS'].split(',')
 ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [

@@ -38,9 +38,10 @@ export default function BillingPage({
   const navigate = useNavigate();
   const { eventId } = useParams();
   const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   // useEffect(() => {
-  //   fetch(`http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`)
+  //   fetch(`${apiEndpoint}/api/v1/payments/?event_id=${eventId}`)
   //     .then((res) => res.json())
   //     .then((data) =>
   //       setPayments(
@@ -54,7 +55,7 @@ export default function BillingPage({
   //       ),
   //     );
 
-  //   fetch(`http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`)
+  //   fetch(`${apiEndpoint}/api/v1/members/?event_id=${eventId}`)
   //     .then((res) => res.json())
   //     .then((data) =>
   //       setMembers(
@@ -67,7 +68,7 @@ export default function BillingPage({
   // }, [eventId, setMembers, setPayments]);
 
   const fetchMembers = useCallback(() => {
-      fetch(`http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`)
+      fetch(`${apiEndpoint}/api/v1/members/?event_id=${eventId}`)
       .then((res) => res.json())
       .then((data) =>
         setMembers(
@@ -80,7 +81,7 @@ export default function BillingPage({
     }, [eventId, setMembers]);
 
     const fetchPayments = useCallback(() => {
-      fetch(`http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`)
+      fetch(`${apiEndpoint}/api/v1/payments/?event_id=${eventId}`)
       .then((res) => res.json())
       .then((data) =>
         setPayments(

@@ -35,6 +35,7 @@ export function DialogMemo({
   setPayments,
 }: DialogMemoProps) {
   const { eventId } = useParams();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
   const handleMemoChange = (index: number, v: string) => {
     setDetails((prev) => {
       const updated = [...prev];
@@ -63,7 +64,7 @@ export function DialogMemo({
       );
     }
 
-    await fetch(`http://127.0.0.1:8000/api/v1/payments/patch_by_key/`, {
+    await fetch(`${apiEndpoint}/api/v1/payments/patch_by_key/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

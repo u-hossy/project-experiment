@@ -20,7 +20,7 @@ application = ProtocolTypeRouter({
                 )
             ),
             # 開発環境で許可するオリジン
-            ["http://localhost:5173"]
+            os.environ['CORS_ALLOWED_ORIGINS'].split(',')
         )
     ),
 })
