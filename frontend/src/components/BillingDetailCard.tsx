@@ -52,7 +52,6 @@ export default function BillingDetailCard({
     setDetails(newDetails);
   }, [payments, paidBy.id]);
 
-
   const handleReceiverChange = async (index: number, value: string) => {
     const newValue = value === "none" ? -1 : Number(value);
     setDetails((prev) => {
@@ -231,19 +230,23 @@ export default function BillingDetailCard({
                   <span>さんから</span>
                 </div>
                 <div className="flex items-center gap-2">
-
                   <Input
                     type="number"
                     min="0" // マイナス入力の禁止
                     inputMode="numeric" // スマホでは数字キーボード表示
-
                     disabled={!isSelectable}
                     placeholder="金額"
                     className="w-24"
                     value={detail.amount}
                     // 入力できるキーの制御
                     onKeyDown={(e) => {
-                      if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "." || e.key ==="-")
+                      if (
+                        e.key === "e" ||
+                        e.key === "E" ||
+                        e.key === "+" ||
+                        e.key === "." ||
+                        e.key === "-"
+                      )
                         e.preventDefault();
                     }}
                     onChange={(e) =>

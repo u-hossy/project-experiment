@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
 import EventRoot from "./components/EventRoot";
 import Layout from "./components/Layout";
 import AlgorithmAndResultPage from "./pages/AlgorithmAndResultPage";
@@ -45,7 +50,12 @@ function App() {
             <Route
               path="algorithmAndresults"
               element={
-                <AlgorithmAndResultPage members={members} payments={payments} />
+                <AlgorithmAndResultPage
+                  members={members}
+                  payments={payments}
+                  setMembers={setMembers}
+                  setPayments={setPayments}
+                />
               }
             />
           </Route>
