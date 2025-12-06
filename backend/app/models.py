@@ -41,13 +41,17 @@ class Payments(models.Model):   #支払いテーブル
                                  related_name='payments', 
                                  on_delete=models.CASCADE)
     payment_id = models.IntegerField()
-    paid_by = models.IntegerField()
-    paid_for = models.IntegerField()
+    paid_by = models.ForeignKey(Members,
+                                on_delete=models.CASCADE,
+                                related_name='payments_paid')
+    paid_for = models.ForeignKey(Members,
+                                on_delete=models.CASCADE,
+                                related_name='payments_for')
     amount = models.IntegerField()
     note = models.CharField(max_length=200, blank=True, null=True)  #メモするところ
 
     def __str__(self):
-        return f"Payments {self.payment_id} in {self.event_id.url_end_code}"
+        return f"Payments {self.payment_id}: {self.paid_by.name} -> {self.paid_for.name}"
     
 
 class Results(models.Model):    #結果テーブル
@@ -56,8 +60,12 @@ class Results(models.Model):    #結果テーブル
                                  related_name='results', 
                                  on_delete=models.CASCADE)
     result_id = models.IntegerField()
-    paid_by = models.IntegerField()
-    paid_for = models.IntegerField()
+    paid_by = models.ForeignKey(Members,
+                                on_delete=models.CASCADE,
+                                related_name='results_paid')
+    paid_for = models.ForeignKey(Members,
+                                on_delete=models.CASCADE,
+                                related_name='results_for')
     amount = models.IntegerField()
 
     def __str__(self):

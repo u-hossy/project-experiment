@@ -5,6 +5,7 @@ import { toCamelCaseObject, toSnakeCaseObject } from "./caseConvert";
 interface FetchResultParams {
   algorithmId: number;
   payments: Payment[];
+  eventId: string;
 }
 
 /**
@@ -25,10 +26,11 @@ async function fetchResult(params: FetchResultParams): Promise<Result[]> {
   const url = `${apiEndpoint}/api/v1/calculate/`;
 
   // リクエストボディをsnake_caseに変換
-  // API仕様に従って、algorithm_idとpaymentsを送信
+  // API仕様に従って、algorithm_idとpaymentsとevent_idを送信
   const requestBody = toSnakeCaseObject({
     algorithmId: params.algorithmId,
     payments: params.payments,
+    eventId: params.eventId,
   });
 
   try {

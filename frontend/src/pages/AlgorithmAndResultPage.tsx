@@ -31,6 +31,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
   const handleSubmit = async () => {
     if (!algorithmId) return setError("アルゴリズムを選択してください");
     if (payments.length === 0) return setError("請求を追加してください");
+    if (!eventId) return setError("イベントIDが見つかりません");
 
     setIsLoading(true);
     setError(null);
@@ -39,7 +40,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       if (eventId) {
         await deleteResult(eventId);
       }
-      const fetchedResults = await fetchResult({ algorithmId, payments });
+      const fetchedResults = await fetchResult({ algorithmId, payments, eventId });
       setResults(fetchedResults);
 
       if (eventId) {
