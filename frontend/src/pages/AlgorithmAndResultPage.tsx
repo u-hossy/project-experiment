@@ -40,7 +40,11 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       if (eventId) {
         await deleteResult(eventId);
       }
-      const fetchedResults = await fetchResult({ algorithmId, payments, eventId });
+      const fetchedResults = await fetchResult({
+        algorithmId,
+        payments,
+        eventId
+      });
       setResults(fetchedResults);
 
       if (eventId) {
