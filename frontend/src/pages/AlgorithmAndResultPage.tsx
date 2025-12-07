@@ -43,7 +43,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       const fetchedResults = await fetchResult({
         algorithmId,
         payments,
-        eventId
+        eventId,
       });
       setResults(fetchedResults);
 
