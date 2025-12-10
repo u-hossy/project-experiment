@@ -118,7 +118,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
               const finalPaidBy =
                 paidByMapped !== undefined ? paidByMapped : Number(p.paid_by);
               const finalPaidFor =
-                paidForMapped !== undefined 
+                paidForMapped !== undefined
                   ? paidForMapped
                   : Number(p.paid_for);
 
