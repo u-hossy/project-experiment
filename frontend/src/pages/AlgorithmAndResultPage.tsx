@@ -76,7 +76,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       if (!eventId) return;
 
       const pkToMemberId: Record<number, number> = {};
-      
+
       // 最新のメンバー情報を取得
       try {
         const memRes = await fetch(
