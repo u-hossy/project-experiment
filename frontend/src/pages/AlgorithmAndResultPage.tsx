@@ -3,8 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ConnectAlert } from "@/components/ConnectAlert";
 import NetworkGraph from "@/components/NetworkGraph";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
-import { useFetchMembers } from "@/hooks/useFetchMembers";
-import { useFetchPayments } from "@/hooks/useFetchPayments";
 import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import { deleteResult } from "@/lib/deleteResult";
 import { downloadCsv } from "@/lib/downloadCsv";
@@ -20,18 +18,11 @@ import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
 
 type Props = {
-  members: Member[];
   payments: Payment[];
-  setMembers: React.Dispatch<React.SetStateAction<Member[]>>;
-  setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
+  members: Member[];
 };
 
-export default function AlgorithmAndResultPage({
-  members,
-  payments,
-  setMembers,
-  setPayments,
-}: Props) {
+export default function AlgorithmAndResultPage({ payments, members }: Props) {
   const navigate = useNavigate();
   const [algorithmId, setAlgorithmId] = useState<number | undefined>(undefined);
   const [results, setResults] = useState<ResultType[]>([]);
@@ -39,18 +30,6 @@ export default function AlgorithmAndResultPage({
   const [error, setError] = useState<string | null>(null);
   const { eventId } = useParams();
   const ws = useSharedChatHandler();
-
-  const fetchMembers = useFetchMembers({ eventId, setMembers });
-  const fetchPayments = useFetchPayments({ eventId, setPayments });
-
-  useEffect(() => {
-    ws.onMessage({
-      onMember: () => fetchMembers,
-      onPayment: () => fetchPayments,
-    });
-    fetchMembers();
-    fetchPayments();
-  }, [fetchMembers, fetchPayments]);
 
   const handleSubmit = async () => {
     if (!algorithmId) return setError("アルゴリズムを選択してください");
@@ -145,6 +124,7 @@ export default function AlgorithmAndResultPage({
             >
               戻る
             </Button>
+
             <Button onClick={handleCsvExport} size="lg">
               CSV出力
             </Button>

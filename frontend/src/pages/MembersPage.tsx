@@ -1,8 +1,6 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ConnectAlert } from "@/components/ConnectAlert";
-import { useFetchMembers } from "@/hooks/useFetchMembers";
-import { useFetchPayments } from "@/hooks/useFetchPayments";
 import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import CardWrapper from "../components/CardWrapper";
 import MemberList from "../components/MemberList";
@@ -16,6 +14,12 @@ interface MembersPageProps {
   setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
 }
 
+interface MemberResponse {
+  member_id: number;
+  name: string;
+  id: number;
+}
+
 export default function MembersPage({
   members,
   setMembers,
@@ -24,18 +28,30 @@ export default function MembersPage({
   const navigate = useNavigate();
   const { eventId } = useParams();
   const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
-  const fetchMembers = useFetchMembers({ eventId, setMembers });
-  const fetchPayments = useFetchPayments({ eventId, setPayments });
+  const fetchMembers = useCallback(async () => {
+    const res = await fetch(
+      `${apiEndpoint}/api/v1/members/?event_id=${eventId}`,
+    );
+    const data = await res.json();
+
+    const loadedMembers: Member[] = (data as MemberResponse[]).map((m) => ({
+      id: m.member_id,
+      name: m.name,
+      dbId: m.id,
+    }));
+
+    setMembers(loadedMembers);
+  }, [eventId, setMembers]);
 
   useEffect(() => {
     ws.onMessage({
-      onMember: () => fetchMembers,
-      onPayment: () => fetchPayments,
+      onMember: () => fetchMembers(),
+      onPayment: () => fetchMembers(),
     });
     fetchMembers();
-    fetchPayments();
-  }, [fetchMembers, fetchPayments]);
+  }, [fetchMembers]);
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">

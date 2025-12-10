@@ -1,18 +1,13 @@
 import { useState } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import EventRoot from "./components/EventRoot";
 import Layout from "./components/Layout";
 import AlgorithmAndResultPage from "./pages/AlgorithmAndResultPage";
+import BillingPage from "./pages/BillingPage";
+import MembersPage from "./pages/MembersPage";
 import TopPage from "./pages/TopPage";
 import type { Member } from "./types/member";
 import type { Payment } from "./types/payment";
-import BillingWrapper from "./websocket/BillingWrapper";
-import MembersWrapper from "./websocket/MembersWrapper";
 
 function App() {
   const [members, setMembers] = useState<Member[]>([]);
@@ -29,7 +24,7 @@ function App() {
             <Route
               path=":members"
               element={
-                <MembersWrapper
+                <MembersPage
                   members={members}
                   setMembers={setMembers}
                   setPayments={setPayments}
@@ -39,7 +34,7 @@ function App() {
             <Route
               path="billing"
               element={
-                <BillingWrapper
+                <BillingPage
                   members={members}
                   payments={payments}
                   setMembers={setMembers}
@@ -50,12 +45,7 @@ function App() {
             <Route
               path="algorithmAndresults"
               element={
-                <AlgorithmAndResultPage
-                  members={members}
-                  payments={payments}
-                  setMembers={setMembers}
-                  setPayments={setPayments}
-                />
+                <AlgorithmAndResultPage members={members} payments={payments} />
               }
             />
           </Route>
