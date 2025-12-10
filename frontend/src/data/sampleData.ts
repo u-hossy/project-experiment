@@ -1,21 +1,24 @@
-export const sampleBillings = [
-  { from: "A", to: "A", amount: 8000 },
-  { from: "A", to: "B", amount: 8000 },
-  { from: "A", to: "C", amount: 8000 },
-  { from: "A", to: "D", amount: 8000 },
-  { from: "B", to: "A", amount: 1500 },
-  { from: "B", to: "B", amount: 1800 },
-  { from: "B", to: "C", amount: 1200 },
-  { from: "B", to: "D", amount: 2000 },
-  { from: "C", to: "A", amount: 4000 },
-  { from: "C", to: "B", amount: 4000 },
-  { from: "C", to: "C", amount: 4000 },
-  { from: "C", to: "D", amount: 4000 },
-  { from: "D", to: "", amount: "" },
+export const sampleMembers = [
+  { id: 1, name: "A" },
+  { id: 2, name: "B" },
+  { id: 3, name: "C" },
+  { id: 4, name: "D" },
 ];
 
-export const sampleResult = [
-  { from: "B", to: "A", amount: 4500 },
-  { from: "D", to: "A", amount: 14000 },
-  { from: "B", to: "C", amount: 2800 },
+export const samplePayments = [
+  { id: 2, paidBy: 1, paidFor: 2, amount: 8000 },
+  { id: 3, paidBy: 1, paidFor: 3, amount: 8000 },
+  { id: 4, paidBy: 1, paidFor: 4, amount: 8000 },
+  { id: 5, paidBy: 2, paidFor: 1, amount: 1500 },
+  { id: 7, paidBy: 2, paidFor: 3, amount: 1200 },
+  { id: 8, paidBy: 2, paidFor: 4, amount: 2000 },
+  { id: 9, paidBy: 3, paidFor: 1, amount: 4000 },
+  { id: 10, paidBy: 3, paidFor: 2, amount: 4000 },
+  { id: 12, paidBy: 3, paidFor: 4, amount: 4000 },
+];
+
+export const sampleResults = [
+  { id: 1, paidBy: 2, paidFor: 1, amount: 4500 },
+  { id: 2, paidBy: 4, paidFor: 1, amount: 14000 },
+  { id: 3, paidBy: 2, paidFor: 3, amount: 2800 },
 ];

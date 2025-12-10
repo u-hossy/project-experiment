@@ -6,9 +6,10 @@ import ResultDetailCard from "./ResultDetailCard";
 interface ResultProps {
   members: Member[];
   results: Result[];
+  height?: string;
 }
 
-export default function ResultTab({ members, results }: ResultProps) {
+export default function ResultTab({ members, results, height }: ResultProps) {
   // 結果がない場合の表示
   if (results.length === 0) {
     return (
@@ -49,6 +50,7 @@ export default function ResultTab({ members, results }: ResultProps) {
             personId={person}
             members={members}
             results={results}
+            height={height}
           />
         </TabsContent>
       ))}

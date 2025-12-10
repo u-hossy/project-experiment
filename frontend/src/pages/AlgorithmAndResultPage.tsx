@@ -1,10 +1,16 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import NetworkGraph from "@/components/NetworkGraph";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
+import { deleteResult } from "@/lib/deleteResult";
+import { downloadCsv } from "@/lib/downloadCsv";
 import { fetchResult } from "@/lib/fetchResult";
+import { generateCsv } from "@/lib/generateCsv";
+import { getResult } from "@/lib/getResult";
+import { saveResult } from "@/lib/saveResult";
 import type { Payment } from "@/types/payment";
 import CardWrapper from "../components/CardWrapper";
-import Result from "../components/Result";
+import ResultTab from "../components/ResultTab";
 import { Button } from "../components/ui/button";
 import type { Member } from "../types/member";
 import type { Result as ResultType } from "../types/result";
@@ -20,6 +26,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
   const [results, setResults] = useState<ResultType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { eventId } = useParams();
 
   const handleSubmit = async () => {
     if (!algorithmId) return setError("アルゴリズムを選択してください");
@@ -29,8 +36,15 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
     setError(null);
 
     try {
+      if (eventId) {
+        await deleteResult(eventId);
+      }
       const fetchedResults = await fetchResult({ algorithmId, payments });
       setResults(fetchedResults);
+
+      if (eventId) {
+        await saveResult(eventId, fetchedResults);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "計算中にエラーが発生しました",
@@ -39,6 +53,22 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       setIsLoading(false);
     }
   };
+
+  const handleCsvExport = () => {
+    const csv = generateCsv(members, results);
+    downloadCsv(csv);
+  };
+
+  useEffect(() => {
+    const loadSavedResults = async () => {
+      if (!eventId) return;
+      const saved = await getResult(eventId);
+      if (saved.length > 0) {
+        setResults(saved);
+      }
+    };
+    loadSavedResults();
+  }, [eventId]);
 
   return (
     <div className="w-full min-w-80 max-w-3xl p-4">
@@ -59,7 +89,10 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         )}
 
         <div className="mt-4 flex gap-4">
-          <Button onClick={() => navigate("/billing")} variant="outline">
+          <Button
+            onClick={() => navigate(`/${eventId}/billing`)}
+            variant="outline"
+          >
             戻る
           </Button>
           <Button
@@ -76,15 +109,29 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         title="結果表示"
         nextButton={null} // ボタンは下で自作
       >
-        <h2 className="mb-4 font-semibold text-xl">結果表示</h2>
-        <Result members={members} results={results} />
+        <ResultTab members={members} results={results} />
 
         <div className="mt-4 flex gap-4">
-          <Button onClick={() => navigate("/algorithm")} variant="outline">
+          <Button
+            onClick={() => navigate(`/${eventId}/billing`)}
+            variant="outline"
+          >
             戻る
           </Button>
-          <Button onClick={() => navigate("/network")} size="lg">
-            ネットワークを表示
+          <Button onClick={handleCsvExport} size="lg">
+            CSV出力
+          </Button>
+        </div>
+      </CardWrapper>
+
+      <CardWrapper title="ネットワークグラフ" nextButton={null}>
+        <NetworkGraph members={members} results={results} />
+        <div className="mt-4 flex gap-4">
+          <Button
+            onClick={() => navigate(`/${eventId}/billing`)}
+            variant="outline"
+          >
+            戻る
           </Button>
         </div>
       </CardWrapper>
