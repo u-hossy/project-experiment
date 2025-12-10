@@ -57,7 +57,6 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         eventId,
       });
       setResults(fetchedResults);
-
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "計算中にエラーが発生しました",
@@ -80,14 +79,17 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
       
       // 最新のメンバー情報を取得
       try {
-        const memRes = await fetch(`http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`);
+        const memRes = await fetch(
+          `http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`,
+        );
         if (memRes.ok) {
           const memData = await memRes.json();
 
           if (Array.isArray(memData)) {
             (memData as MemberResponse[]).forEach((p) => {
               pkToMemberId[p.id] = Number(p.member_id);
-              if (pkToMemberId[p.id] === undefined) pkToMemberId[p.id] = Number(p.member_id);
+              if (pkToMemberId[p.id] === undefined)
+                pkToMemberId[p.id] = Number(p.member_id);
             });
 
             const fetchedMembers = (memData as MemberResponse[]).map((p) => ({
@@ -103,7 +105,9 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
 
       // 最新の支払い情報を取得
       try {
-        const payRes = await fetch(`http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`);
+        const payRes = await fetch(
+          `http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`,
+        );
         if (payRes.ok) {
           const payData = await payRes.json();
           if (Array.isArray(payData)) {
@@ -111,8 +115,12 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
               const paidByMapped = pkToMemberId[Number(p.paid_by)];
               const paidForMapped = pkToMemberId[Number(p.paid_for)];
 
-              const finalPaidBy = paidByMapped !== undefined ? paidByMapped : Number(p.paid_by);
-              const finalPaidFor = paidForMapped !== undefined ? paidForMapped : Number(p.paid_for);
+              const finalPaidBy =
+                paidByMapped !== undefined ? paidByMapped : Number(p.paid_by);
+              const finalPaidFor =
+                paidForMapped !== undefined 
+                  ? paidForMapped
+                  : Number(p.paid_for);
 
               return {
                 id: Number(p.payment_id),

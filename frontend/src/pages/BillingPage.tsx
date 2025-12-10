@@ -68,7 +68,6 @@ export default function BillingPage({
 
       // 保存が成功したら次の画面に進む
       navigate(`/${eventId}/algorithmAndresults`);
-
     } catch (error) {
       console.error("保存エラー:", error);
       alert("データの保存に失敗しました。もう一度お試しください。");
@@ -83,25 +82,30 @@ export default function BillingPage({
       const pkToMemberId: Record<number, number> = {};
 
       try {
-        const memRes = await fetch(`http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`);
+        const memRes = await fetch(
+          `http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`,
+        );
         if (!memRes.ok) throw new Error("Members fetch failed");
 
         const memData = await memRes.json();
         if (Array.isArray(memData)) {
           (memData as MemberResponse[]).forEach((p) => {
             pkToMemberId[p.id] = Number(p.member_id);
-            if (pkToMemberId[p.id] === undefined) pkToMemberId[p.id] = Number(p.member_id);
+            if (pkToMemberId[p.id] === undefined)
+              pkToMemberId[p.id] = Number(p.member_id);
           });
 
           setMembers(
             (memData as MemberResponse[]).map((p) => ({
               id: Number(p.member_id),
               name: p.name,
-            }))
+            })),
           );
         }
 
-        const payRes = await fetch(`http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`);
+        const payRes = await fetch(
+          `http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`,
+        );
         if (!payRes.ok) throw new Error("Payments fetch failed");
 
         const payData = await payRes.json();
@@ -111,8 +115,12 @@ export default function BillingPage({
               const paidByMapped = pkToMemberId[Number(p.paid_by)];
               const paidForMapped = pkToMemberId[Number(p.paid_for)];
 
-              const finalPaidBy = paidByMapped !== undefined ? paidByMapped : Number(p.paid_by);
-              const finalPaidFor = paidForMapped !== undefined ? paidForMapped : Number(p.paid_for);
+              const finalPaidBy =
+                paidByMapped !== undefined ? paidByMapped : Number(p.paid_by);
+              const finalPaidFor =
+                paidForMapped !== undefined
+                  ? paidForMapped
+                  : Number(p.paid_for);
 
               return {
                 id: p.payment_id,
@@ -121,7 +129,7 @@ export default function BillingPage({
                 amount: p.amount,
                 memo: p.note,
               };
-            })
+            }),
           );
         }
       } catch (err) {
