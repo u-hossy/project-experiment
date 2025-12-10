@@ -32,8 +32,8 @@ export default function TopPageHeader({
       {...props}
     >
       <div className="flex h-16 w-full items-center px-4">
-        <img src="/wallet.svg" alt="割り勘アイコン" className="mr-2 h-6 w-6" />
-        <span className="font-bold text-sm md:text-lg">割り勘くん</span>
+        <img src="/wallet.svg" alt="精算アイコン" className="mr-2 h-6 w-6" />
+        <span className="font-bold text-sm md:text-lg">精算くん</span>
       </div>
       <Card
         className={cn(

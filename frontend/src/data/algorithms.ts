@@ -5,7 +5,7 @@ const algorithms: {
   { id: 1, name: "全体の送金回数最小" },
   {
     id: 2,
-    name: "端数がでないようにする",
+    name: "受け渡す紙幣・硬貨の枚数が最小",
   },
 ];
 export { algorithms };
