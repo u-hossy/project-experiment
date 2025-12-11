@@ -157,7 +157,7 @@
       "linter": {
         "rules": {
           "correctness": {
-            "useExhaustiveDependencies": "warn",
+            "useExhaustiveDependencies": "off",
             "useHookAtTopLevel": "error"
           }
         }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ConnectAlert } from "@/components/ConnectAlert";
 import { useSharedChatHandler } from "@/hooks/WebSocketContext";
@@ -68,14 +68,6 @@ export default function BillingPage({
         ),
       );
   }, [eventId, setPayments]);
-
-  const handleMessage = useCallback(() => {
-    ws.onMessage({
-      onMember: fetchMembers,
-      onPayment: fetchPayments,
-    });
-  }, [fetchMembers, fetchPayments]);
-  
 
   useEffect(() => {
     ws.onMessage({
