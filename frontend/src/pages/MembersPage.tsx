@@ -1,4 +1,7 @@
+import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+// import { ConnectAlert } from "@/components/ConnectAlert";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import CardWrapper from "../components/CardWrapper";
 import MemberList from "../components/MemberList";
 import { Button } from "../components/ui/button";
@@ -11,6 +14,12 @@ interface MembersPageProps {
   setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
 }
 
+interface MemberResponse {
+  member_id: number;
+  name: string;
+  id: number;
+}
+
 export default function MembersPage({
   members,
   setMembers,
@@ -18,9 +27,35 @@ export default function MembersPage({
 }: MembersPageProps) {
   const navigate = useNavigate();
   const { eventId } = useParams();
+  const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+
+  const fetchMembers = useCallback(async () => {
+    const res = await fetch(
+      `${apiEndpoint}/api/v1/members/?event_id=${eventId}`,
+    );
+    const data = await res.json();
+
+    const loadedMembers: Member[] = (data as MemberResponse[]).map((m) => ({
+      id: m.member_id,
+      name: m.name,
+      dbId: m.id,
+    }));
+
+    setMembers(loadedMembers);
+  }, [eventId, setMembers]);
+
+  useEffect(() => {
+    ws.onMessage({
+      onMember: () => fetchMembers(),
+      onPayment: () => fetchMembers(),
+    });
+    fetchMembers();
+  }, [fetchMembers]);
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
+      {/* <ConnectAlert isConnected={ws.isConnected} /> */}
       <CardWrapper
         title="メンバーの追加"
         description="まずは建て替え精算を行うメンバーを追加してください"

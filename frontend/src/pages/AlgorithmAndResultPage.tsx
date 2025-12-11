@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+// import { ConnectAlert } from "@/components/ConnectAlert";
 import NetworkGraph from "@/components/NetworkGraph";
 import SelectAlgorithm from "@/components/SelectAlgorithm";
+// import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import { deleteResult } from "@/lib/deleteResult";
 import { downloadCsv } from "@/lib/downloadCsv";
 import { fetchResult } from "@/lib/fetchResult";
@@ -27,6 +29,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { eventId } = useParams();
+  // const ws = useSharedChatHandler();
 
   const handleSubmit = async () => {
     if (!algorithmId) return setError("アルゴリズムを選択してください");
@@ -72,6 +75,7 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
 
   return (
     <div className="w-full min-w-80 max-w-3xl p-4">
+      {/* <ConnectAlert isConnected={ws.isConnected} /> */}
       <CardWrapper
         title="アルゴリズムの選択"
         description="計算を行うアルゴリズムを選択して、「計算実行」を押すと計算が実行されます！"
@@ -110,30 +114,38 @@ export default function AlgorithmAndResultPage({ payments, members }: Props) {
         nextButton={null} // ボタンは下で自作
       >
         <ResultTab members={members} results={results} />
+        {results.length === 0 ? (
+          <></>
+        ) : (
+          <div className="mt-4 flex gap-4">
+            <Button
+              onClick={() => navigate(`/${eventId}/billing`)}
+              variant="outline"
+            >
+              戻る
+            </Button>
 
-        <div className="mt-4 flex gap-4">
-          <Button
-            onClick={() => navigate(`/${eventId}/billing`)}
-            variant="outline"
-          >
-            戻る
-          </Button>
-          <Button onClick={handleCsvExport} size="lg">
-            CSV出力
-          </Button>
-        </div>
+            <Button onClick={handleCsvExport} size="lg">
+              CSV出力
+            </Button>
+          </div>
+        )}
       </CardWrapper>
 
       <CardWrapper title="ネットワークグラフ" nextButton={null}>
         <NetworkGraph members={members} results={results} />
-        <div className="mt-4 flex gap-4">
-          <Button
-            onClick={() => navigate(`/${eventId}/billing`)}
-            variant="outline"
-          >
-            戻る
-          </Button>
-        </div>
+        {results.length === 0 ? (
+          <></>
+        ) : (
+          <div className="mt-4 flex gap-4">
+            <Button
+              onClick={() => navigate(`/${eventId}/billing`)}
+              variant="outline"
+            >
+              戻る
+            </Button>
+          </div>
+        )}
       </CardWrapper>
     </div>
   );

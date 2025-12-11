@@ -1,5 +1,7 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+// import { ConnectAlert } from "@/components/ConnectAlert";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import BillingTabList from "../components/BillingTabList";
 import CardWrapper from "../components/CardWrapper";
 import { Button } from "../components/ui/button";
@@ -16,6 +18,7 @@ interface BillingPageProps {
 interface MemberResponse {
   member_id: number;
   name: string;
+  id: number;
 }
 
 interface PaymentResponse {
@@ -34,9 +37,24 @@ export default function BillingPage({
 }: BillingPageProps) {
   const navigate = useNavigate();
   const { eventId } = useParams();
+  const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
-  useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/v1/payments/?event_id=${eventId}`)
+  const fetchMembers = useCallback(() => {
+    fetch(`${apiEndpoint}/api/v1/members/?event_id=${eventId}`)
+      .then((res) => res.json())
+      .then((data) =>
+        setMembers(
+          (data as MemberResponse[]).map((p) => ({
+            id: p.member_id,
+            name: p.name,
+          })),
+        ),
+      );
+  }, [eventId, setMembers]);
+
+  const fetchPayments = useCallback(() => {
+    fetch(`${apiEndpoint}/api/v1/payments/?event_id=${eventId}`)
       .then((res) => res.json())
       .then((data) =>
         setPayments(
@@ -49,21 +67,20 @@ export default function BillingPage({
           })),
         ),
       );
+  }, [eventId, setPayments]);
 
-    fetch(`http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`)
-      .then((res) => res.json())
-      .then((data) =>
-        setMembers(
-          (data as MemberResponse[]).map((p) => ({
-            id: p.member_id,
-            name: p.name,
-          })),
-        ),
-      );
-  }, [eventId, setMembers, setPayments]);
+  useEffect(() => {
+    ws.onMessage({
+      onMember: () => fetchMembers(),
+      onPayment: () => fetchPayments(),
+    });
+    fetchMembers();
+    fetchPayments();
+  }, [fetchMembers, fetchPayments]);
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
+      {/* <ConnectAlert isConnected={ws.isConnected} /> */}
       <CardWrapper
         title="請求の追加"
         description="各メンバーに請求したい金額を入力してください"

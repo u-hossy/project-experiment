@@ -5,7 +5,8 @@ class WarikanConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # group_id を取得
         self.group_id = self.scope['url_route']['kwargs']['group_id']
-        self.room_group_name = f'warikan_{self.group_id}'
+        safe_group_id = self.group_id.replace("~", "_") 
+        self.room_group_name = f'warikan_{safe_group_id}'
 
         # グループに参加
         await self.channel_layer.group_add(
@@ -22,12 +23,37 @@ class WarikanConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
-    # Viewから送られてきたメッセージを受け取るメソッド
-    async def chat_message(self, event):
-        message = event['message']
-
-        # WebSocketを通じてReact（クライアント）にデータを送信
-        await self.send(text_data=json.dumps({
-            'message': message
+        
+    # クライアントがサーバーにデータを送信 
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        event_type = data.get("type")
+        
+        if event_type == "member_added":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "broadcast_member_added",
+                    "member": data["member"]
+                    }
+            )
+        elif event_type == "payment_added":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "broadcast_payment_added",
+                    "payment": data["payment"]
+                }
+            )
+            
+    async def broadcast_member_added(self, event):
+        await self.send(json.dumps({
+            "type": "member_added",
+            "member": event["member"]
+        }))
+        
+    async def broadcast_payment_added(self, event):
+        await self.send(json.dumps({
+            "type": "payment_added",
+            "payment": event["payment"]
         }))

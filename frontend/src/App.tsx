@@ -4,8 +4,9 @@ import { refreshToken } from "./api/auth";
 import { setAccessToken } from "./api/tokenStore";
 import Header from "./components/Header";
 import useWebSocket from "react-use-websocket";
+import EventRoot from "./components/EventRoot";
 import Layout from "./components/Layout";
-import ResultPage from "./pages/AlgorithmAndResultPage";
+import AlgorithmAndResultPage from "./pages/AlgorithmAndResultPage";
 import BillingPage from "./pages/BillingPage";
 import LoginPage from "./pages/LoginPage";
 import MemberPage from "./pages/MembersPage";
@@ -80,31 +81,35 @@ function App() {
           <Route index element={<Navigate to="/top" replace />} />
 
           <Route path="top" element={<TopPage />} />
-          <Route
-            path=":eventId/members"
-            element={
-              <MemberPage
-                members={members}
-                setMembers={setMembers}
-                setPayments={setPayments}
-              />
-            }
-          />
-          <Route
-            path=":eventId/billing"
-            element={
-              <BillingPage
-                members={members}
-                payments={payments}
-                setMembers={setMembers}
-                setPayments={setPayments}
-              />
-            }
-          />
-          <Route
-            path=":eventId/algorithmAndresults"
-            element={<ResultPage members={members} payments={payments} />}
-          />
+          <Route path=":eventId" element={<EventRoot />}>
+            <Route
+              path=":members"
+              element={
+                <MembersPage
+                  members={members}
+                  setMembers={setMembers}
+                  setPayments={setPayments}
+                />
+              }
+            />
+            <Route
+              path="billing"
+              element={
+                <BillingPage
+                  members={members}
+                  payments={payments}
+                  setMembers={setMembers}
+                  setPayments={setPayments}
+                />
+              }
+            />
+            <Route
+              path="algorithmAndresults"
+              element={
+                <AlgorithmAndResultPage members={members} payments={payments} />
+              }
+            />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

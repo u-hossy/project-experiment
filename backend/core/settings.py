@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
 ]
 
+<<<<<<< HEAD
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -63,6 +64,8 @@ SIMPLE_JWT = {
 
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
+=======
+>>>>>>> main
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -80,12 +83,16 @@ MIDDLEWARE = [
 >>>>>>> main
 ]
 
+<<<<<<< HEAD
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173", # React開発サーバー(デプロイする時はここにデプロイ先を追加)
     "http://127.0.0.1:5173"
 ]
+=======
+CORS_ALLOWED_ORIGINS = os.environ['CORS_ALLOWED_ORIGINS'].split(',')
+>>>>>>> main
 ROOT_URLCONF = "core.urls"
 
 CSRF_TRUSTED_ORIGINS = [

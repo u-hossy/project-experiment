@@ -1,77 +1,33 @@
 /* メッセージの受信と送信のイベント管理の実装 */
-import { useCallback, useEffect, useRef, useState } from "react";
 
-/* 送受信するデータ型の設定 */
-export type MemberId = number;
+import { useCallback } from "react";
+import type { Member } from "../types/member";
+import type { Payment } from "../types/payment";
+import { useWebSocket } from "./useWebSocket";
 
-export interface Member {
-  id: MemberId;
-  name: string;
-}
+export type WsMessage =
+  | { type: "member_added"; member: Member }
+  | { type: "payment_added"; payment: Payment };
 
-export interface Payment {
-  id: number;
-  amount: number | "";
-  paidBy: MemberId;
-  paidFor: MemberId;
-}
-
-export type WsMessage = Member | Payment;
-
-/* 接続を管理するカスタムフック */
 export const useChatHandler = (url: string) => {
-  const wsRef = useRef<WebSocket | null>(null);
-  const [isConnected, setIsConnected] = useState(false);
-  const onMessageRef = useRef<((msg: WsMessage) => void) | null>(null);
+  const ws = useWebSocket<WsMessage>(url);
 
-  useEffect(() => {
-    /* WebSocket接続の確立 */
-    const ws = new WebSocket(url);
-    wsRef.current = ws;
+  const onMessage = useCallback(
+    (handlers: {
+      onMember?: (m: Member) => void;
+      onPayment?: (p: Payment) => void;
+    }) => {
+      ws.setOnMessage((raw) => {
+        if (raw.type === "member_added") handlers.onMember?.(raw.member);
+        if (raw.type === "payment_added") handlers.onPayment?.(raw.payment);
+      });
+    },
+    [ws],
+  );
 
-    /* WebSocketイベントのハンドラ */
-    const handleOpen = () => {
-      setIsConnected(true);
-    };
-
-    const handleClose = () => {
-      setIsConnected(false);
-    };
-
-    const handleMessage = (event: MessageEvent) => {
-      try {
-        const data = JSON.parse(event.data) as WsMessage;
-        onMessageRef.current?.(data);
-      } catch (_error) {
-        console.error("Failed to parse WebSocket message:", event.data);
-      }
-    };
-
-    ws.addEventListener("open", handleOpen);
-    ws.addEventListener("close", handleClose);
-    ws.addEventListener("message", handleMessage);
-
-    return () => {
-      ws.close();
-      ws.removeEventListener("open", handleOpen);
-      ws.removeEventListener("close", handleClose);
-      ws.removeEventListener("message", handleMessage);
-    };
-  }, [url]);
-
-  /* メッセージ受信時 */
-  const setOnMessage = (handler: (msg: WsMessage) => void) => {
-    onMessageRef.current = handler;
+  return {
+    isConnected: ws.isConnected,
+    sendMessage: (msg: WsMessage) => ws.sendMessage(msg),
+    onMessage,
   };
-
-  /* メッセージ送信時 */
-  const sendMessage = useCallback((msg: WsMessage) => {
-    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) {
-      console.error("WebSocket is not connected.");
-      return;
-    }
-    wsRef.current.send(JSON.stringify(msg));
-  }, []);
-
-  return { isConnected, sendMessage, setOnMessage };
 };

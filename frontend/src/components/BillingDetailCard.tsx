@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import type { Member } from "@/types/member";
 import type { Payment } from "@/types/payment";
 import { DialogMemo } from "./DialogMemo";
@@ -31,6 +32,8 @@ export default function BillingDetailCard({
     Array<{ id: number; paidFor: number; amount: number | ""; memo: string }>
   >([{ id: -1, paidFor: -1, amount: "", memo: "" }]);
   const { eventId } = useParams();
+  const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   // payerに関連するpaymentsをdetailsに反映
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function BillingDetailCard({
       };
       setPayments((prev) => [...prev, newPayment]);
 
-      await fetch("http://127.0.0.1:8000/api/v1/payments/", {
+      await fetch(`${apiEndpoint}/api/v1/payments/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -83,6 +86,15 @@ export default function BillingDetailCard({
           amount: 0,
           note: "",
         }),
+      });
+
+      ws.sendMessage({
+        type: "member_added",
+        member: { id: 999, name: "テスト送信" },
+      });
+      ws.sendMessage({
+        type: "payment_added",
+        payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
       });
 
       // detailsのidも更新
@@ -125,7 +137,7 @@ export default function BillingDetailCard({
       );
     }
 
-    await fetch(`http://127.0.0.1:8000/api/v1/payments/patch_by_key/`, {
+    await fetch(`${apiEndpoint}/api/v1/payments/patch_by_key/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -134,6 +146,15 @@ export default function BillingDetailCard({
         amount: detail.amount,
         note: "",
       }),
+    });
+
+    ws.sendMessage({
+      type: "member_added",
+      member: { id: 999, name: "テスト送信" },
+    });
+    ws.sendMessage({
+      type: "payment_added",
+      payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
     });
 
     if (
@@ -156,11 +177,19 @@ export default function BillingDetailCard({
       setPayments((prev) => prev.filter((p) => p.id !== target.id));
 
       await fetch(
-        `http://127.0.0.1:8000/api/v1/payments/delete_by_key/?event_id=${eventId}&payment_id=${target.id}`,
+        `${apiEndpoint}/api/v1/payments/delete_by_key/?event_id=${eventId}&payment_id=${target.id}`,
         {
           method: "DELETE",
         },
       );
+      ws.sendMessage({
+        type: "member_added",
+        member: { id: 999, name: "テスト送信" },
+      });
+      ws.sendMessage({
+        type: "payment_added",
+        payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
+      });
     }
 
     setDetails((prev) => prev.filter((_, i) => i !== index));
@@ -203,10 +232,23 @@ export default function BillingDetailCard({
                 <div className="flex items-center gap-2">
                   <Input
                     type="number"
+                    min="0" // マイナス入力の禁止
+                    inputMode="numeric" // スマホでは数字キーボード表示
                     disabled={!isSelectable}
                     placeholder="金額"
                     className="w-24"
                     value={detail.amount}
+                    // 入力できるキーの制御
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === "e" ||
+                        e.key === "E" ||
+                        e.key === "+" ||
+                        e.key === "." ||
+                        e.key === "-"
+                      )
+                        e.preventDefault();
+                    }}
                     onChange={(e) =>
                       handleAmountChange(
                         index,

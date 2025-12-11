@@ -16,7 +16,12 @@ dependencies = [
     "djangorestframework-simplejwt (>=5.5.1,<6.0.0)"
 =======
     "channels (>=4.3.2,<5.0.0)",
+<<<<<<< HEAD
     "daphne (>=4.2.1,<5.0.0)"
+>>>>>>> main
+=======
+    "daphne (>=4.2.1,<5.0.0)",
+    "channels-redis (>=4.3.0,<5.0.0)"
 >>>>>>> main
 ]
 

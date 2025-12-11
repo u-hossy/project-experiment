@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import type { Payment } from "@/types/payment";
 
 interface DialogMemoProps {
@@ -35,6 +36,8 @@ export function DialogMemo({
   setPayments,
 }: DialogMemoProps) {
   const { eventId } = useParams();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+  const ws = useSharedChatHandler();
   const handleMemoChange = (index: number, v: string) => {
     setDetails((prev) => {
       const updated = [...prev];
@@ -63,7 +66,7 @@ export function DialogMemo({
       );
     }
 
-    await fetch(`http://127.0.0.1:8000/api/v1/payments/patch_by_key/`, {
+    await fetch(`${apiEndpoint}/api/v1/payments/patch_by_key/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -71,6 +74,10 @@ export function DialogMemo({
         payment_id: detail.id,
         note: detail.memo,
       }),
+    });
+    ws.sendMessage({
+      type: "payment_added",
+      payment: { id: 999, paidBy: 999, paidFor: 999, amount: 999, memo: "" },
     });
 
     if (
