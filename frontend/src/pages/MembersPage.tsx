@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ConnectAlert } from "@/components/ConnectAlert";
+// import { ConnectAlert } from "@/components/ConnectAlert";
 import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import CardWrapper from "../components/CardWrapper";
 import MemberList from "../components/MemberList";
@@ -55,7 +55,7 @@ export default function MembersPage({
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
-      <ConnectAlert isConnected={ws.isConnected} />
+      {/* <ConnectAlert isConnected={ws.isConnected} /> */}
       <CardWrapper
         title="メンバーの追加"
         description="まずは建て替え精算を行うメンバーを追加してください"
