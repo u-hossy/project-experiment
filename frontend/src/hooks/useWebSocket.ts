@@ -11,12 +11,10 @@ export function useWebSocket<T = unknown>(
   url: string,
   options: UseWebSocketOptions = {},
 ) {
-  const { reconnect = true, reconnectInterval = 3000 } = options;
+  const { reconnect = true, reconnectInterval = 1000 } = options;
 
   const socketRef = useRef<WebSocket | null>(null);
-
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const messageHandlerRef = useRef<((data: T) => void) | null>(null);
 
   const [isConnected, setIsConnected] = useState(false);

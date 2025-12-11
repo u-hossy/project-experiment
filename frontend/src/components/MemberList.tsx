@@ -1,6 +1,7 @@
 import { PlusIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import type { Member } from "../types/member";
 import type { Payment } from "../types/payment";
 import { Button } from "./ui/button";
@@ -10,12 +11,6 @@ interface MemberListProps {
   members: Member[];
   setMembers: React.Dispatch<React.SetStateAction<Member[]>>;
   setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
-}
-
-interface MemberResponse {
-  member_id: number;
-  name: string;
-  id: number;
 }
 
 export default function MemberList({
@@ -28,6 +23,8 @@ export default function MemberList({
   // 最後に追加されたメンバーにフォーカスを当てるためのフラグ
   const [shouldFocusLast, setShouldFocusLast] = useState(false);
   const { eventId } = useParams();
+  const ws = useSharedChatHandler();
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   // メンバー追加関数
   const handleAddMember = () => {
@@ -61,7 +58,7 @@ export default function MemberList({
     if (!target.name.trim()) return;
 
     if (!target.dbId) {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/members/`, {
+      const res = await fetch(`${apiEndpoint}/api/v1/members/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -71,6 +68,10 @@ export default function MemberList({
         }),
       });
       const created = await res.json();
+      ws.sendMessage({
+        type: "member_added",
+        member: { id: 999, name: "テスト送信" },
+      });
 
       setMembers((prev) => {
         const updated = [...prev];
@@ -81,12 +82,16 @@ export default function MemberList({
       return;
     }
 
-    await fetch(`http://127.0.0.1:8000/api/v1/members/${target.dbId}/`, {
+    await fetch(`${apiEndpoint}/api/v1/members/${target.dbId}/`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: target.name,
       }),
+    });
+    ws.sendMessage({
+      type: "member_added",
+      member: { id: 999, name: "テスト送信" },
     });
   };
 
@@ -107,11 +112,15 @@ export default function MemberList({
 
     if (targetMember.dbId) {
       await fetch(
-        `http://127.0.0.1:8000/api/v1/members/delete_by_key/?event_id=${eventId}&member_id=${targetMember.id}`,
+        `${apiEndpoint}/api/v1/members/delete_by_key/?event_id=${eventId}&member_id=${targetMember.id}`,
         {
           method: "DELETE",
         },
       );
+      ws.sendMessage({
+        type: "member_added",
+        member: { id: 999, name: "テスト送信" },
+      });
     }
 
     // メンバーを削除
@@ -157,25 +166,6 @@ export default function MemberList({
       setShouldFocusLast(false);
     }
   }, [members, shouldFocusLast]);
-
-  useEffect(() => {
-    const fetchMembers = async () => {
-      const res = await fetch(
-        `http://127.0.0.1:8000/api/v1/members/?event_id=${eventId}`,
-      );
-      const data = await res.json();
-
-      const loadedMembers: Member[] = (data as MemberResponse[]).map((m) => ({
-        id: m.member_id,
-        name: m.name,
-        dbId: m.id,
-      }));
-
-      setMembers(loadedMembers);
-    };
-
-    fetchMembers();
-  }, [eventId, setMembers]);
 
   return (
     <>

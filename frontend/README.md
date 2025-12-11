@@ -14,9 +14,10 @@ pnpm install
 
 ### `.env`ファイルの作成
 
-以下のコマンドで`.env`ファイルを作成した後に、`.env`の`VITE_API_ENDPOINT`に API の URI を記載してください。
+以下のコマンドで`.env`ファイルを作成した後に、`.env`の`VITE_API_ENDPOINT`と`VITE_WS_ENDPOINT`に API の URI を記載してください。
 
-> `VITE_API_ENDPOINT=http://localhost:8000`の形式です。
+> `VITE_API_ENDPOINT=http://localhost:8000`
+> `VITE_WS_ENDPOINT=ws://localhost:8000/ws`の形式です。
 
 ```bash
 cp .env.template .env
