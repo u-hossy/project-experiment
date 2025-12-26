@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import { ConnectAlert } from "@/components/ConnectAlert";
+import { ConnectAlert } from "@/components/ConnectAlert";
 import { useSharedChatHandler } from "@/hooks/WebSocketContext";
 import BillingTabList from "../components/BillingTabList";
 import CardWrapper from "../components/CardWrapper";
@@ -80,7 +80,7 @@ export default function BillingPage({
 
   return (
     <div className="mx-auto w-full max-w-3xl p-6">
-      {/* <ConnectAlert isConnected={ws.isConnected} /> */}
+      <ConnectAlert isConnected={ws.isConnected} />
       <CardWrapper
         title="請求の追加"
         description="各メンバーに請求したい金額を入力してください"

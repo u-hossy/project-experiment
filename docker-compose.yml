@@ -1,0 +1,34 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    command: pnpm run dev
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/backend
+      - sqlite_data:/backend/db
+    command: daphne core.asgi:application --port 8000 --bind 0.0.0.0
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    ports: 
+      - "6379:6379"
+
+volumes:
+  sqlite_data:
