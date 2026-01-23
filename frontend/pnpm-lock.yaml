@@ -31,7 +31,7 @@ importers:
         version: 1.1.13(@types/react-dom@19.2.3(@types/react@19.2.9))(@types/react@19.2.9)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tailwindcss/vite':
         specifier: ^4.1.18
-        version: 4.1.18(rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1))
+        version: 4.1.18(rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -76,8 +76,8 @@ importers:
         specifier: 2.3.8
         version: 2.3.8
       '@types/node':
-        specifier: ^25.0.9
-        version: 25.0.9
+        specifier: ^25.0.10
+        version: 25.0.10
       '@types/react':
         specifier: ^19.2.9
         version: 19.2.9
@@ -89,7 +89,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^5.1.1
-        version: 5.1.2(rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1))
+        version: 5.1.2(rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1))
       globals:
         specifier: ^17.1.0
         version: 17.1.0
@@ -104,10 +104,10 @@ importers:
         version: 5.9.3
       vite:
         specifier: npm:rolldown-vite@7.1.14
-        version: rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1)
+        version: rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1)
       vitest:
         specifier: ^4.0.17
-        version: 4.0.17(@types/node@25.0.9)(jiti@2.6.1)
+        version: 4.0.17(@types/node@25.0.10)(jiti@2.6.1)
 
 packages:
 
@@ -950,8 +950,8 @@ packages:
   '@types/history@4.7.11':
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
 
-  '@types/node@25.0.9':
-    resolution: {integrity: sha512-/rpCXHlCWeqClNBwUhDcusJxXYDjZTyE8v5oTO7WbL8eij2nKhUeU89/6xgjU7N4/Vh3He0BtyhJdQbDyhiXAw==}
+  '@types/node@25.0.10':
+    resolution: {integrity: sha512-zWW5KPngR/yvakJgGOmZ5vTBemDoSqF3AcV/LrO5u5wTWyEAVVh+IT39G4gtyAkh3CtTZs8aX/yRM82OfzHJRg==}
 
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
@@ -2286,12 +2286,12 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.18
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.18
 
-  '@tailwindcss/vite@4.1.18(rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1))':
+  '@tailwindcss/vite@4.1.18(rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1))':
     dependencies:
       '@tailwindcss/node': 4.1.18
       '@tailwindcss/oxide': 4.1.18
       tailwindcss: 4.1.18
-      vite: rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1)
+      vite: rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1)
 
   '@tinyhttp/accepts@2.2.4':
     dependencies:
@@ -2410,7 +2410,7 @@ snapshots:
 
   '@types/history@4.7.11': {}
 
-  '@types/node@25.0.9':
+  '@types/node@25.0.10':
     dependencies:
       undici-types: 7.16.0
 
@@ -2433,7 +2433,7 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
-  '@vitejs/plugin-react@5.1.2(rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1))':
+  '@vitejs/plugin-react@5.1.2(rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.5)
@@ -2441,7 +2441,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.53
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1)
+      vite: rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -2454,13 +2454,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.17(rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1))':
+  '@vitest/mocker@4.0.17(rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1))':
     dependencies:
       '@vitest/spy': 4.0.17
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1)
+      vite: rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1)
 
   '@vitest/pretty-format@4.0.17':
     dependencies:
@@ -2784,7 +2784,7 @@ snapshots:
 
   regexparam@2.0.2: {}
 
-  rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1):
+  rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1):
     dependencies:
       '@oxc-project/runtime': 0.92.0
       fdir: 6.5.0(picomatch@4.0.3)
@@ -2794,7 +2794,7 @@ snapshots:
       rolldown: 1.0.0-beta.41
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 25.0.9
+      '@types/node': 25.0.10
       fsevents: 2.3.3
       jiti: 2.6.1
 
@@ -2904,10 +2904,10 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.9
 
-  vitest@4.0.17(@types/node@25.0.9)(jiti@2.6.1):
+  vitest@4.0.17(@types/node@25.0.10)(jiti@2.6.1):
     dependencies:
       '@vitest/expect': 4.0.17
-      '@vitest/mocker': 4.0.17(rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1))
+      '@vitest/mocker': 4.0.17(rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1))
       '@vitest/pretty-format': 4.0.17
       '@vitest/runner': 4.0.17
       '@vitest/snapshot': 4.0.17
@@ -2924,10 +2924,10 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: rolldown-vite@7.1.14(@types/node@25.0.9)(jiti@2.6.1)
+      vite: rolldown-vite@7.1.14(@types/node@25.0.10)(jiti@2.6.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.0.9
+      '@types/node': 25.0.10
     transitivePeerDependencies:
       - esbuild
       - jiti
